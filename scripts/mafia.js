@@ -18,7 +18,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-02g";
+    this.version = "2016-10-02h";
     var mafia = this;
     var defaultThemeName = "default"; //stored as lowercase
     var mwarns = script.mwarns;
@@ -5511,7 +5511,7 @@ function Mafia(mafiachan) {
                     table.push("<tr>" + row + "</tr>");
                 }
                 table.push("</table>");
-                sys.sendHtmlMessage(src, table.join(""), channel);
+                sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
         } else {
             mafiabot.sendMessage(sys.id(src), commandData + " has no standing rule violations.", mafiachan);
         }
