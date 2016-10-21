@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21a";
+    this.version = "2016-10-21b";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6113,7 +6113,7 @@ function Mafia(mafiachan) {
         }
         var pts = cmd[2];
         var comments = cmd[3];
-        var shove = cmd[4].toLowerCase();
+        var shove = cmd[4] ? cmd[4].toLowerCase() : false;
         if ((pts === undefined) && (rule.toLowerCase() in this.defaultWarningPoints)) {
             pts = this.defaultWarningPoints[rule];
             rule = cap(rule);
@@ -6130,7 +6130,7 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
-        if (shove !== undefined && shove !== "") {
+        if (shove !== false && shove !== "") {
             shove = true;
         }
         var info = {
@@ -6143,11 +6143,11 @@ function Mafia(mafiachan) {
             expirationTime: expirationTime
         };
         if (mwarns.get(ip)) {
-            var data = JSON.parse(mwarns.get(ip).split(":::")[1]);
+            var data = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]);
             if (Array.isArray(data)) {
                 data.push(info);
                 mwarns.remove(ip);
-                mwarns.add(ip, name + ":::" + JSON.stringify(data));
+                mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify(data));
             }
         } else {
             mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify([info]));
@@ -6164,8 +6164,8 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
-        if (mwarns.get(ip)) {
-            var warns = JSON.parse(mwarns.get(ip).split(":::")[1]), removed = false;
+        if (mwarns.get(ip)) { // reminder to include shove info in this
+            var warns = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]), removed = false;
             if (Array.isArray(warns)) {
                 for (var i = warns.length - 1; i >= 0; i--) { // go backwards as to not break array when splicing
                     var warn = warns[i];
