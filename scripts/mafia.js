@@ -6172,7 +6172,7 @@ function Mafia(mafiachan) {
                     }
                 }
                 if (removed) {
-                    script.remove(ip);
+                    mwarns.remove(ip);
                     if (warns.length > 0) {
                         mwarns.add(ip, name + ":::" + JSON.stringify(warns));
                     }
