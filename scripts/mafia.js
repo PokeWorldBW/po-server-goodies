@@ -20,7 +20,8 @@ function Mafia(mafiachan) {
     this.version = "2016-10-21";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
-
+    var mwarns = script.mwarns;
+    
     this.mafiaStats = require("mafiastats.js");
     this.mafiaChecker = require("mafiachecker.js");
     sys.makeDir(Config.dataDir + "mafiathemes/");
