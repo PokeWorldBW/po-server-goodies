@@ -6154,7 +6154,7 @@ function Mafia(mafiachan) {
         }
         dualBroadcast("±" + mafiabot.name + ": " + cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + ".");
         if (shove === true) {
-            this.shoveUser(src,name);
+            this.shoveUser(sys.id(src), name); // why can we not use src as a consistent variable type
         }
     };
     this.clearOldWarnings = function(name) {
@@ -6205,7 +6205,7 @@ function Mafia(mafiachan) {
             }
         }
         if (mwarns.get(ip)) {
-            var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1],
+            var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
                 table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='5'>Mafia Warns for " + commandData + "</th></tr><tr></tr><tr><th>Name</th><th>By</th><th>Rule</th><th>Points</th><th>Comments</th>"];
                 for (var i = 0; i < info.length; i++) {
                     sys.sendMessage(sys.id("Yttrium"), JSON.stringify(info));
@@ -6245,8 +6245,8 @@ function Mafia(mafiachan) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1])
                 table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='3'>Your Mafia Warns</th></tr><tr></tr><tr><th>Name</th><th>By</th><th>Rule</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
-                    var warning = info[i], row = [warning.name, warning.warner, warning.rule, warning.comments].map(function(element) {
-                       return "<td><center>" + element + "</center></td>"; 
+                    var warning = info[i], row = [warning.name, warning.warner, warning.rule, warning.comments].map(function(e) {
+                       return "<td><center>" + e + "</center></td>"; 
                     });
                     table.push("<tr>" + row + "</tr>");
                 }
