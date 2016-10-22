@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21f";
+    this.version = "2016-10-21g";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6102,13 +6102,13 @@ function Mafia(mafiachan) {
         var name = cmd[0].toLowerCase();
         var rule = cmd[1];
         if (commandData === "*") {
-            mafiabot.sendMessage(src, "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.", channel);
+            mafiabot.sendMessage(sys.id(src), "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.", channel);
             return;
         } else if (sys.dbIp(name) === undefined) {
-            gamemsg(src, "That user does not exist!");
+            gamemsg(src, "That user does not exist!", false, channel);
             return;
         } else if (rule === undefined) {
-            gamemsg(src,"Please specify a rule that has been violated.");
+            gamemsg(src,"Please specify a rule that has been violated.", false, channel);
             return;
         }
         var pts = cmd[2];
@@ -6119,7 +6119,7 @@ function Mafia(mafiachan) {
             rule = cap(rule);
         }
         if (isNaN(pts) || pts < 1) {
-            mafiabot.sendMessage(src, "Please specify a valid amount of warning points.", channel);
+            gamemsg(src, "Please specify a valid amount of warning points.", false, channel);
             return;
         }
         this.clearOldWarnings(name);
@@ -6176,9 +6176,10 @@ function Mafia(mafiachan) {
                 }
                 if (removed) {
                     sys.sendMessage(sys.id("Yttrium"), "Warn removed from " + ip);
+                    var shove = mwarns.get(ip).split(":::")[1].split("|||")[0];
                     mwarns.remove(ip);
                     if (warns.length > 0) {
-                        mwarns.add(ip, name + ":::" + JSON.stringify(warns));
+                        mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify(warns));
                     }
                 }
             }
