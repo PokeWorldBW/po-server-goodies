@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21g";
+    this.version = "2016-10-21h";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6123,7 +6123,7 @@ function Mafia(mafiachan) {
             return;
         }
         this.clearOldWarnings(name);
-        var expirationTime = (new Date()).getTime() + (/*timeForWarningErase **/ 20 * pts);
+        var expirationTime = (new Date()).getTime() + (/*timeForWarningErase **/ 20000 * pts);
         var ip;
         if (sys.id(name) !== undefined) {
             ip = sys.ip(sys.id(name));
