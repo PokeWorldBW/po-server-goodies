@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21k";
+    this.version = "2016-10-21l";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6188,12 +6188,12 @@ function Mafia(mafiachan) {
             } else {
                 index--; // Command reads index starting at 1, but arrays start at 0
                 var removed = warns.splice(index, 1),
-                    info = "Rule: " + removed.rule + ", Comments: " + removed.comments;
+                    info = "Rule: " + removed[0].rule + ", Comments: " + removed[0].comments;
                 mwarns.remove(ip);
                 if (warns.length > 0) {
                     mwarns.add(ip, name + ":::false|||" + JSON.stringify(warns));
                 }
-                mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + "[" + info + "] from " + commandData[0] + ".", channel);
+                mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
             }
         } else {
             mafiabot.sendMessage(sys.id(src), commandData[0] + " has no warns to remove!", channel);
