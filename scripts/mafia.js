@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21n";
+    this.version = "2016-10-21o";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6304,7 +6304,9 @@ function Mafia(mafiachan) {
             if (shove) {
                 mwarns.remove(ip);
                 mwarns.add(ip, name + ":::false|||" + JSON.stringify(info));
-                mafiabot.sendMessage(sys.id(src), "Now that you have checked you warns, you can <a href=\"po:send//join\">/join</a> the Mafia game!", channel, undefined, undefined, true);
+                if (this.state == "entry") {
+                    mafiabot.sendHtmlMessage(sys.id(src), "Now that you have checked your warns, you can <a href=\"po:send//join\">/join</a> the Mafia game!", channel, undefined, undefined, true);
+                }
             }
         } else {
             mafiabot.sendMessage(sys.id(src), "You have no standing rule violations.", channel);
