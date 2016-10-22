@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21i";
+    this.version = "2016-10-21j";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6112,7 +6112,7 @@ function Mafia(mafiachan) {
             return;
         }
         var pts = cmd[2];
-        var comments = cmd[3];
+        var comments = cmd[3] || "None";
         var shove = cmd[4] ? cmd[4].toLowerCase() : false;
         if ((pts === undefined) && (rule.toLowerCase() in this.defaultWarningPoints)) {
             pts = this.defaultWarningPoints[rule];
@@ -6153,6 +6153,7 @@ function Mafia(mafiachan) {
             mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify([info]));
         }
         dualBroadcast("±" + mafiabot.name + ": " + cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + ".");
+        mafiabot.sendAll("Points: " + pts + ", Comments: " + comments + ", Shove: " + (shove ? "Yes" : "No"), sachannel);
         if (shove === true) {
             this.shoveUser(sys.id(src), name); // why can we not use src as a consistent variable type
         }
@@ -6183,18 +6184,19 @@ function Mafia(mafiachan) {
         if (mwarns.get(ip)) {
             var warns = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]);
             if (index > warns.length) {
-                mafiabot.sendMessage(sys.id(src), commandData + " only has " + warns.length + " warns! Can't remove nonexistent warn #" + index + "!", channel);
+                mafiabot.sendMessage(sys.id(src), commandData[0] + " only has " + warns.length + " warns! Can't remove nonexistent warn #" + index + "!", channel);
             } else {
                 index--; // Command reads index starting at 1, but arrays start at 0
-                warns.splice(index, 1);
-                var shove = mwarns.get(ip).split(":::")[1].split("|||")[0];
+                var removed = warns.splice(index, 1),
+                    info = "Rule: " + removed.rule + ", Comments: " + removed.comments;
                 mwarns.remove(ip);
                 if (warns.length > 0) {
-                    mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify(warns));
+                    mwarns.add(ip, name + ":::false|||" + JSON.stringify(warns));
                 }
+                mafia.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + "[" + info + "] from " + commandData[0] + ".", channel);
             }
         } else {
-            mafiabot.sendMessage(sys.id(src), commandData + " has no warns to remove!", channel);
+            mafiabot.sendMessage(sys.id(src), commandData[0] + " has no warns to remove!", channel);
         }
     };
     this.clearOldWarnings = function(name) {
@@ -6253,6 +6255,12 @@ function Mafia(mafiachan) {
                         return "<td><center>" + e + "</center></td>";
                     });
                     table.push("<tr>" + row.join("") + "</tr>");
+                }
+                var shove = mwarns.get(ip).split(":::")[1].split("|||")[0];
+                if (shove == true) {
+                    table.push("<tr><td colspan='6'>" + commandData + " <b>will be shoved</b> if they attempt to join a game.</td></tr>");
+                } else {
+                    table.push("<tr><td colspan='6'>" + commandData + " will <b>not</b> be shoved if they attempt to join a game.</td></tr>");
                 }
                 table.push("</table>");
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
