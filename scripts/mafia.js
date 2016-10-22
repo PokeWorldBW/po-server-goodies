@@ -8,16 +8,16 @@
 // Global variables inherited from scripts.js
 /*global mafiabot, getTimeString, updateModule, script, sys, SESSION, sendChanAll, require, Config, module, sachannel, staffchannel, sendChanHtmlAll, isSuperAdmin*/
 /*jshint laxbreak:true,shadow:true,undef:true,evil:true,trailing:true,proto:true,withstmt:true,eqnull:true*/
-var MAFIA_CHANNEL = "Mafia";
 
 /* Search for "/*REMOVE" to find things that need to be removed before being submitted to PO Scripts (Remove this line too!) */
 
+var MAFIA_CHANNEL = "Mafia";
 var is_command = require("utilities.js").is_command;
 var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21s";
+    this.version = "2016-10-21t";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -28,8 +28,18 @@ function Mafia(mafiachan) {
     if (!this.nextEventTime) {
         this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;
     }
-    this.eventQueue = [defaultThemeName];
-    this.eventThemePool = [defaultThemeName];
+    if (sys.getVal("mafia_eventQueue") !== "") {
+        this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
+    } else {
+        this.eventQueue = [defaultThemeName];
+        sys.saveVal("mafia_eventQueue", this.eventQueue.toString());
+    }
+    if (sys.getVal("mafia_eventThemePool") !== "") {
+        this.eventThemePool = sys.getVal("mafia_eventThemePool").split(",");
+    } else {
+        this.eventThemePool = [defaultThemeName];
+        sys.saveVal("mafia_eventThemePool", this.eventThemePool.toString());
+    }
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -8502,12 +8512,6 @@ this.beforeChatMessage = function (src, message, channel) {
         /*msgAll("Mafia was reloaded, please start a new game!");*/
         /*REMOVE: The line below */
         msgAll("Mafia was updated to version " + this.version + "!");
-        if (sys.getVal("mafia_eventQueue") !== "") {
-            this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
-        }
-        if (sys.getVal("mafia_eventThemePool") !== "") {
-            this.eventThemePool = sys.getVal("mafia_eventThemePool").split(",");
-        }
     };
     this.onHelp = function (src, commandData, channel) {
         if (commandData.toLowerCase() === "mafia") {
