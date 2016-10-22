@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21q";
+    this.version = "2016-10-21r";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -28,18 +28,8 @@ function Mafia(mafiachan) {
     if (!this.nextEventTime) {
         this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;
     }
-    if (sys.getVal("mafia_eventQueue") !== "") {
-        this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
-    } else {
-        this.eventQueue = [defaultThemeName];
-        sys.saveVal("mafia_eventQueue", this.eventQueue.toString());
-    }
-    if (sys.getVal("mafia_eventThemePool") !== "") {
-        this.eventQueue = sys.getVal("mafia_eventThemePool").split(",");
-    } else {
-        this.eventThemePool = [defaultThemeName];
-        sys.saveVal("mafia_eventThemePool", this.eventThemePool.toString());
-    }
+    this.eventQueue = [defaultThemeName];
+    this.eventThemePool = [defaultThemeName];
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -8512,6 +8502,12 @@ this.beforeChatMessage = function (src, message, channel) {
         /*msgAll("Mafia was reloaded, please start a new game!");*/
         /*REMOVE: The line below */
         msgAll("Mafia was updated to version " + this.version + "!");
+        if (sys.getVal("mafia_eventQueue") !== "") {
+            this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
+        }
+        if (sys.getVal("mafia_eventThemePool") !== "") {
+            this.eventQueue = sys.getVal("mafia_eventThemePool").split(",");
+        }
     };
     this.onHelp = function (src, commandData, channel) {
         if (commandData.toLowerCase() === "mafia") {
