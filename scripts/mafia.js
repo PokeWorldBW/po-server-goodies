@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21o";
+    this.version = "2016-10-21q";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -25,9 +25,21 @@ function Mafia(mafiachan) {
     this.mafiaStats = require("mafiastats.js");
     this.mafiaChecker = require("mafiachecker.js");
     sys.makeDir(Config.dataDir + "mafiathemes/");
-    if (!this.nextEventTime) {this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;}
-    if (!this.eventQueue) {this.eventQueue = [defaultThemeName];}
-    if (!this.eventThemePool) {this.eventThemePool = [defaultThemeName];}
+    if (!this.nextEventTime) {
+        this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;
+    }
+    if (sys.getVal("mafia_eventQueue") !== "") {
+        this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
+    } else {
+        this.eventQueue = [defaultThemeName];
+        sys.saveVal("mafia_eventQueue", this.eventQueue.toString());
+    }
+    if (sys.getVal("mafia_eventThemePool") !== "") {
+        this.eventQueue = sys.getVal("mafia_eventThemePool").split(",");
+    } else {
+        this.eventThemePool = [defaultThemeName];
+        sys.saveVal("mafia_eventThemePool", this.eventThemePool.toString());
+    }
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -1683,13 +1695,12 @@ function Mafia(mafiachan) {
             return;
         }
         if (place === "first") {
-            this.eventQueue.reverse();
-            this.eventQueue.push(theme);
-            this.eventQueue.reverse();
+            this.eventQueue = [theme].concat(this.eventQueue);
         }
         else {
             this.eventQueue.push(theme);
         }
+        sys.saveVal("mafia_eventQueue", this.eventQueue.toString());
         gamemsg(srcname, "Theme " + theme + " added to the Event Queue.");
         this.showEventQueue(src);
     };
@@ -1702,14 +1713,13 @@ function Mafia(mafiachan) {
             return;
         }
         if (place === "last") {
-            this.eventQueue.reverse();
-            indx = this.eventQueue.indexOf(theme);
+            indx = this.eventQueue.lastIndexOf(theme);
             this.eventQueue.splice(indx,1);
-            this.eventQueue.reverse();
         }
         else {
             this.eventQueue.splice(indx,1);
         }
+        sys.saveVal("mafia_eventQueue", this.eventQueue.toString());
         gamemsg(srcname, "Theme " + theme + " removed from the Event Queue.");
         this.showEventQueue(src);
     };
@@ -1731,6 +1741,7 @@ function Mafia(mafiachan) {
             return;
         }
         this.eventThemePool.push(theme);
+        sys.saveVal("mafia_eventThemePool", this.eventThemePool.toString());
         gamemsg(srcname, "Theme " + theme + " added to Event Pool.");
         this.showEventPool(src);
     };
@@ -1743,6 +1754,7 @@ function Mafia(mafiachan) {
              return;
         }
         this.eventThemePool.splice(indx,1);
+        sys.saveVal("mafia_eventThemePool", this.eventThemePool.toString());
         gamemsg(srcname, "Theme " + theme + " removed from Event Pool.");
         this.showEventPool(src);
     };
@@ -6153,9 +6165,13 @@ function Mafia(mafiachan) {
             mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify([info]));
         }
         dualBroadcast("±" + mafiabot.name + ": " + cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + ".");
-        mafiabot.sendAll("Points: " + pts + ", Comments: " + comments + ", Shove: " + (shove ? "Yes" : "No"), sachannel);
+        mafiabot.sendAll("Points: " + pts + ", Comments: " + comments.replace(/(s)(lay)/gi, "$1\u200b$2") + ", Shove: " + (shove ? "Yes" : "No"), sachannel);
         if (shove === true) {
             this.shoveUser(sys.id(src), name); // why can we not use src as a consistent variable type
+        }
+        if (mafia.distributeEvent && this.rewardSafariPlayers.indexOf(name) !== -1) {
+            mafia.safariShove.push(name);
+            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(srcname) + " rescinded " + cmd[0] + "'s Mafia Event participation points!");
         }
     };
     this.removeWarn = function (src, commandData, channel) {
@@ -6193,7 +6209,7 @@ function Mafia(mafiachan) {
                 if (warns.length > 0) {
                     mwarns.add(ip, name + ":::false|||" + JSON.stringify(warns));
                 }
-                mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
+                mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
             }
         } else {
             mafiabot.sendMessage(sys.id(src), commandData[0] + " has no warns to remove!", channel);
@@ -7804,7 +7820,7 @@ function Mafia(mafiachan) {
                  return;
             }
             mafia.safariShove.push(commandData.toLowerCase());
-            dualBroadcast("±" + mafiabot.name + ": " + srcname + " rescinded " + commandData + "'s Mafia Event participation points!");
+            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(srcname) + " rescinded " + commandData + "'s Mafia Event participation points!");
             return;
         }
         var id;
