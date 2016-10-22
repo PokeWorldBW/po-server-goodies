@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21m";
+    this.version = "2016-10-21n";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -1919,7 +1919,7 @@ function Mafia(mafiachan) {
         if (this.state != "blank") {
             gamemsg(srcname, "A game is going on. Wait until it's finished before trying to start another one");
             if (this.state == "voting" || this.state == "entry") {
-                gamemsg(srcname, "You can join the current game by typing /join !");
+                gamemsg(srcname, "You can join the current game by typing <a href=\"po:send//join\">/join</a>!");
             }
             return;
         }
@@ -6268,7 +6268,7 @@ function Mafia(mafiachan) {
             mafiabot.sendMessage(sys.id(src), commandData + " has no standing rule violations.", channel);
         }
     };
-    this.myWarns = function (src) {
+    this.myWarns = function (src, channel) {
         var name = typeof src == "string" ? src : sys.name(src);
         name = name.toLowerCase();
         this.clearOldWarnings( name );
@@ -6290,8 +6290,9 @@ function Mafia(mafiachan) {
             }
         }
         if (mwarns.get(ip)) {
-            var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1])
-                table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='3'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Comments</th></tr>"];
+            var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
+                shove = mwarns.get(ip).split(":::")[1].split("|||")[0] == "true";
+            var table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='3'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
                     var warning = info[i], row = [warning.warner, warning.rule, warning.comments].map(function(e) {
                        return "<td><center>" + e + "</center></td>"; 
@@ -6300,8 +6301,13 @@ function Mafia(mafiachan) {
                 }
                 table.push("</table>");
                 sys.sendHtmlMessage(sys.id(src), table.join(""), mafiachan);
+            if (shove) {
+                mwarns.remove(ip);
+                mwarns.add(ip, name + ":::false|||" + JSON.stringify(info));
+                mafiabot.sendMessage(sys.id(src), "Now that you have checked you warns, you can <a href=\"po:send//join\">/join</a> the Mafia game!", channel, undefined, undefined, true);
+            }
         } else {
-            mafiabot.sendMessage(sys.id(src), "You have no standing rule violations.", mafiachan);
+            mafiabot.sendMessage(sys.id(src), "You have no standing rule violations.", channel);
         }
     };
     this.possibleBotquote = function (mess) {
@@ -6417,7 +6423,7 @@ function Mafia(mafiachan) {
         return false;
     };
     this.canJoin = function (src) {
-        var user = sys.name(src);
+        var user = sys.name(src), ip = sys.ip(src);
         if (this.isInGame(sys.name(src))) {
             gamemsg(user, "You already joined!");
             return false;
@@ -6425,11 +6431,11 @@ function Mafia(mafiachan) {
         if (this.invalidName(src)) {
             return false;
         }
-        if (this.ips.indexOf(sys.ip(src)) != -1) {
+        if (this.ips.indexOf(ip) != -1) {
             gamemsg(user, "This IP is already in list. You cannot register two times!");
             return false;
         }
-        if (this.numjoins[sys.ip(src)] >= 2) {
+        if (this.numjoins[ip] >= 2) {
             gamemsg(user, "You can't join/unjoin more than 3 times!");
             return false;
         }
@@ -6439,6 +6445,11 @@ function Mafia(mafiachan) {
         }
         if (!sys.dbRegistered(sys.name(src))) {
             gamemsg(user, "You need to register to play mafia here! Click on the 'Register' button below and follow the instructions!");
+            return false;
+        }
+        var warnings = mwarns.get(ip);
+        if (warnings !== undefined && warnings.split(":::")[1].split("|||")[0] == "true") {
+            gamemsg(user, "You have been warned for breaking a rule! You must type <a href=\"po:send//mywarns\">/mywarns</a> to check your warnings before you join.", undefined, undefined, true)
             return false;
         }
         return true;
@@ -7665,7 +7676,7 @@ function Mafia(mafiachan) {
             return;
         }
         if (command === "mywarns") {
-            this.myWarns(srcname);
+            this.myWarns(srcname, channel);
             return;
         }
 
@@ -8409,7 +8420,7 @@ this.beforeChatMessage = function (src, message, channel) {
                     gamemsg(srcname, "A voting for the next game is running now! Type /vote [theme name] to vote for " + readable(Object.keys(this.possibleThemes), "or") + "!", "±Info");
                     break;
                 case "entry":
-                    gamemsg(srcname, "You can join a " + (mafia.theme.name == defaultThemeName ? "" : mafia.theme.name + "-themed ") + "mafia game now by typing /join! ", "±Info");
+                    gamemsg(srcname, "You can join a " + (mafia.theme.name == defaultThemeName ? "" : "<b>" + mafia.theme.name + "</b>-themed ") + "mafia game now by typing <a href=\"po:send//join\">/join</a>! ", "±Info", undefined, true);
                     break;
                 default:
                     if (mafia.isInGame(srcname)) {
