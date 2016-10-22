@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21j";
+    this.version = "2016-10-21k";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6193,7 +6193,7 @@ function Mafia(mafiachan) {
                 if (warns.length > 0) {
                     mwarns.add(ip, name + ":::false|||" + JSON.stringify(warns));
                 }
-                mafia.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + "[" + info + "] from " + commandData[0] + ".", channel);
+                mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + "[" + info + "] from " + commandData[0] + ".", channel);
             }
         } else {
             mafiabot.sendMessage(sys.id(src), commandData[0] + " has no warns to remove!", channel);
@@ -6258,9 +6258,9 @@ function Mafia(mafiachan) {
                 }
                 var shove = mwarns.get(ip).split(":::")[1].split("|||")[0];
                 if (shove == true) {
-                    table.push("<tr><td colspan='6'>" + commandData + " <b>will be shoved</b> if they attempt to join a game.</td></tr>");
+                    table.push("<tr><td colspan='6'><center>" + commandData + " <b>will be shoved</b> if they attempt to join a game.</center></td></tr>");
                 } else {
-                    table.push("<tr><td colspan='6'>" + commandData + " will <b>not</b> be shoved if they attempt to join a game.</td></tr>");
+                    table.push("<tr><td colspan='6'><center>" + commandData + " will <b>not</b> be shoved if they attempt to join a game.</center></td></tr>");
                 }
                 table.push("</table>");
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
