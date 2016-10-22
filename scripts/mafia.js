@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21l";
+    this.version = "2016-10-21m";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6257,7 +6257,7 @@ function Mafia(mafiachan) {
                     table.push("<tr>" + row.join("") + "</tr>");
                 }
                 var shove = mwarns.get(ip).split(":::")[1].split("|||")[0];
-                if (shove == true) {
+                if (shove == "true") {
                     table.push("<tr><td colspan='6'><center>" + commandData + " <b>will be shoved</b> if they attempt to join a game.</center></td></tr>");
                 } else {
                     table.push("<tr><td colspan='6'><center>" + commandData + " will <b>not</b> be shoved if they attempt to join a game.</center></td></tr>");
