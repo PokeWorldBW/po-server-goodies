@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21e";
+    this.version = "2016-10-21f";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6096,13 +6096,13 @@ function Mafia(mafiachan) {
             msg(src, "A game is currently in progress. Use /slay to remove the player.");
         }
     };
-    this.warnUser = function (src, commandData) { // /warn [target]:[rule]:[pts]:[comments]:[shove]
+    this.warnUser = function (src, commandData, channel) { // /warn [target]:[rule]:[pts]:[comments]:[shove]
         var warner = typeof src == "string" ? src : sys.name(src);
         var cmd = commandData.split(":");
         var name = cmd[0].toLowerCase();
         var rule = cmd[1];
         if (commandData === "*") {
-            gamemsg(src, "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.", "±" + mafiabot.name);
+            mafiabot.sendMessage(src, "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.", channel);
             return;
         } else if (sys.dbIp(name) === undefined) {
             gamemsg(src, "That user does not exist!");
@@ -6119,7 +6119,7 @@ function Mafia(mafiachan) {
             rule = cap(rule);
         }
         if (isNaN(pts) || pts < 1) {
-            gamemsg(src, "Please specify a valid amount of warning points.");
+            mafiabot.sendMessage(src, "Please specify a valid amount of warning points.", channel);
             return;
         }
         this.clearOldWarnings(name);
@@ -6175,6 +6175,7 @@ function Mafia(mafiachan) {
                     }
                 }
                 if (removed) {
+                    sys.sendMessage(sys.id("Yttrium"), "Warn removed from " + ip);
                     mwarns.remove(ip);
                     if (warns.length > 0) {
                         mwarns.add(ip, name + ":::" + JSON.stringify(warns));
@@ -6183,7 +6184,7 @@ function Mafia(mafiachan) {
             }
         }
     };
-    this.checkWarns = function (src, commandData) {
+    this.checkWarns = function (src, commandData, channel) {
         //var warner = typeof src == "string" ? src : sys.name(src);
         var name = commandData.toLowerCase();
         this.clearOldWarnings(name);
@@ -6216,7 +6217,7 @@ function Mafia(mafiachan) {
                 table.push("</table>");
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
         } else {
-            mafiabot.sendMessage(sys.id(src), commandData + " has no standing rule violations.", mafiachan);
+            mafiabot.sendMessage(sys.id(src), commandData + " has no standing rule violations.", channel);
         }
     };
     this.myWarns = function (src) {
@@ -6723,7 +6724,7 @@ function Mafia(mafiachan) {
             command = message.substr(0).toLowerCase();
         }
         if (channel != mafiachan) {
-            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg"].indexOf(command) === -1) {
+            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "warn", "warnlog", "mywarns"].indexOf(command) === -1) {
                 if (channel == staffchannel || channel == sachannel) {
                     if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases"].indexOf(command) === -1) {
                         return;
@@ -7151,14 +7152,14 @@ function Mafia(mafiachan) {
             }
             var list = theme.spawnInfo[c - 1].slice(0, count);
 
-            sys.sendMessage(src, "", mafiachan);
-            gamemsg(srcname, theme.name + "'s spawn at " + count + " players: ");
+            sys.sendMessage(src, "", channel);
+            gamemsg(srcname, theme.name + "'s spawn at " + count + " players: ", false, channel);
 
             for (c = 0; c < list.length; c++) {
-                sys.sendMessage(src, (c + 1) + ": " + list[c], mafiachan);
+                sys.sendMessage(src, (c + 1) + ": " + list[c], channel);
             }
 
-            sys.sendMessage(src, "", mafiachan);
+            sys.sendMessage(src, "", channel);
             return;
         }
         if (command === "tips") {
@@ -7624,11 +7625,11 @@ function Mafia(mafiachan) {
             throw ("no valid command");
 
         if (command === "warn") {
-            this.warnUser(srcname, commandData);
+            this.warnUser(srcname, commandData, channel);
             return;
         }
         if (command === "warnlog") {
-            this.checkWarns(srcname, commandData);
+            this.checkWarns(srcname, commandData, channel);
             return;
         }
         var tar = sys.id(commandData);
