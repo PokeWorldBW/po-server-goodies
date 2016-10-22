@@ -6171,7 +6171,7 @@ function Mafia(mafiachan) {
         }
         if (mafia.distributeEvent && this.rewardSafariPlayers.indexOf(name) !== -1) {
             mafia.safariShove.push(name);
-            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(srcname) + " rescinded " + cmd[0] + "'s Mafia Event participation points!");
+            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(warner) + " rescinded " + cmd[0] + "'s Mafia Event participation points!");
         }
     };
     this.removeWarn = function (src, commandData, channel) {
@@ -6185,17 +6185,6 @@ function Mafia(mafiachan) {
         if (isNaN(index) || index < 1) {
             mafiabot.sendMessage(sys.id(src), "Please enter a valid warn index number!", channel);
             return;
-        }
-        if (!mwarns.get(ip)) {
-            var found = false;
-            var hash = mwarns.hash;
-            for (var x in hash) {
-                found = hash[x].split(":::")[0].split(",").indexOf(name) !== -1;
-                if (found) {
-                    ip = x;
-                    break;
-                }
-            }
         }
         if (mwarns.get(ip)) {
             var warns = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]);
@@ -6222,7 +6211,7 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
-        if (mwarns.get(ip)) { // reminder to include shove info in this
+        if (mwarns.get(ip)) {
             var warns = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]), removed = false;
             if (Array.isArray(warns)) {
                 for (var i = warns.length - 1; i >= 0; i--) { // go backwards as to not break array when splicing
@@ -6251,17 +6240,6 @@ function Mafia(mafiachan) {
             ip = sys.ip(sys.id(name));
         } else {
             ip = sys.dbIp(name);
-        }
-        if (!mwarns.get(ip)) {
-            var found = false;
-            var hash = mwarns.hash;
-            for (var x in hash) {
-                found = hash[x].split(":::")[0].split(",").indexOf(name) !== -1;
-                if (found) {
-                    ip = x;
-                    break;
-                }
-            }
         }
         if (mwarns.get(ip)) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
@@ -6293,17 +6271,6 @@ function Mafia(mafiachan) {
             ip = sys.ip(sys.id(name));
         } else {
             ip = sys.dbIp(name);
-        }
-        if (!mwarns.get(ip)) {
-            var found = false;
-            var hash = mwarns.hash;
-            for (var x in hash) {
-                found = hash[x].split(":::")[0].split(",").indexOf(name) !== -1;
-                if (found) {
-                    ip = x;
-                    break;
-                }
-            }
         }
         if (mwarns.get(ip)) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
@@ -6801,9 +6768,9 @@ function Mafia(mafiachan) {
             command = message.substr(0).toLowerCase();
         }
         if (channel != mafiachan) {
-            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "warn", "unwarn", "warnlog", "mywarns"].indexOf(command) === -1) {
+            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "mywarns"].indexOf(command) === -1) {
                 if (channel == staffchannel || channel == sachannel) {
-                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases"].indexOf(command) === -1) {
+                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "warnlog"].indexOf(command) === -1) {
                         return;
                     }
                 } else {
