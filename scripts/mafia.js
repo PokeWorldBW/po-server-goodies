@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21b";
+    this.version = "2016-10-21c";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6206,7 +6206,7 @@ function Mafia(mafiachan) {
         }
         if (mwarns.get(ip)) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
-                table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='5'>Mafia Warns for " + commandData + "</th></tr><tr></tr><tr><th>Name</th><th>By</th><th>Rule</th><th>Points</th><th>Comments</th>"];
+                table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='5'>Mafia Warns for " + commandData + "</th></tr><tr></tr><tr><th>Name</th><th>By</th><th>Rule</th><th>Points</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
                     sys.sendMessage(sys.id("Yttrium"), JSON.stringify(info));
                     var warning = info[i], row = [warning.name, warning.warner, warning.rule, warning.points, warning.comments].map(function(e) {
