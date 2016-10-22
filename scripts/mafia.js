@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21r";
+    this.version = "2016-10-21s";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -8506,7 +8506,7 @@ this.beforeChatMessage = function (src, message, channel) {
             this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
         }
         if (sys.getVal("mafia_eventThemePool") !== "") {
-            this.eventQueue = sys.getVal("mafia_eventThemePool").split(",");
+            this.eventThemePool = sys.getVal("mafia_eventThemePool").split(",");
         }
     };
     this.onHelp = function (src, commandData, channel) {
