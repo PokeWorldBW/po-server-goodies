@@ -6123,7 +6123,7 @@ function Mafia(mafiachan) {
             return;
         }
         this.clearOldWarnings(name);
-        var expirationTime = (new Date()).getTime() + (timeForWarningErase * pts);
+        var expirationTime = (new Date()).getTime() + (/*timeForWarningErase **/ 20 * pts);
         var ip;
         if (sys.id(name) !== undefined) {
             ip = sys.ip(sys.id(name));
