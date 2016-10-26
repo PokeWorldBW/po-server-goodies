@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25";
+    this.version = "2016-10-25a";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -6142,7 +6142,7 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
-        if (shove !== false && shove !== "") {
+        if (shove != "false" && shove !== "") {
             shove = true;
         }
         var info = {
@@ -6164,12 +6164,12 @@ function Mafia(mafiachan) {
         } else {
             mwarns.add(ip, name + ":::" + shove + "|||" + JSON.stringify([info]));
         }
-        dualBroadcast("±" + mafiabot.name + ": " + cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + ".");
-        mafiabot.sendAll("Points: " + pts + ", Comments: " + comments.replace(/(s)(lay)/gi, "$1\u200b$2") + ", Shove: " + (shove ? "Yes" : "No"), sachannel);
+        mafiabot.sendAll(cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + ".", mafiachan);
+        mafiabot.sendAll(cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + " [Points: " + pts + ", Comments: " + comments.replace(/(s)(lay)/gi, "$1\u200b$2") + ", Shove: " + (shove ? "Yes" : "No") + "]", sachannel);        
         if (shove === true) {
             this.shoveUser(sys.id(src), name); // why can we not use src as a consistent variable type
         }
-        if (mafia.distributeEvent && this.rewardSafariPlayers.indexOf(name) !== -1) {
+        if (mafia.distributeEvent && this.rewardSafariPlayers.indexOf(name) !== -1 && mafia.safariShove.indexOf(name) === -1) {
             mafia.safariShove.push(name);
             dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(warner) + " rescinded " + cmd[0] + "'s Mafia Event participation points!");
         }
@@ -6199,6 +6199,9 @@ function Mafia(mafiachan) {
                     mwarns.add(ip, name + ":::false|||" + JSON.stringify(warns));
                 }
                 mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
+                if (!sys.isInChannel(sys.id(src), sachannel)) {
+                    mafiabot.sendAll("You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
+                }
             }
         } else {
             mafiabot.sendMessage(sys.id(src), commandData[0] + " has no warns to remove!", channel);
