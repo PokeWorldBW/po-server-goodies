@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25c";
+    this.version = "2016-10-25d";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -1982,7 +1982,7 @@ function Mafia(mafiachan) {
         border = this.theme.border ? this.theme.border : DEFAULT_BORDER;
         CurrentGame = { who: src !== null ? srcname : "voted", what: themeName, when: parseInt(sys.time(), 10), playerCount: 0 };
 
-        if ((src !== null) && (src !== "Event")) {
+        if (src !== null && src !== "Event") {
             sendChanAll("", mafiachan);
             sendBorder();
             if (this.theme.name == defaultThemeName) {
@@ -3793,7 +3793,7 @@ function Mafia(mafiachan) {
             }
             sendBorder();
             if (!revenge) {
-                gamemsgAll(colorizePerRole(commandObject.killmsg).replace(/~Self~/g, name).replace(/~Target~/g, commandData).replace(/~Role~/g, colorizeRole(mafia.players[name].role.role)).replace(/~TargetRole~/g, colorizeRole(mafia.players[commandData].role.role)), undefined, undefined, true);
+                gamemsgAll(colorizePerRole(html_escape(commandObject.killmsg)).replace(/~Self~/g, name).replace(/~Target~/g, commandData).replace(/~Role~/g, colorizeRole(mafia.players[name].role.role)).replace(/~TargetRole~/g, colorizeRole(mafia.players[commandData].role.role)), undefined, undefined, true);
                 if ("revealChance" in commandObject && commandObject.revealChance > sys.rand(0, 100) / 100) {
                     var rmsg = (commandObject.revealmsg || "While attacking, ~Self~ (~Role~) made a mistake and was revealed!").replace(/~Self~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[name].role.role));
                     gamemsgAll(rmsg, undefined, undefined, true);
@@ -6111,7 +6111,7 @@ function Mafia(mafiachan) {
         var name = cmd[0].toLowerCase();
         var rule = cmd[1];
         if (commandData === "*") {
-            mafiabot.sendHtmlMessage(sys.id(src), "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>. Type <a href=\"po:send//warnhelp\"/>/warnhelp</a> for more info.", channel);
+            mafiabot.sendHtmlMessage(sys.id(src), html_escape("Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.") + " Type <a href=\"po:send//warnhelp\"/>/warnhelp</a> for more info.", channel);
             return;
         } else if (sys.dbIp(name) === undefined) {
             gamemsg(src, "That user does not exist!", false, channel);
@@ -6188,18 +6188,18 @@ function Mafia(mafiachan) {
                     default:
                         x = cap(x);
                     }
-                    mafiabot.sendMessage(src, x + ": " + pts + " Points", channel);
+                    sys.sendMessage(src, x + ": " + pts + " Points", channel);
                 }
             }
             sys.sendMessage(src, "", channel);
         } else {
             var helpInfo = [
                 "",
-                "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>,",
+                mafiabot.name + ": Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>,",
                 "<user> and <rule> are mandatory parameters,",
                 "<user> is the target user you want to warn,",
                 "<rule> is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
-                "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase) + ", increase with severity,",
+                "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity,",
                 "Some rules have a default amount of points which do not need to be specificed. Type /warnhelp points to see default point info,",
                 "<comments> are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
                 "<shove> is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
@@ -8445,7 +8445,7 @@ this.beforeChatMessage = function (src, message, channel) {
                     gamemsg(srcname, "A voting for the next game is running now! Type /vote [theme name] to vote for " + readable(Object.keys(this.possibleThemes), "or") + "!", "±Info");
                     break;
                 case "entry":
-                    gamemsg(srcname, "You can join a " + (mafia.theme.name == defaultThemeName ? "" : "<b>" + mafia.theme.name + "</b>-themed ") + "mafia game now by typing <a href=\"po:send//join\">/join</a>! ", "±Info", undefined, true);
+                    gamemsg(srcname, "You can join a" + (mafia.isEvent ? "n Event" : "") + " + (mafia.theme.name == defaultThemeName ? "" : "<b>" + mafia.theme.name + "</b>-themed ") + "mafia game now by typing <a href=\"po:send//join\">/join</a>! ", "±Info", undefined, true);
                     break;
                 default:
                     if (mafia.isInGame(srcname)) {
