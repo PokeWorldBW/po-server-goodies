@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25b";
+    this.version = "2016-10-25c";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -54,7 +54,6 @@ function Mafia(mafiachan) {
     this.rewardSafariTime = 0;
     this.rewardSafariPlayers = [];
     this.allPlayers = [];
-    this.safariShove = [];
     this.distributeEvent = false;
 
     var DEFAULT_BORDER = "***************************************************************************************",
@@ -1626,23 +1625,20 @@ function Mafia(mafiachan) {
         var indx = Math.floor(arr.length * Math.random());
         return arr[indx];
     };
-    this.trySafariReward = function () {
-        if (this.rewardSafariTime > new Date().getTime()) {
-            return;
+    this.rescind = function(name) {
+        name = name.toLowerCase();
+        var index = this.rewardSafariPlayers.indexOf(name);
+        if (index !== -1) {
+            this.rewardSafariPlayers.splice(index, 1);
+            return true;
         }
-        var shoved, playerIndex;
-        for (var b = 0; b < this.safariShove.length; b++) {
-            shoved = this.safariShove[b];
-            playerIndex = ((this.rewardSafariPlayers.indexOf(shoved) !== -1) ? this.rewardSafariPlayers.indexOf(shoved) : null);
-            if (playerIndex) {
-                this.rewardSafariPlayers.splice(playerIndex, 1);
-            }
-        }
+        return false;
+    };
+    this.trySafariReward = function() {
         var Safari = require("safari.js");
-        if ((Safari) && (Safari.hasOwnProperty("mafiaPromo"))) {
+        if (Safari && (Safari.hasOwnProperty("mafiaPromo"))) {
             Safari.mafiaPromo(this.rewardSafariPlayers);
         }
-        this.safariShove = [];
         this.rewardSafariPlayers = [];
         this.distributeEvent = false;
         this.rewardSafariTime = this.nextEventTime;
@@ -2107,7 +2103,7 @@ function Mafia(mafiachan) {
         mafia.tryEventTheme();
     };
     this.tickDown = function () { /* called every second */
-        if (this.distributeEvent) {
+        if (this.distributeEvent && this.rewardSafariTime <= new Date().getTime()) {
             this.trySafariReward();
         } 
         if (this.state == "blank") {
@@ -6171,8 +6167,7 @@ function Mafia(mafiachan) {
         if (shove === true) {
             this.shoveUser(sys.id(src), name); // why can we not use src as a consistent variable type
         }
-        if (mafia.distributeEvent && this.rewardSafariPlayers.indexOf(name) !== -1 && mafia.safariShove.indexOf(name) === -1) {
-            mafia.safariShove.push(name);
+        if (mafia.distributeEvent && this.rescind(name)) {
             dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(warner) + " rescinded " + cmd[0] + "'s Mafia Event participation points!");
         }
     };
@@ -7828,12 +7823,11 @@ function Mafia(mafiachan) {
                  msg(src, "Wait until after an Event game ends to rescind points from it.", channel);
                  return;
             }
-            if (this.rewardSafariPlayers.indexOf(commandData.toLowerCase()) === -1) {
+            if (!this.rescind(commandData)) {
                  msg(src, "Can't find any player named " + commandData + " to rescind coins from!", channel);
-                 return;
+            } else {
+                dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(srcname) + " rescinded " + commandData + "'s Mafia Event participation points!");
             }
-            mafia.safariShove.push(commandData.toLowerCase());
-            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(srcname) + " rescinded " + commandData + "'s Mafia Event participation points!");
             return;
         }
         var id;
