@@ -6164,7 +6164,7 @@ function Mafia(mafiachan) {
         }
         mafiabot.sendAll(cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + ".", mafiachan);
         mafiabot.sendAll(cmd[0] + " was warned for " + rule + " by " + nonFlashing(warner) + " [Points: " + pts + ", Comments: " + comments.replace(/(s)(lay)/gi, "$1\u200b$2") + ", Shove: " + (shove ? "Yes" : "No") + "]", sachannel);        
-        if (shove === true) {
+        if (shove === true && !this.usersToShove.hasOwnProperty(name)) {
             this.shoveUser(sys.id(src), name); // why can we not use src as a consistent variable type
         }
         if (mafia.distributeEvent && this.rescind(name)) {
@@ -6238,7 +6238,7 @@ function Mafia(mafiachan) {
                 }
                 mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
                 if (channel !== sachannel) {
-                    mafiabot.sendMessage(src, "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
+                    mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
                 }
             }
         } else {
