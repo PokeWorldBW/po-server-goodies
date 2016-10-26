@@ -5971,7 +5971,7 @@ function Mafia(mafiachan) {
         }
         if (typeof role.actions.startup == "object" && Array.isArray(role.actions.startup["team-revealif-with-roles"])) {
             if (role.actions.startup["team-revealif-with-roles"].indexOf(role.side) != -1) {
-                var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme));
+                var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme);
                 gamemsg(player.name, "<b>Your team is " + html_escape(readable(playersRole, "and")) + ".</b>", undefined, undefined, true);
             }
         }
