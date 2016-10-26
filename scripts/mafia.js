@@ -6234,7 +6234,7 @@ function Mafia(mafiachan) {
                 }
                 mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
                 if (channel !== sachannel) {
-                    mafiabot.sendAll("You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
+                    mafiabot.sendMessage(src, "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
                 }
             }
         } else {
@@ -8517,7 +8517,7 @@ this.beforeChatMessage = function (src, message, channel) {
         this.themeManager.loadThemes();
         mafiachan = sys.channelId(MAFIA_CHANNEL);
         /*msgAll("Mafia was reloaded, please start a new game!");*/
-        mwarns = script.mwarns; // may not be defined after when server first starts
+        mwarns = script.mwarns; // may not be defined after server restart
         /*REMOVE: The line below */
         msgAll("Mafia was updated to version " + this.version + "!");
     };
