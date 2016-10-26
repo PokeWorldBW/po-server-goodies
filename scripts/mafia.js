@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25e";
+    this.version = "2016-10-25f";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -5961,7 +5961,7 @@ function Mafia(mafiachan) {
     this.showTeammates = function(player) {
         var role = player.role;
         if (role.actions.startup == "team-reveal") {
-            gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side) + ".", undefined, undefined, true);
+            gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side).split(", ").map(bold).join(", ") + ".", undefined, undefined, true);
         }
         if (role.actions.startup == "team-reveal-with-roles" || role.actions.teamUtilities) {
             var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme);
@@ -5979,8 +5979,7 @@ function Mafia(mafiachan) {
             }
         }
         if (role.actions.startup == "role-reveal") {
-            var players = mafia.getPlayersForRoleS(role.role).split(", ").map(bold).join(", ");
-            gamemsg(player.name, "People with your role are " + players + ".", undefined, undefined, true);
+            gamemsg(player.name, "People with your role are " + mafia.getPlayersForRoleS(role.role).split(", ").map(bold).join(", ") + ".", undefined, undefined, true);
         }
 
         if (typeof role.actions.startup == "object") {
@@ -8449,7 +8448,7 @@ this.beforeChatMessage = function (src, message, channel) {
                     gamemsg(srcname, "A voting for the next game is running now! Type /vote [theme name] to vote for " + readable(Object.keys(this.possibleThemes), "or") + "!", "±Info");
                     break;
                 case "entry":
-                    gamemsg(srcname, "You can join a" + (mafia.isEvent ? "n Event " : " ") + (mafia.theme.name == defaultThemeName ? "" : "<b>" + mafia.theme.name + "</b>-themed ") + "mafia game now by typing <a href=\"po:send//join\">/join</a>! ", "±Info", undefined, true);
+                    gamemsg(srcname, "You can join a" + (mafia.isEvent ? "n <font color='blue'><b>Event</b></font> " : " ") + (mafia.theme.name == defaultThemeName ? "" : "<b>" + mafia.theme.name + "</b>-themed ") + "mafia game now by typing <a href=\"po:send//join\">/join</a>! ", "±Info", undefined, true);
                     break;
                 default:
                     if (mafia.isInGame(srcname)) {
