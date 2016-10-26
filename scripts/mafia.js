@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-21t";
+    this.version = "2016-10-25";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -8477,6 +8477,7 @@ this.beforeChatMessage = function (src, message, channel) {
         this.themeManager.loadThemes();
         mafiachan = sys.channelId(MAFIA_CHANNEL);
         /*msgAll("Mafia was reloaded, please start a new game!");*/
+        mwarns = script.mwarns; // may not be defined after when server first starts
         /*REMOVE: The line below */
         msgAll("Mafia was updated to version " + this.version + "!");
     };
