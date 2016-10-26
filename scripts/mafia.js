@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25f";
+    this.version = "2016-10-25g";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -379,7 +379,7 @@ function Mafia(mafiachan) {
         sys.sendHtmlAll(border, channel);
     }
     function bold(string) {
-        return "<b>" + string + "</b>";
+        return "<b>" + html_escape(string) + "</b>";
     }
     function runUpdate() {
         if (!mafia.needsUpdating) {return;}
@@ -5964,17 +5964,17 @@ function Mafia(mafiachan) {
             gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side).split(", ").map(bold).join(", ") + ".", undefined, undefined, true);
         }
         if (role.actions.startup == "team-reveal-with-roles" || role.actions.teamUtilities) {
-            var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme);
+            var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme).map(bold);
             gamemsg(player.name, "Your team is " + readable(playersRole, "and") + ".", undefined, undefined, true);
         }
         if (typeof role.actions.startup == "object" && Array.isArray(role.actions.startup["team-revealif"])) {
             if (role.actions.startup["team-revealif"].indexOf(role.side) != -1) {
-                gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side) + ".", undefined, undefined, true);
+                gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side).split(", ").map(bold).join(", ") + ".", undefined, undefined, true);
             }
         }
         if (typeof role.actions.startup == "object" && Array.isArray(role.actions.startup["team-revealif-with-roles"])) {
             if (role.actions.startup["team-revealif-with-roles"].indexOf(role.side) != -1) {
-                var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme);
+                var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme).map(bold);
                 gamemsg(player.name, "Your team is " + readable(playersRole, "and") + ".", undefined, undefined, true);
             }
         }
@@ -5986,12 +5986,12 @@ function Mafia(mafiachan) {
             if (role.actions.startup.revealRole) {
                 if (typeof role.actions.startup.revealRole == "string") {
                     if (mafia.getPlayersForRoleS(player.role.actions.startup.revealRole) !== "")
-                        gamemsg(player.name, "The " + mafia.theme.roles[role.actions.startup.revealRole].translation + " is " + mafia.getPlayersForRoleS(player.role.actions.startup.revealRole) + "!", undefined, undefined, true);
+                        gamemsg(player.name, "<b>The " + html_escape(mafia.theme.roles[role.actions.startup.revealRole].translation) + " is " + html_escape(mafia.getPlayersForRoleS(player.role.actions.startup.revealRole)) + "</b>!", undefined, undefined, true);
                 } else if (Array.isArray(role.actions.startup.revealRole)) {
                     for (var s = 0, l = role.actions.startup.revealRole.length; s < l; ++s) {
                         var revealrole = role.actions.startup.revealRole[s];
                         if (mafia.getPlayersForRoleS(revealrole) !== "") {
-                            gamemsg(player.name, "The " + colorizeRole(mafia.theme.roles[revealrole].role) + " is " + mafia.getPlayersForRoleS(revealrole) + "!", undefined, undefined, true);
+                            gamemsg(player.name, "The " + colorizeRole(html_escape(mafia.theme.roles[revealrole].role)) + " is " + mafia.getPlayersForRoleS(revealrole).split(", ").map(bold).join(", ") + "!", undefined, undefined, true);
                         }
                     }
                 }
@@ -6004,10 +6004,10 @@ function Mafia(mafiachan) {
                     for (var r in role.actions.startup.revealPlayers) {
                         list = list.concat(mafia.getPlayersForRole(role.actions.startup.revealPlayers[r]));
                     }
-                    list = list.sort().join(", ");
+                    list = list.sort().map(bold).join(", ");
                 }
                 if (list.length > 0) {
-                    msg = ("revealPlayersMsg" in role.actions.startup ? role.actions.startup.revealPlayersMsg : msg).replace(/~Players~/g, list);
+                    msg = ("revealPlayersMsg" in role.actions.startup ? html_escape(role.actions.startup.revealPlayersMsg) : msg).replace(/~Players~/g, list);
                     gamemsg(player.name, msg, undefined, undefined, true);
                 }
             }
@@ -6191,7 +6191,7 @@ function Mafia(mafiachan) {
                     default:
                         x = cap(x);
                     }
-                    sys.sendMessage(src, x + ": " + pts + " Points", channel);
+                    sys.sendMessage(src, x + ": " + pts + " Point" + (pts === 1 ? "" : "s"), channel);
                 }
             }
             sys.sendMessage(src, "", channel);
