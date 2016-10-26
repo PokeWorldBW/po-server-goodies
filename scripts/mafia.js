@@ -6195,7 +6195,7 @@ function Mafia(mafiachan) {
         } else {
             var helpInfo = [
                 "",
-                "±" + mafiabot.name + ": Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.",
+                "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.",
                 "<user> and <rule> are mandatory parameters.",
                 "<user> is the target user you want to warn.",
                 "<rule> is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
