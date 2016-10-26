@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25d";
+    this.version = "2016-10-25e";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -59,7 +59,7 @@ function Mafia(mafiachan) {
     var DEFAULT_BORDER = "***************************************************************************************",
         GREEN_BORDER = " " + DEFAULT_BORDER + ":",
         border,
-        globalDefaultSideColors = ["#0099ff", "#cc00ff", "red", "#33cc33", "#ff00ff", "#660066", "#ff9933", "#0099cc", "#cc9900", "#cc0066", "#006666", "#666699", "#990033", "#663300", "#6666ff"],
+        globalDefaultSideColors = ["#0099ff", "#cc00ff", "#ff0000", "#33cc33", "#ff00ff", "#660066", "#ff9933", "#0099cc", "#cc9900", "#cc0066", "#006666", "#666699", "#990033", "#663300", "#6666ff"],
         noPlayer = '*',
         CurrentGame,
         PreviousGames,
@@ -377,6 +377,9 @@ function Mafia(mafiachan) {
             channel = mafiachan;
         }
         sys.sendHtmlAll(border, channel);
+    }
+    function bold(string) {
+        return "<b>" + string + "</b>";
     }
     function runUpdate() {
         if (!mafia.needsUpdating) {return;}
@@ -5958,37 +5961,38 @@ function Mafia(mafiachan) {
     this.showTeammates = function(player) {
         var role = player.role;
         if (role.actions.startup == "team-reveal") {
-            gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side) + ".");
+            gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side) + ".", undefined, undefined, true);
         }
         if (role.actions.startup == "team-reveal-with-roles" || role.actions.teamUtilities) {
             var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme);
-            gamemsg(player.name, "Your team is " + readable(playersRole, "and") + ".");
+            gamemsg(player.name, "Your team is " + readable(playersRole, "and") + ".", undefined, undefined, true);
         }
         if (typeof role.actions.startup == "object" && Array.isArray(role.actions.startup["team-revealif"])) {
             if (role.actions.startup["team-revealif"].indexOf(role.side) != -1) {
-                gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side) + ".");
+                gamemsg(player.name, "Your team is " + mafia.getPlayersForTeamS(role.side) + ".", undefined, undefined, true);
             }
         }
         if (typeof role.actions.startup == "object" && Array.isArray(role.actions.startup["team-revealif-with-roles"])) {
             if (role.actions.startup["team-revealif-with-roles"].indexOf(role.side) != -1) {
                 var playersRole = mafia.getPlayersForTeam(role.side).map(name_trrole, mafia.theme);
-                gamemsg(player.name, "Your team is " + readable(playersRole, "and") + ".");
+                gamemsg(player.name, "Your team is " + readable(playersRole, "and") + ".", undefined, undefined, true);
             }
         }
         if (role.actions.startup == "role-reveal") {
-            gamemsg(player.name, "People with your role are " + mafia.getPlayersForRoleS(role.role) + ".");
+            var players = mafia.getPlayersForRoleS(role.role).split(", ").map(bold).join(", ");
+            gamemsg(player.name, "People with your role are " + players + ".", undefined, undefined, true);
         }
 
         if (typeof role.actions.startup == "object") {
             if (role.actions.startup.revealRole) {
                 if (typeof role.actions.startup.revealRole == "string") {
                     if (mafia.getPlayersForRoleS(player.role.actions.startup.revealRole) !== "")
-                        gamemsg(player.name, "The " + mafia.theme.roles[role.actions.startup.revealRole].translation + " is " + mafia.getPlayersForRoleS(player.role.actions.startup.revealRole) + "!");
+                        gamemsg(player.name, "The " + mafia.theme.roles[role.actions.startup.revealRole].translation + " is " + mafia.getPlayersForRoleS(player.role.actions.startup.revealRole) + "!", undefined, undefined, true);
                 } else if (Array.isArray(role.actions.startup.revealRole)) {
                     for (var s = 0, l = role.actions.startup.revealRole.length; s < l; ++s) {
                         var revealrole = role.actions.startup.revealRole[s];
                         if (mafia.getPlayersForRoleS(revealrole) !== "") {
-                            gamemsg(player.name, "The " + colorizeRole(mafia.theme.roles[revealrole].role) + " is " + mafia.getPlayersForRoleS(revealrole) + "!");
+                            gamemsg(player.name, "The " + colorizeRole(mafia.theme.roles[revealrole].role) + " is " + mafia.getPlayersForRoleS(revealrole) + "!", undefined, undefined, true);
                         }
                     }
                 }
@@ -6005,7 +6009,7 @@ function Mafia(mafiachan) {
                 }
                 if (list.length > 0) {
                     msg = ("revealPlayersMsg" in role.actions.startup ? role.actions.startup.revealPlayersMsg : msg).replace(/~Players~/g, list);
-                    gamemsg(player.name, msg);
+                    gamemsg(player.name, msg, undefined, undefined, true);
                 }
             }
         }
@@ -6174,7 +6178,7 @@ function Mafia(mafiachan) {
     this.warnHelp = function(src, commandData, channel) {
         if (commandData.toLowerCase() === "points") {
             sys.sendMessage(src, "", channel);
-            mafiabot.sendMessage(src, "Default Warning Points:", channel);
+            sys.sendMessage(src, "DEFAULT WARNING POINTS:", channel);
             for (x in this.defaultWarningPoints) {
                 if (this.defaultWarningPoints.hasOwnProperty(x)) {
                     var pts = this.defaultWarningPoints[x];
@@ -6195,12 +6199,12 @@ function Mafia(mafiachan) {
         } else {
             var helpInfo = [
                 "",
-                mafiabot.name + ": Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>,",
-                "<user> and <rule> are mandatory parameters,",
-                "<user> is the target user you want to warn,",
+                "±" + mafiabot.name + ": Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.",
+                "<user> and <rule> are mandatory parameters.",
+                "<user> is the target user you want to warn.",
                 "<rule> is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
-                "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity,",
-                "Some rules have a default amount of points which do not need to be specificed. Type /warnhelp points to see default point info,",
+                "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity.",
+                "Some rules have a default amount of points which do not need to be specificed. Type /warnhelp points to see default point info.",
                 "<comments> are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
                 "<shove> is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
                 ""
