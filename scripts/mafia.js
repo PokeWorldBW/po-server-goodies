@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-25a";
+    this.version = "2016-10-25b";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -1646,6 +1646,7 @@ function Mafia(mafiachan) {
         this.rewardSafariPlayers = [];
         this.distributeEvent = false;
         this.rewardSafariTime = this.nextEventTime;
+        runUpdate();
     };
     this.tryEventTheme = function () { //checked at end of a game and during blank every 2 hours.
         if (!(this.eventsEnabled)) return;
@@ -6114,7 +6115,7 @@ function Mafia(mafiachan) {
         var name = cmd[0].toLowerCase();
         var rule = cmd[1];
         if (commandData === "*") {
-            mafiabot.sendMessage(sys.id(src), "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.", channel);
+            mafiabot.sendHtmlMessage(sys.id(src), "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>. Type <a href=\"po:send//warnhelp\"/>/warnhelp</a> for more info.", channel);
             return;
         } else if (sys.dbIp(name) === undefined) {
             gamemsg(src, "That user does not exist!", false, channel);
@@ -6126,9 +6127,8 @@ function Mafia(mafiachan) {
         var pts = cmd[2];
         var comments = cmd[3] || "None";
         var shove = cmd[4] ? cmd[4].toLowerCase() : false;
-        if ((pts === undefined) && (rule.toLowerCase() in this.defaultWarningPoints)) {
-            pts = this.defaultWarningPoints[rule];
-            rule = cap(rule);
+        if ((pts === undefined || pts === "") && this.defaultWarningPoints.hasOwnProperty(rule.toLowerCase())) {
+            pts = this.defaultWarningPoints[rule.toLowerCase()];
         }
         if (isNaN(pts) || pts < 1) {
             gamemsg(src, "Please specify a valid amount of warning points.", false, channel);
@@ -6142,8 +6142,10 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
-        if (shove != "false" && shove !== "") {
+        if (shove != "false" && shove !== "no" && shove !== "") {
             shove = true;
+        } else {
+            shove = false;
         }
         var info = {
             name: name,
@@ -6174,6 +6176,43 @@ function Mafia(mafiachan) {
             dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(warner) + " rescinded " + cmd[0] + "'s Mafia Event participation points!");
         }
     };
+    this.warnHelp = function(src, commandData, channel) {
+        if (commandData.toLowerCase() === "points") {
+            sys.sendMessage(src, "", channel);
+            mafiabot.sendMessage(src, "Default Warning Points:", channel);
+            for (x in this.defaultWarningPoints) {
+                if (this.defaultWarningPoints.hasOwnProperty(x)) {
+                    var pts = this.defaultWarningPoints[x];
+                    switch (x) {
+                    case "afk":
+                        x = "AFK";
+                        break;
+                    case "slay abuse":
+                        x = "Slay Abuse";
+                        break;
+                    default:
+                        x = cap(x);
+                    }
+                    mafiabot.sendMessage(src, x + ": " + pts + " Points", channel);
+                }
+            }
+            sys.sendMessage(src, "", channel);
+        } else {
+            var helpInfo = [
+                "",
+                "Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>,",
+                "<user> and <rule> are mandatory parameters,",
+                "<user> is the target user you want to warn,",
+                "<rule> is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
+                "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase) + ", increase with severity,",
+                "Some rules have a default amount of points which do not need to be specificed. Type /warnhelp points to see default point info,",
+                "<comments> are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
+                "<shove> is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
+                ""
+            ];
+            dump(src, helpInfo, channel);
+        }
+    };
     this.removeWarn = function (src, commandData, channel) {
         commandData = commandData.split(":");
         var name = commandData[0].toLowerCase(), index = commandData[1], ip;
@@ -6199,7 +6238,7 @@ function Mafia(mafiachan) {
                     mwarns.add(ip, name + ":::false|||" + JSON.stringify(warns));
                 }
                 mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
-                if (!sys.isInChannel(sys.id(src), sachannel)) {
+                if (channel !== sachannel) {
                     mafiabot.sendAll("You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
                 }
             }
@@ -7675,6 +7714,10 @@ function Mafia(mafiachan) {
             this.warnUser(srcname, commandData, channel);
             return;
         }
+        if (command === "warnhelp") {
+            this.warnHelp(src, commandData, channel);
+            return;
+        }
         if (command === "unwarn") {
             this.removeWarn(srcname, commandData, channel);
             return;
@@ -7972,7 +8015,7 @@ function Mafia(mafiachan) {
         if (command === "updateafter") {
             msg(src, "Mafia will update after the game");
             mafia.needsUpdating = true;
-            if (mafia.state == "blank") {
+            if (mafia.state == "blank" && !mafia.distributeEvent) {
                 runUpdate();
             }
             return;
