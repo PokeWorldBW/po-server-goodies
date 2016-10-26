@@ -6122,7 +6122,7 @@ function Mafia(mafiachan) {
         }
         var pts = cmd[2];
         var comments = cmd[3] || "None";
-        var shove = cmd[4] ? cmd[4].toLowerCase() : false;
+        var shove = cmd[4] ? cmd[4].toLowerCase() : "false";
         if ((pts === undefined || pts === "") && this.defaultWarningPoints.hasOwnProperty(rule.toLowerCase())) {
             pts = this.defaultWarningPoints[rule.toLowerCase()];
         }
@@ -6138,7 +6138,7 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
-        if (shove != "false" && shove !== "no" && shove !== "") {
+        if (["false", "no", ""].indexOf(shove) !== -1) {
             shove = true;
         } else {
             shove = false;
