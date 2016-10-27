@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-27b";
+    this.version = "2016-10-27c";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -211,11 +211,11 @@ function Mafia(mafiachan) {
     function toColor(msg, color) {
         return ("<b><font color=" + color + ">" + msg + "</font></b>");
     }
-    function colorizeRole(r) {
+    function colorizeRole(r, c) {
         // .replace(/~New~/g, colorizeRole(player.role.role))
-        sys.sendMessage(sys.id("Yttrium"), "role: " + r);
+        sys.sendMessage(sys.id("Yttrium"), "role: " + r + ", call: " + c);
         var role = mafia.theme.roles[r];
-        sys.sendMessage(sys.id("Yttrium"), "role: " + role + ", translation: " + role.translation);
+        sys.sendMessage(sys.id("Yttrium"), "role: " + role + ", call: " + c);
         if (!role) {
             return r;
         }
@@ -3638,7 +3638,7 @@ function Mafia(mafiachan) {
                 } else {
                     mafia.setPlayerRole(player, newRole);
                     if (!Action.silent) {
-                        var allmsg = ("copymsg" in Action ? Action.copymsg : "A ~Old~ has been converted into a ~New~!").replace(/~Old~/g, colorizeRole(oldRole.role)).replace(/~New~/g, colorizeRole(player.role.role)).replace(/~Self~/g, player.name).replace(/~Target~/g, target.name).replace(/~TargetRole~/g, colorizeRole(target.role.role));
+                        var allmsg = ("copymsg" in Action ? Action.copymsg : "A ~Old~ has been converted into a ~New~!").replace(/~Old~/g, colorizeRole(oldRole.role, "Old")).replace(/~New~/g, colorizeRole(player.role.role, "New")).replace(/~Self~/g, player.name).replace(/~Target~/g, target.name).replace(/~TargetRole~/g, colorizeRole(target.role.role, "TargetRole"));
                         gamemsgAll(allmsg, undefined, undefined, true);
                     }
                     if (!Action.silentCopy) {
