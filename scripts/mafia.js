@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-27c";
+    this.version = "2016-10-27d";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -211,11 +211,8 @@ function Mafia(mafiachan) {
     function toColor(msg, color) {
         return ("<b><font color=" + color + ">" + msg + "</font></b>");
     }
-    function colorizeRole(r, c) {
-        // .replace(/~New~/g, colorizeRole(player.role.role))
-        sys.sendMessage(sys.id("Yttrium"), "role: " + r + ", call: " + c);
+    function colorizeRole(r) {
         var role = mafia.theme.roles[r];
-        sys.sendMessage(sys.id("Yttrium"), "role: " + role + ", call: " + c);
         if (!role) {
             return r;
         }
@@ -3638,7 +3635,7 @@ function Mafia(mafiachan) {
                 } else {
                     mafia.setPlayerRole(player, newRole);
                     if (!Action.silent) {
-                        var allmsg = ("copymsg" in Action ? Action.copymsg : "A ~Old~ has been converted into a ~New~!").replace(/~Old~/g, colorizeRole(oldRole.role, "Old")).replace(/~New~/g, colorizeRole(player.role.role, "New")).replace(/~Self~/g, player.name).replace(/~Target~/g, target.name).replace(/~TargetRole~/g, colorizeRole(target.role.role, "TargetRole"));
+                        var allmsg = ("copymsg" in Action ? Action.copymsg : "A ~Old~ has been converted into a ~New~!").replace(/~Old~/g, colorizeRole(oldRole.role)).replace(/~New~/g, colorizeRole(player.role.role)).replace(/~Self~/g, player.name).replace(/~Target~/g, target.name).replace(/~TargetRole~/g, colorizeRole(target.role.role));
                         gamemsgAll(allmsg, undefined, undefined, true);
                     }
                     if (!Action.silentCopy) {
@@ -5086,11 +5083,11 @@ function Mafia(mafiachan) {
                                     } else {
                                         mafia.setPlayerRole(player, newRole, "copyKeepSide" in Action ? Action.copyKeepSide : false);
                                         if (!Action.silent) {
-                                            allmsg = ("copymsg" in Action ? Action.copymsg : "A ~Old~ has been converted into a ~New~!").replace(/~Old~/g, colorizeRole(oldRole.role)).replace(/~New~/g, colorizeRole(player.role)); //Can't replace ~New~ with nightargs due to different target
+                                            allmsg = ("copymsg" in Action ? Action.copymsg : "A ~Old~ has been converted into a ~New~!").replace(/~Old~/g, colorizeRole(oldRole.role)).replace(/~New~/g, colorizeRole(player.role.role)); //Can't replace ~New~ with nightargs due to different target
                                             gamemsgAll(formatArgs(allmsg, nightargs), undefined, undefined, true);
                                         }
                                         if (!Action.silentCopy) {
-                                            pmsg = ("copyusermsg" in Action ? Action.copyusermsg : ("usermsg" in Action ? Action.usermsg : "You copied someone and changed roles!")).replace(/~Old~/g, colorizeRole(oldRole)).replace(/~New~/g, colorizeRole(player.role));
+                                            pmsg = ("copyusermsg" in Action ? Action.copyusermsg : ("usermsg" in Action ? Action.usermsg : "You copied someone and changed roles!")).replace(/~Old~/g, colorizeRole(oldRole.role)).replace(/~New~/g, colorizeRole(player.role.role));
                                             gamemsg(player.name, formatArgs(pmsg, nightargs), undefined, undefined, true);
                                             if (mafia.theme.delayedConversionMsg) {
                                                 mafia.needsConvertMsg.push(player.name);
