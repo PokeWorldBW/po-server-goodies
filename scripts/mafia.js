@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-27";
+    this.version = "2016-10-27a";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -212,7 +212,10 @@ function Mafia(mafiachan) {
         return ("<b><font color=" + color + ">" + msg + "</font></b>");
     }
     function colorizeRole(r) {
+        // .replace(/~New~/g, colorizeRole(player.role.role))
+        sys.sendMessage(sys.id("Yttrium"), r);
         var role = mafia.theme.roles[r];
+        sys.sendMessage(sys.id("Yttrium"), role);
         if (!role) {
             return r;
         }
@@ -6200,7 +6203,7 @@ function Mafia(mafiachan) {
                 "<user> is the target user you want to warn.",
                 "<rule> is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
                 "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity.",
-                "Some rules have a default amount of points which do not need to be specificed. Type /warnhelp points to see default point info.",
+                "Some rules have a default amount of points which do not need to be specified. Type /warnhelp points to see default point info.",
                 "<comments> are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
                 "<shove> is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
                 "Type /unwarn <name>꞉<index> to remove a warn from someone. Index is the number used to identify a warn. You can see the index of a warn with /warnlog <user>. If index is left blank, the most recent warn will be removed.",
@@ -6811,7 +6814,7 @@ function Mafia(mafiachan) {
         if (channel != mafiachan) {
             if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "mywarns"].indexOf(command) === -1) {
                 if (channel == staffchannel || channel == sachannel) {
-                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "warnlog"].indexOf(command) === -1) {
+                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "warnlog", "warnhelp", "rescind"].indexOf(command) === -1) {
                         return;
                     }
                 } else {
