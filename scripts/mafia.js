@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-27a";
+    this.version = "2016-10-27b";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -213,9 +213,9 @@ function Mafia(mafiachan) {
     }
     function colorizeRole(r) {
         // .replace(/~New~/g, colorizeRole(player.role.role))
-        sys.sendMessage(sys.id("Yttrium"), r);
+        sys.sendMessage(sys.id("Yttrium"), "role: " + r);
         var role = mafia.theme.roles[r];
-        sys.sendMessage(sys.id("Yttrium"), role);
+        sys.sendMessage(sys.id("Yttrium"), "role: " + role + ", translation: " + role.translation);
         if (!role) {
             return r;
         }
