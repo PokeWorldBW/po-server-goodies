@@ -7961,7 +7961,7 @@ function Mafia(mafiachan) {
                 mafiabot.sendMessage(src, mafia.theme.name + " does not have the " + role + " role!", mafiachan);
                 return;
             }
-            mafia.players[player] = { 'name': player, 'role': mafia.theme.roles[role], 'targets': {}, 'recharges': {}, 'dayrecharges': {}, 'charges' : {}, 'daycharges': {}, 'evadeCharges': {}, "restrictions": [], "extraVote": 0, "extraVoteshield": 0, 'targets': {}, 'targetsData': {}, 'dayKill': undefined, 'revealUse': undefined, 'exposeUse': undefined, 'guarded': undefined, 'safeguarded': undefined, 'restrictions': [], 'redirectTo': undefined, 'redirectActions': undefined, 'guardActions': [], 'shieldmsg': undefined, 'protectmsg': undefined, 'safeguardmsg': undefined, 'guardmsg': undefined, 'haxCount': {} };
+            mafia.players[player] = { 'name': player, 'role': mafia.theme.roles[role], 'targets': {}, 'recharges': {}, 'dayrecharges': {}, 'charges' : {}, 'daycharges': {}, 'evadeCharges': {}, "restrictions": [], "addVote": {}, "addVoteshield": {}, "extraVote": 0, "extraVoteshield": 0, 'targets': {}, 'targetsData': {}, 'dayKill': undefined, 'revealUse': undefined, 'exposeUse': undefined, 'guarded': undefined, 'safeguarded': undefined, 'restrictions': [], 'redirectTo': undefined, 'redirectActions': undefined, 'guardActions': [], 'shieldmsg': undefined, 'protectmsg': undefined, 'safeguardmsg': undefined, 'guardmsg': undefined, 'haxCount': {} };
             var initPlayer = mafia.players[player];
             if ("night" in initPlayer.role.actions) {
                 for (var act in initPlayer.role.actions.night) {
