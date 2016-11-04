@@ -8067,7 +8067,7 @@ function Mafia(mafiachan) {
                 msg(src, "Use /event forcestart to set the event time to now or /event time:[time from now in seconds] to set the time.");
                 return;
             }
-            var data = commandData.split(":");
+            var data = commandData.split(":").concat("*"); // sloppy fix to make sure data has at least two parts to prevent errors from being thrown when data[1] is undefined
             if (data[0] === "enable") {
                 this.enableEvent(src, true);
                 return;
@@ -8126,7 +8126,7 @@ function Mafia(mafiachan) {
                 mafiabot.sendMessage(src, "Please enter a valid time to delay the event by!", channel);
                 return;
             }
-            if (data[1].toLowerCase() === "confirm") {
+            if (data.length > 1 && data[1].toLowerCase() === "confirm") {
                 this.nextEventTime = new Date().getTime() + seconds * 1000;
                 mafiabot.sendHtmlAll("The Mafia Event was " + (seconds < 0 ? "moved forward" : "delayed" ) + " by <b>" + getTimeString(seconds) + "</b>!", mafiachan);
                 return;
