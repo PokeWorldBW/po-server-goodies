@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-11-04";
+    this.version = "2016-11-04a";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -3287,19 +3287,13 @@ function Mafia(mafiachan) {
             mafia.ticks = 8;
         }
     };
-    this.whisperMessage = function(sentName, commandArray) {
-        if (sentName === commandArray[0]) return;
-        if ((commandArray[1] === "*") || (commandArray[1] === "")) {
-            gamemsg(sentName, "Please whisper an actual message. Syntax is /whisper [name]:[message]");
-            return;
+    this.whisperMessage = function(src, tar, message) {
+        var sentName = sys.name(src);
+        if (src !== undefined && sys.isInChannel(src, mafiachan)) {
+            sys.sendMessage(src, sentName + ": " + "[Whisper to " + commandArray[0] + "] " + message, mafiachan);
         }
-        var id = sys.id(sentName);
-        if (id !== undefined && sys.isInChannel(id, mafiachan)) {
-            sys.sendMessage(id, sentName + ": " + "[Whisper to " + commandArray[0] + "] " + commandArray[1], mafiachan);
-        }
-        var tarid = sys.id(commandArray[0]);
-        if (tarid !== undefined && sys.isInChannel(tarid, mafiachan)) {
-            sys.sendMessage(tarid, sentName + ": " + "[Whisper] " + commandArray[1], mafiachan);
+        if (tar !== undefined && sys.isInChannel(tar, mafiachan)) {
+            sys.sendMessage(tar, sentName + ": " + "[Whisper] " + message, mafiachan);
         }
     };
     this.showVoteCount = function(sentName, dat) {
@@ -6930,13 +6924,34 @@ function Mafia(mafiachan) {
             return;
         }
         if (this.isInGame(sys.name(src)) && (command == "whisper" || command == "w")) {
-            messageInfo = delimSplit(":", commandData);
-            messageInfo[0] = this.correctCase(messageInfo[0]);
-            if (!(this.isInGame(messageInfo[0]))) {
-                gamemsg(sys.name(src),"You can't whisper to someone who isn't in the game!");
+            var pos = commandData.indexOf(":"),
+                targetName = commandData.substring(0, pos).replace(/ ,|, /g, ",").split(","),
+                message = commandData.substring(pos + 1, commandData.length);
+            if (pos === -1 || message === "") {
+                gamemsg(sentName, "Please whisper an actual message. Syntax is /whisper [name]:[message]");
                 return;
             }
-            mafia.whisperMessage(sys.name(src), messageInfo);
+            if (targetName.length === 1) {
+                if (!this.isInGame(targetName[0])) {
+                    gamemsg(sys.name(src),"You can't whisper to someone who isn't in the game!");
+                    return;
+                } else if (targetName === sys.name(src)) {
+                    gamemsg(sys.name(src),"You don't need to whisper to yourself!");
+                    return;
+                }
+            }
+            var fails = [];
+            for (var i = 0; i < targetName.length; i++) {
+                var tar = sys.id(targetName[i]);
+                if (tar !== undefined) {
+                    mafia.whisperMessage(src, tar, message);
+                } else {
+                    fails.push(targetName[i]);
+                }
+            }
+            if (fails.length > 0) {
+                mafiabot.sendMessage(src, "Could not whisper to: " + readable(fails, "and") + ".", mafiachan);
+            }
             return;
         }
         if (command === "tt" || command === "teamtalk") {
