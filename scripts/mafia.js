@@ -6941,7 +6941,9 @@ function Mafia(mafiachan) {
             for (var i = 0; i < targetName.length; i++) {
                 var tarname = targetName[i],
                     tar = sys.id(tarname);
-                if (tar === undefined) {
+                if (tarname.toLowerCase() === sys.name(src).toLowerCase()) { // silly
+                    continue;
+                } else if (tar === undefined) {
                     fails.push(tarname + " (offline)");
                 } else if (!this.isInGame(this.correctCase(tarname))) {
                     fails.push(tarname.toCorrectCase() + " (not in game)")
