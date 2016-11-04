@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-11-04a";
+    this.version = "2016-11-04";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -3290,7 +3290,7 @@ function Mafia(mafiachan) {
     this.whisperMessage = function(src, tar, message) {
         var sentName = sys.name(src);
         if (src !== undefined && sys.isInChannel(src, mafiachan)) {
-            sys.sendMessage(src, sentName + ": " + "[Whisper to " + commandArray[0] + "] " + message, mafiachan);
+            sys.sendMessage(src, sentName + ": " + "[Whisper to " + sys.name(tar) + "] " + message, mafiachan);
         }
         if (tar !== undefined && sys.isInChannel(tar, mafiachan)) {
             sys.sendMessage(tar, sentName + ": " + "[Whisper] " + message, mafiachan);
@@ -8537,8 +8537,6 @@ this.beforeChatMessage = function (src, message, channel) {
         mafiachan = sys.channelId(MAFIA_CHANNEL);
         /*msgAll("Mafia was reloaded, please start a new game!");*/
         mwarns = script.mwarns; // may not be defined after server restart
-        /*REMOVE: The line below */
-        msgAll("Mafia was updated to version " + this.version + "!");
     };
     this.onHelp = function (src, commandData, channel) {
         if (commandData.toLowerCase() === "mafia") {
