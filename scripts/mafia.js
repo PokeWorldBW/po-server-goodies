@@ -8060,62 +8060,40 @@ function Mafia(mafiachan) {
             return;
         }
         if (command === "event") {
-            if ((commandData === "*") || (commandData === "show")) {
-                this.showEventQueue(src);
-                msg(src, "Use /event add:[theme] to add to queue, /event remove:[theme] to remove, /event jump:[theme] to add a theme to the front of the queue, /event trim:[theme] to cut the last, or /event shuffle to shuffle the queue.");
-                msg(src, "Edit the themes added to the event queue by default with /event addpool:[theme] and /event removepool:[theme].");
-                msg(src, "Use /event forcestart to set the event time to now or /event time:[time from now in seconds] to set the time.");
-                return;
-            }
             var data = commandData.split(":").concat("*"); // sloppy fix to make sure data has at least two parts to prevent errors from being thrown when data[1] is undefined
-            if (data[0] === "enable") {
-                this.enableEvent(src, true);
-                return;
-            }
-            if (data[0] === "disable") {
-                this.enableEvent(src, false);
-                return;
-            }
-            if (data[0] === "add") {
-                this.addEventTheme(src, data[1], "");
-                return;
-            }
-            if (data[0] === "jump") {
-                this.addEventTheme(src, data[1], "first");
-                return;
-            }
-            if (data[0] === "remove") {
-                this.removeEventTheme(src, data[1], "");
-                return;
-            }
-            if (data[0] === "trim") {
-                this.removeEventTheme(src, data[1], "last");
-                return;
-            }
-            if (data[0] === "shuffle") {
-                this.shuffleEventQueue(src);
-                return;
-            }
-            if (data[0] === "addpool") {
-                this.addToEventPool(src, data[1]);
-                return;
-            }
-            if (data[0] === "removepool") {
-                this.removeFromEventPool(src, data[1]);
-                return;
-            }
-            if (data[0] === "forcestart") {
-                this.startEvent(true);
-                return;
-            }
-            if (data[0] === "time") {
-                if (isNaN(data[1]))
-                    return;
-                else {
-                    this.nextEventTime = new Date().getTime() + 1000 * data[1];
-                    //this.showEvent; // this doesn't exist???
-                }
-                return;
+            switch (data[0]) {
+                case "enable": case "disable":
+                    this.enableEvent(src, data[0] === "enable");
+                    break;
+                case "add": case "jump":
+                    this.addEventTheme(src, data[1], data[0] === "jump" ? "first": "");
+                    break;
+                case "remove": case "trim":
+                    this.removeEventTheme(src, data[1], data[0] === "trim" ? "last" : "");
+                    break;
+                case "shuffle":
+                    this.shuffleEventQueue(src);
+                    break;
+                case "addpool":
+                    this.addToEventPool(src, data[1]);
+                    break;
+                case "removepool":
+                    this.removeFromEventPool(src, data[1]);
+                    break;
+                case "forcestart":
+                    this.startEvent(true);
+                    break;
+                case "time":
+                    if (!isNaN(data[1])) {
+                        this.nextEventTime = new Date().getTime() + 1000 * data[1];
+                        //this.showEvent; // this doesn't exist???
+                    }
+                    break;
+                default:
+                    this.showEventQueue(src);
+                    msg(src, "Use /event add:[theme] to add to queue, /event remove:[theme] to remove, /event jump:[theme] to add a theme to the front of the queue, /event trim:[theme] to cut the last, or /event shuffle to shuffle the queue.");
+                    msg(src, "Edit the themes added to the event queue by default with /event addpool:[theme] and /event removepool:[theme].");
+                    msg(src, "Use /event forcestart to set the event time to now or /event time:[time from now in seconds] to set the time.");
             }
             return;
         }
@@ -8127,7 +8105,7 @@ function Mafia(mafiachan) {
                 return;
             }
             if (data.length > 1 && data[1].toLowerCase() === "confirm") {
-                this.nextEventTime = new Date().getTime() + seconds * 1000;
+                this.nextEventTime += seconds * 1000;
                 mafiabot.sendHtmlAll("The Mafia Event was " + (seconds < 0 ? "moved forward" : "delayed" ) + " by <b>" + getTimeString(seconds) + "</b>!", mafiachan);
                 return;
             } else {
