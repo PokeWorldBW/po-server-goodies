@@ -1422,9 +1422,8 @@ function Mafia(mafiachan) {
                 return this.players[x].name;
         }
         for (var i = 0; i < this.dead.length; i++) {
-            var name = this.dead[i];
-            if (name.toLowerCase() == lstring)
-                return this.players[name].name;
+            if (this.dead[i].toLowerCase() == lstring)
+                return this.dead[i];
         }
         return noPlayer;
     };
@@ -6940,12 +6939,12 @@ function Mafia(mafiachan) {
             }
             var fails = [];
             for (var i = 0; i < targetName.length; i++) {
-                var tarname = this.correctCase(targetName[i]),
+                var tarname = targetName[i],
                     tar = sys.id(tarname);
                 if (tar === undefined) {
                     fails.push(tarname + " (offline)");
-                } else if (!this.isInGame(tarname)) {
-                    fails.push(tarname + " (not in game)")
+                } else if (!this.isInGame(this.correctCase(tarname))) {
+                    fails.push(tarname.toCorrectCase() + " (not in game)")
                 } else {
                     mafia.whisperMessage(src, tar, message);
                 }
