@@ -8101,18 +8101,23 @@ function Mafia(mafiachan) {
             var data = commandData.split(":");
             var seconds = getSeconds(data[0]);
             if (isNaN(seconds)) {
-                mafiabot.sendMessage(src, "Please enter a valid time to delay the event by!", channel);
-                return;
-            }
-            if (data.length > 1 && data[1].toLowerCase() === "confirm") {
-                this.nextEventTime += seconds * 1000;
-                mafiabot.sendHtmlAll("The Mafia Event was " + (seconds < 0 ? "moved forward" : "delayed" ) + " by <b>" + getTimeString(seconds) + "</b>!", mafiachan);
-                return;
+                mafiabot.sendMessage(src, "Please enter a valid time to delay the event by!", mafiachan);
             } else {
-                var c = "/delayevent " + data[0] + ":confirm";
-                mafiabot.sendHtmlMessage(src, "This will " + (seconds < 0 ? "move the Mafia Event forward" : "delay the Mafia Event" ) + " by " + getTimeString(seconds) + ". Type <a href=\"po:send/" + c + "\">" + c + "</a> if this is what you intend to do.", mafiachan);
-                return;
+                var timeString;
+                if (seconds < 0) {
+                    timeString = getTimeString(-seconds);
+                } else {
+                    timeString = getTimeString(seconds);
+                }
+                if (data.length > 1 && data[1].toLowerCase() === "confirm") {
+                    this.nextEventTime += seconds * 1000;
+                    mafiabot.sendHtmlAll("The Mafia Event was " + (seconds < 0 ? "moved forward" : "delayed" ) + " by <b>" + timeString + "</b>!", mafiachan);
+                } else {
+                    var c = "/delayevent " + data[0] + ":confirm";
+                    mafiabot.sendHtmlMessage(src, "This will " + (seconds < 0 ? "move the Mafia Event forward" : "delay the Mafia Event" ) + " by " + timeString + ". Type <a href=\"po:send/" + c + "\">" + c + "</a> if this is what you intend to do.", mafiachan);
+                }
             }
+            return;
         }
         if (command === "updatestats") {
             mafia.mafiaStats.compileData();
