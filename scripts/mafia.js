@@ -6935,18 +6935,21 @@ function Mafia(mafiachan) {
                 if (!this.isInGame(targetName[0])) {
                     gamemsg(sys.name(src),"You can't whisper to someone who isn't in the game!");
                     return;
-                } else if (targetName === sys.name(src)) {
+                } else if (targetName[0].toLowerCase() === sys.name(src).toLowerCase()) {
                     gamemsg(sys.name(src),"You don't need to whisper to yourself!");
                     return;
                 }
             }
             var fails = [];
             for (var i = 0; i < targetName.length; i++) {
-                var tar = sys.id(targetName[i]);
-                if (tar !== undefined) {
-                    mafia.whisperMessage(src, tar, message);
+                var tarname = this.correctCase(targetName[i]),
+                    tar = sys.id(tarname);
+                if (tar === undefined) {
+                    fails.push(tarname + " (offline)");
+                } else if (!this.isInGame(tarname)) {
+                    fails.push(tarname + " (not in game)")
                 } else {
-                    fails.push(targetName[i]);
+                    mafia.whisperMessage(src, tar, message);
                 }
             }
             if (fails.length > 0) {
