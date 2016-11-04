@@ -1416,20 +1416,15 @@ function Mafia(mafiachan) {
         return cmds.length > 0 ? "Your commands are: " + readable(cmds, "and") + "." : null;
     };
     this.correctCase = function (string) {
-        var lstring = string.toLowerCase();
+        var lstring = string.toLowerCase().trim(); // try to trim around if there's extra whitespace
         for (var x in this.players) {
             if (x.toLowerCase() == lstring)
                 return this.players[x].name;
         }
-        for (var x in this.dead) {
-            if (x.toLowerCase() == lstring)
-                return this.players[x].name;
-        }
-        // try to trim around if there's extra whitespace
-        lstring = lstring.replace(/^\s+|\s+$/g, '');
-        for (var y in this.players) {
-            if (y.toLowerCase() == lstring)
-                return this.players[y].name;
+        for (var i = 0; i < this.dead.length; i++) {
+            var name = this.dead[i];
+            if (name.toLowerCase() == lstring)
+                return this.players[name].name;
         }
         return noPlayer;
     };
@@ -6937,6 +6932,9 @@ function Mafia(mafiachan) {
                     return;
                 } else if (targetName[0].toLowerCase() === sys.name(src).toLowerCase()) {
                     gamemsg(sys.name(src),"You don't need to whisper to yourself!");
+                    return;
+                } else if (sys.id(targetName[0]) === undefined) {
+                    gamemsg(sys.name(src), "You can't whisper to someone that's offline!");
                     return;
                 }
             }
