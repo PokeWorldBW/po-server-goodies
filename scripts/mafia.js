@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2016-10-27d";
+    this.version = "2016-11-04";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     var mwarns = script.mwarns;
@@ -7554,7 +7554,7 @@ function Mafia(mafiachan) {
         if (command === "nextevent") {
             var timer =  this.nextEventTime - new Date().getTime();
             if (timer <= 0) {
-                mafiabot.sendHtmlMessage(src, "<b>Next Mafia Event begins as soon as the next game ends</b>!", mafiachan);
+                mafiabot.sendHtmlMessage(src, "<b>Next Mafia Event begins when this game ends</b>!", mafiachan);
                 return;
             }
             var sec = Math.floor((timer/1000)%60);
