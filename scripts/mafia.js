@@ -6,7 +6,7 @@
 */
 
 // Global variables inherited from scripts.js
-/*global mafiabot, getTimeString, updateModule, script, sys, SESSION, sendChanAll, require, Config, module, sachannel, staffchannel, sendChanHtmlAll, isSuperAdmin*/
+/*global mafiabot, getTimeString, getSeconds, updateModule, script, sys, SESSION, sendChanAll, require, Config, module, sachannel, staffchannel, sendChanHtmlAll, isSuperAdmin*/
 /*jshint laxbreak:true,shadow:true,undef:true,evil:true,trailing:true,proto:true,withstmt:true,eqnull:true*/
 
 /* Search for "/*REMOVE" to find things that need to be removed before being submitted to PO Scripts (Remove this line too!) */
@@ -7574,9 +7574,7 @@ function Mafia(mafiachan) {
                 mafiabot.sendHtmlMessage(src, "<b>Next Mafia Event begins when this game ends</b>!", mafiachan);
                 return;
             }
-            var sec = Math.floor((timer/1000)%60);
-            var mins = Math.floor((timer/1000)/60);
-            mafiabot.sendHtmlMessage(src, "Next Mafia Event begins in <b>" + mins + " minute(s) and " + sec + " second(s)</b>!", mafiachan);
+            mafiabot.sendHtmlMessage(src, "Next Mafia Event begins in <b>" + getTimeString(Math.floor(timer / 1000)) + "</b>!", mafiachan);
             return;
         }
         if (command === "featured") {
@@ -8066,7 +8064,7 @@ function Mafia(mafiachan) {
                 this.showEventQueue(src);
                 msg(src, "Use /event add:[theme] to add to queue, /event remove:[theme] to remove, /event jump:[theme] to add a theme to the front of the queue, /event trim:[theme] to cut the last, or /event shuffle to shuffle the queue.");
                 msg(src, "Edit the themes added to the event queue by default with /event addpool:[theme] and /event removepool:[theme].");
-                msg(src, "Use /event forcestart to set the event time to now.");
+                msg(src, "Use /event forcestart to set the event time to now or /event time:[time from now in seconds] to set the time.");
                 return;
             }
             var data = commandData.split(":");
@@ -8115,11 +8113,28 @@ function Mafia(mafiachan) {
                     return;
                 else {
                     this.nextEventTime = new Date().getTime() + 1000 * data[1];
-                    this.showEvent;
+                    //this.showEvent; // this doesn't exist???
                 }
                 return;
             }
             return;
+        }
+        if (command === "delayevent") {
+            var data = commandData.split(":");
+            var seconds = getSeconds(data[0]);
+            if (isNaN(seconds)) {
+                mafiabot.sendMessage(src, "Please enter a valid time to delay the event by!", channel);
+                return;
+            }
+            if (data[1].toLowerCase() === "confirm") {
+                this.nextEventTime = new Date().getTime() + seconds * 1000;
+                mafiabot.sendHtmlAll("The Mafia Event was " + (seconds < 0 ? "moved forward" : "delayed" ) + " by <b>" + getTimeString(seconds) + "</b>!", mafiachan);
+                return;
+            } else {
+                var c = "/delayevent " + data[0] + ":confirm";
+                mafiabot.sendHtmlMessage(src, "This will " + (seconds < 0 ? "move the Mafia Event forward" : "delay the Mafia Event" ) + " by " + getTimeString(seconds) + ". Type <a href=\"po:send/" + c + "\">" + c + "</a> if this is what you intend to do.", mafiachan);
+                return;
+            }
         }
         if (command === "updatestats") {
             mafia.mafiaStats.compileData();
