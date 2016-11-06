@@ -6823,9 +6823,9 @@ function Mafia(mafiachan) {
             command = message.substr(0).toLowerCase();
         }
         if (channel != mafiachan) {
-            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "mywarns", "mafiawarns", "allwarns", "whodungoofd"].indexOf(command) === -1) {
+            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "passmas", "windata", "topthemes", "playedgames", "pg", "mywarns", "mafiawarns", "allwarns", "whodungoofd", "expiredwarns"].indexOf(command) === -1) {
                 if (channel == staffchannel || channel == sachannel) {
-                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "warnlog", "warnhelp", "rescind"].indexOf(command) === -1) {
+                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "warnlog", "warnhelp", "rescind", "checkwarns"].indexOf(command) === -1) {
                         return;
                     }
                 } else {
@@ -7887,7 +7887,7 @@ function Mafia(mafiachan) {
             return;
         }
         var id;
-        if (command === "passma") {
+        if (command === "passma" || command === "passmas") {
             var oldname = sys.name(src).toLowerCase();
             var newname = commandData.toLowerCase();
             var sMA = false;
@@ -7921,7 +7921,9 @@ function Mafia(mafiachan) {
             id = sys.id(commandData);
             if (id !== undefined)
                 SESSION.users(id).mafiaAdmin = true;
-            msgAll(sys.name(src) + " passed their " + (sMA ? "Super Mafia Admin powers" : "Mafia auth") + " to " + commandData, sachannel);
+            if (command === "passma") {
+                msgAll(sys.name(src) + " passed their " + (sMA ? "Super Mafia Admin powers" : "Mafia auth") + " to " + commandData, sachannel);
+            }
             return;
         }
         if (command === "enablenonpeak" || command === "disablenonpeak") {
@@ -8566,19 +8568,19 @@ this.beforeChatMessage = function (src, message, channel) {
                                 break;
                             case "standby":
                                 phase = "Day";
-                                state = "(Standby)";
+                                state = " (Standby)";
                                 break;
                             case "day":
                                 phase = "Day";
-                                state = "(Voting)";
+                                state = " (Voting)";
                                 break;
                         }
                         gamemsg(srcname, phase + " " + number + state, "±Time");
                         sys.sendHtmlMessage(src, border, mafiachan);
+                        this.showOwnRole(src);
                         if (mafia.state === "day" && !mafia.theme.silentVote) {
                             this.showVoteCount(srcname, []);
                         }
-                        this.showOwnRole(src);
                     } else {
                         gamemsg(srcname, "A " + (mafia.theme.name == defaultThemeName ? "" : mafia.theme.name + "-themed ") + "mafia game is in progress! You can join the next game by typing /join during signups after the game finishes!", "±Info");
                     }
