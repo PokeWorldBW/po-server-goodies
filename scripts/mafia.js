@@ -8552,7 +8552,7 @@ this.beforeChatMessage = function (src, message, channel) {
                             listAndroid = players.map(function(player) {
                                 return "<poappend m='" + player + "'>" + player + "</poappend>";
                             }).join(", ") + ".<ping/>";
-                        gamemsg(srcname, sys.os(id) === "android" ? listAndroid : listPC, "±Current Players", undefined, true);
+                        gamemsg(srcname, sys.os(src) === "android" ? listAndroid : listPC, "±Current Players", undefined, true);
                         if (mafia.theme.closedSetup !== "team" && !mafia.theme.closedSetup && mafia.theme.closedSetup !== "full") {
                             var player = mafia.players[srcname];
                             var side = player.role.side;
