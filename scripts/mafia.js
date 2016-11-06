@@ -7604,7 +7604,7 @@ function Mafia(mafiachan) {
         }
         if (command === "eventthemes") {
             var themes = this.eventThemePool.map(function(theme) { return this.themeManager.themes[this.eventQueue[0]].name; }).sort();
-            mafiabot.sendMessage(src, "The themes that can be started as events are: " readable(themes, "and") + "." , mafiachan);
+            mafiabot.sendMessage(src, "The themes that can be started as events are: " + readable(themes, "and") + "." , mafiachan);
             return;
         }
         if (command === "featured") {
@@ -8502,11 +8502,10 @@ this.beforeChatMessage = function (src, message, channel) {
                 default:
                     if (mafia.isInGame(srcname)) {
                         this.showOwnRole(src);
-                        if (mafia.state === "day") {
+                        if (mafia.state === "day" && !mafia.theme.silentVote) {
                             this.showVoteCount(srcname, []);
                         }
-                    }
-                    else {
+                    } else {
                         gamemsg(srcname, "A " + (mafia.theme.name == defaultThemeName ? "" : mafia.theme.name + "-themed ") + "mafia game is in progress! You can join the next game by typing /join during signups after the game finishes!", "±Info");
                     }
             }
