@@ -40,6 +40,10 @@ function Mafia(mafiachan) {
         this.eventThemePool = [defaultThemeName];
         sys.saveVal("mafia_eventThemePool", this.eventThemePool.toString());
     }
+    if (!sys.getVal("unknownWarnIssueTime")) {
+        sys.saveVal("unknownWarnIssueTime", new Date().getTime());
+    }
+    this.unknownWarnIssueTime = +sys.getVal("unknownWarnIssueTime");
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -6280,7 +6284,7 @@ function Mafia(mafiachan) {
                 table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
                     var warning = info[i],
-                        issued = warning.issueTime ? getTimeString(Math.floor((new Date().getTime() - warning.issueTime) / 1000)) : "Before November 07, 2016",
+                        issued = (warning.issueTime ? "" : "&gt;") + getTimeString(Math.floor((new Date().getTime() - (warning.issueTime ? warning.issueTime : this.unknownWarnIssueTime)) / 1000)),
                         row = [i + 1, warning.name, warning.warner, warning.rule, issued, warning.comments].map(function(e) {
                             return "<td><center>" + e + "</center></td>";
                         });
@@ -6314,7 +6318,7 @@ function Mafia(mafiachan) {
             var table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
                     var warning = info[i],
-                        issued = warning.issueTime ? getTimeString(Math.floor((new Date().getTime() - warning.issueTime) / 1000)) : "Before November 07, 2016",
+                        issued = (warning.issueTime ? "" : "&gt;") + getTimeString(Math.floor((new Date().getTime() - (warning.issueTime ? warning.issueTime : this.unknownWarnIssueTime)) / 1000)),
                         row = [warning.warner, warning.rule, issued, warning.comments].map(function(e) {
                            return "<td><center>" + e + "</center></td>"; 
                         });
