@@ -199,14 +199,14 @@ function Mafia(mafiachan) {
         return true;
     }
     /* Replaces keywords in messages */
-    function formatArgs(mess, args) {
+    function formatArgs(mess, args, html) {
         if (mess === undefined || mess.length === 0) {
             return mess;
         }
         for (var i in args) {
             mess = mess.replace(new RegExp(i, "g"), args[i]);
         }
-        return html_escape(mess);
+        return html === false ? mess : html_escape(mess);
     }
     function toColor(msg, color) {
         return ("<b><font color=" + color + ">" + msg + "</font></b>");
@@ -1921,8 +1921,10 @@ function Mafia(mafiachan) {
         }
         if (this.state != "blank") {
             gamemsg(srcname, "A game is going on. Wait until it's finished before trying to start another one");
-            if (this.state == "voting" || this.state == "entry") {
-                gamemsg(srcname, "You can join the current game by typing <a href=\"po:send//join\">/join</a>!");
+            if (this.state == "entry") {
+                gamemsg(srcname, "You can join the current game by typing <a href=\"po:send//join\">/join</a>!", undefined, mafiachan, true);
+            } else if (this.state == "voting") {
+                gamemsg(srcname, "You can vote for a theme by typing <a href=\"po:send//votetheme\">/votetheme</a> [theme]!", undefined, mafiachan, true);
             }
             return;
         }
@@ -3781,7 +3783,7 @@ function Mafia(mafiachan) {
             }
             sendBorder();
             if (!revenge) {
-                gamemsgAll(colorizePerRole(html_escape(commandObject.killmsg)).replace(/~Self~/g, name).replace(/~Target~/g, commandData).replace(/~Role~/g, colorizeRole(mafia.players[name].role.role)).replace(/~TargetRole~/g, colorizeRole(mafia.players[commandData].role.role)), undefined, undefined, true);
+                gamemsgAll(html_escape(commandObject.killmsg).replace(/~Self~/g, name).replace(/~Target~/g, commandData).replace(/~Role~/g, colorizeRole(mafia.players[name].role.role)).replace(/~TargetRole~/g, colorizeRole(mafia.players[commandData].role.role)), undefined, undefined, true);
                 if ("revealChance" in commandObject && commandObject.revealChance > sys.rand(0, 100) / 100) {
                     var rmsg = (commandObject.revealmsg || "While attacking, ~Self~ (~Role~) made a mistake and was revealed!").replace(/~Self~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[name].role.role));
                     gamemsgAll(rmsg, undefined, undefined, true);
@@ -4946,7 +4948,7 @@ function Mafia(mafiachan) {
                                     var team = getTeam(player.role, Action.common);
                                     for (var x in team) {
                                         if (team[x] != player.name) {
-                                            gamemsg(team[x], formatArgs(poisonmsg, nightargs));
+                                            gamemsg(team[x], formatArgs(poisonmsg, nightargs, false));
                                         }
                                     }
                                     target.poisoned = 1;
