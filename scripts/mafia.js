@@ -1924,7 +1924,7 @@ function Mafia(mafiachan) {
             if (this.state == "entry") {
                 gamemsg(srcname, "You can join the current game by typing <a href=\"po:send//join\">/join</a>!", undefined, mafiachan, true);
             } else if (this.state == "voting") {
-                gamemsg(srcname, "You can vote for a theme by typing <a href=\"po:send//votetheme\">/votetheme</a> [theme]!", undefined, mafiachan, true);
+                gamemsg(srcname, "You can vote for a theme by typing <a href=\"po:appendmsg//votetheme\">/votetheme</a> [theme]!", undefined, mafiachan, true);
             }
             return;
         }
@@ -4943,7 +4943,7 @@ function Mafia(mafiachan) {
                                 if (target.poisoned === undefined || target.poisonCount - target.poisoned >= finalPoisonCount) {
                                     var poisonmsg = "poisonmsg" in Action ? Action.poisonmsg : "Your target (~Target~) was poisoned!";
                                     var poisontarmsg = "poisontarmsg" in Action ? Action.poisontarmsg : "";
-                                    gamemsg(player.name, formatArgs(poisonmsg, nightargs));
+                                    gamemsg(player.name, formatArgs(poisonmsg, nightargs), false);
                                     gamemsg(target.name, formatArgs(poisontarmsg, nightargs));
                                     var team = getTeam(player.role, Action.common);
                                     for (var x in team) {
