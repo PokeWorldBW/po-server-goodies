@@ -6280,7 +6280,7 @@ function Mafia(mafiachan) {
                 table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
                     var warning = info[i],
-                        issued = warning.issueTime ? getTimeString(Math.floor((new Date().getTime() - warning.issueTime()) / 1000)) : "Before November 07, 2016",
+                        issued = warning.issueTime ? getTimeString(Math.floor((new Date().getTime() - warning.issueTime) / 1000)) : "Before November 07, 2016",
                         row = [i + 1, warning.name, warning.warner, warning.rule, issued, warning.comments].map(function(e) {
                             return "<td><center>" + e + "</center></td>";
                         });
