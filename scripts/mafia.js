@@ -6778,7 +6778,9 @@ function Mafia(mafiachan) {
         ma: ["/slay: To slay users in a Mafia game. Use /unslay to cancel.",
             "/shove: To remove users before a game starts. Use /unshove to cancel.",
             "/warn: To warn a user for violation of a rule. Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.",
+            "/unwarn: To remove a warning from a user.",
             "/warnlog: To check relevant warnings for a user. Consider this record before banning.",
+            "/mafiawarns: To check all users that have active warnings. Can also use /allwarns or /whodungoofd.",
             "/rescind: To take away someone's Mafia Event points. Use within 5 minutes after game ends.",
             "/mafiaban: To ban a user from the Mafia channel, format /mafiaban user:reason:time",
             "/mafiaunban: To unban a user from the Mafia channel.",
@@ -6797,6 +6799,8 @@ function Mafia(mafiachan) {
             "/remove: To remove a Mafia Theme! Use /sremove for a silent removal.",
             "/mafiaadmin: To promote a user to Mafia Admin. Use /smafiaadmin for a silent promotion.",
             "/mafiaadminoff: To strip a user of all Mafia authority. Use /smafiaadminoff for a silent demotion.",
+            "/event: To make changes to the event queue and pool, enable/disable events, start events, or change the event time. Type /event for more info on how to use the command.",
+            "/delayevent: To delay the event by a certain amount of time.",
             "/updateafter: To update mafia after current game!",
             "/updatestats: To update the mafia stats webpage. Use after mafiastat script changes.",
             "/featuretheme: To change the currently featured theme. Leave blank to disable Feature Themes.",
@@ -6931,7 +6935,7 @@ function Mafia(mafiachan) {
         }
         var messageInfo;
         if (this.isInGame(sys.name(src)) && (command == "votecount" || command == "vc")) {
-            if (mafia.theme.silentVote && mafia.theme.silentVote) {
+            if (mafia.theme.silentVote) {
                 gamemsg(sys.name(src),"Vote count is disabled for this theme!");
                 return;
             }
@@ -7598,12 +7602,12 @@ function Mafia(mafiachan) {
                 mafiabot.sendHtmlMessage(src, "Next Mafia Event begins in <b>" + getTimeString(Math.floor(timer / 1000)) + "</b>!", mafiachan);
             }
             if (this.eventQueue.length > 0) {
-                mafiabot.sendMessage(src, "The theme for the next event is " + this.themeManager.themes[this.eventQueue[0]].name + "!", mafiachan);
+                mafiabot.sendHtmlMessage(src, "The theme for the next event is <b>" + this.themeManager.themes[this.eventQueue[0]].name + "</b>!", mafiachan);
             }
             return;
         }
         if (command === "eventthemes") {
-            var themes = this.eventThemePool.map(function(theme) { return this.themeManager.themes[this.eventQueue[0]].name; }).sort();
+            var themes = this.eventThemePool.map(function(theme) { return mafia.themeManager.themes[mafia.eventQueue[0]].name; }).sort();
             mafiabot.sendMessage(src, "The themes that can be started as events are: " + readable(themes, "and") + "." , mafiachan);
             return;
         }
