@@ -1976,7 +1976,7 @@ function Mafia(mafiachan) {
         }
 
         border = this.theme.border ? this.theme.border : DEFAULT_BORDER;
-        CurrentGame = { who: src !== null ? srcname : "voted", what: themeName, when: parseInt(sys.time(), 10), playerCount: 0 };
+        CurrentGame = { who: src !== null ? srcname : "voted", what: themeName, when: parseInt(sys.time(), 10), playerCount: 0, winner: "" };
 
         if (src !== null && src !== "Event") {
             sendChanAll("", mafiachan);
@@ -6183,20 +6183,21 @@ function Mafia(mafiachan) {
             }
             sys.sendMessage(src, "", channel);
         } else {
-            var helpInfo = [
-                "",
-                "Syntax is /warn <user>꞉<rule>꞉<duration>꞉<comments>꞉<shove>.",
-                "<user> and <rule> are mandatory parameters.",
-                "<user> is the target user you want to warn.",
-                "<rule> is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
-                "<duration> is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity.",
-                "Some rules have a default amount of points which do not need to be specified. Type /warnhelp points to see default point info.",
-                "<comments> are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
-                "<shove> is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
-                "Type /unwarn <name>꞉<index> to remove a warn from someone. Index is the number used to identify a warn. You can see the index of a warn with /warnlog <user>. If index is left blank, the most recent warn will be removed.",
-                ""
-            ];
-            dump(src, helpInfo, channel);
+            sys.sendMessage(src, "", channel);
+            [
+                "Syntax is /warn &lt;user&gt;꞉&lt;rule&gt;꞉&lt;duration&gt;꞉&lt;comments&gt;꞉&lt;shove&gt;.",
+                "&lt;user&gt; and &lt;rule&gt; are mandatory parameters.",
+                "&lt;user&gt; is the target user you want to warn.",
+                "&lt;rule&gt; is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
+                "&lt;duration&gt; is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity.",
+                "Some rules have a default amount of points which do not need to be specified. Type <a href=\"po:send//warnhelps points\">/warnhelp points</a> to see default point info.",
+                "&lt;comments&gt; are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
+                "&lt;shove&gt; is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
+                "Type /unwarn &lt;name&gt;꞉&lt;index&gt; to remove a warn from someone. Index is the number used to identify a warn. You can see the index of a warn with <a href=\"po:send//warnlog \">/warnlog</a> &lt;user&gt;. If index is left blank, the most recent warn will be removed.",
+            ].forEach(function(line) {
+                sys.sendMessage(src, "<timestamp/> " + line, channel);
+            });
+            sys.sendMessage(src, "", channel);
         }
     };
     this.removeWarn = function (src, commandData, channel) {
@@ -6314,7 +6315,7 @@ function Mafia(mafiachan) {
                     table.push("<tr>" + row.join("") + "</tr>");
                 }
                 table.push("</table>");
-                sys.sendHtmlMessage(sys.id(src), table.join(""), mafiachan);
+                sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
             if (shove) {
                 mwarns.remove(ip);
                 mwarns.add(ip, name + ":::false|||" + JSON.stringify(info));
@@ -6324,6 +6325,26 @@ function Mafia(mafiachan) {
             }
         } else {
             mafiabot.sendMessage(sys.id(src), "You have no standing rule violations.", channel);
+        }
+    };
+    this.showAllWarns = function (src, commandData, channel) {
+        var hash = mwarns.hash, table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='4'>Mafia Warns</th></tr><tr><th>IP</th><th>Name</th><th>Number of Warns</th><th>Shove</th></tr>"];
+        if (Object.keys(hash).length === 0) {
+            mafiabot.sendMessage(src, "There are no active warns.", channel);
+        } else {
+            for (var ip in hash) {
+                var info = mwarns.get(ip).split(":::"),
+                    name = info[0],
+                    warn = JSON.parse(info[1].split("|||")[1]),
+                    shove = info[1].split("|||")[0],
+                    row = [x, "<a href=\"po:send//warnlog " + name + "\">" + name + "</a>", warn.length, shove].map(function(e) {
+                       return "<td><center>" + e + "</center></td>"; 
+                    });
+                table.push("<tr>" + row.join("") + "</tr>");
+            }
+            table.push("</table>");
+            sys.sendHtmlMessage(src, table.join(""), channel);
+            mafiabot.sendMessage(src, "Type <a href=\"po:appendmsg//warnlog \">/warnlog</a> [name] to see more details about a person.", channel);
         }
     };
     this.possibleBotquote = function (mess) {
@@ -6799,7 +6820,7 @@ function Mafia(mafiachan) {
             command = message.substr(0).toLowerCase();
         }
         if (channel != mafiachan) {
-            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "mywarns"].indexOf(command) === -1) {
+            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "windata", "topthemes", "playedgames", "pg", "mywarns", "mafiawarns", "allwarns", "whodungoofd"].indexOf(command) === -1) {
                 if (channel == staffchannel || channel == sachannel) {
                     if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "warnlog", "warnhelp", "rescind"].indexOf(command) === -1) {
                         return;
@@ -7741,6 +7762,9 @@ function Mafia(mafiachan) {
         if (command === "warnlog") {
             this.checkWarns(srcname, commandData, channel);
             return;
+        }
+        if (["mafiawarns", "allwarns", "whodungoofd"].indexOf(command) !== -1) {
+            return this.showAllWarns(src, commandData, channel);
         }
         var tar = sys.id(commandData);
         if (command === "slay") {
