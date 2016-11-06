@@ -3298,38 +3298,38 @@ function Mafia(mafiachan) {
         var pastDay = false, voteData = {};
         if (checkDay === "*" || +checkDay === mafia.time.nights) {
             voteData = this.votedBy;
-            gamemsg(sentName, "*** Votecount ***");
+            gamemsg(sentName, "*** VOTECOUNT ***");
         } else {
-            if ((checkDay > mafia.time.nights) || (checkDay <= 0)) {
+            if (checkDay > mafia.time.nights || checkDay <= 0) {
                 gamemsg(sentName, "Please enter a valid day to search for!", "Vote");
                 return;
             }
             if (checkDay < mafia.time.nights) {
                 pastDay = true;
             }
-            gamemsg(sentName, "*** Votecount for Day " + checkDay + " ***");
+            gamemsg(sentName, "*** VOTECOUNT FOR DAY " + checkDay + " ***");
             voteData = this.votedByArchive[checkDay];
         }
         checkPlayer = mafia.isInGame(checkPlayer) ? this.correctCase(checkPlayer) : checkPlayer;
         if (checkPlayer === noPlayer || checkPlayer === "") {
             if (pastDay) {
-                gamemsg(sentName, this.lynchees[checkDay-1] + " was voted off!", "Vote");
+                gamemsg(sentName, this.lynchees[checkDay - 1] + " was voted off!", "Vote");
             }
             var sortable = [];
             for (var target in voteData) {
                 sortable.push([target, voteData[target].length]);
             }
             if (sortable.length === 0) {
-                if (!(pastDay)) {
+                if (!pastDay) {
                     gamemsg(sentName,"No votes have been cast yet!", "Vote");
                 }
                 return;
             }
-            sortable.sort(function(a, b) {return b[1] - a[1];});
+            sortable.sort(function(a, b) { return b[1] - a[1]; });
             var votedUser;
             for (var s in sortable) {
                 votedUser = sortable[s][0];
-                gamemsg(sentName,votedUser + (pastDay ? " was " : " has been ") + "voted by " + readable( voteData[votedUser], "and" ) + ".","Vote");
+                gamemsg(sentName,votedUser + (pastDay ? " was " : " has been ") + "voted by " + readable(voteData[votedUser], "and") + ".","±Vote");
             }
             return;
         }
@@ -3337,7 +3337,7 @@ function Mafia(mafiachan) {
             gamemsg(sentName,checkPlayer + (pastDay ? " was not " : " has not been ") + "voted for!","Vote");
             return;
         }
-        gamemsg(sentName,checkPlayer + (pastDay ? " was " : " has been ") + "voted by " + readable( voteData[checkPlayer], "and" ) + ".","Vote");
+        gamemsg(sentName, checkPlayer + (pastDay ? " was " : " has been ") + "voted by " + readable(voteData[checkPlayer], "and") + ".","±Vote");
     };
     this.testWin = function (slay) {
         if (mafia.playerCount() === 0) {
@@ -6120,8 +6120,9 @@ function Mafia(mafiachan) {
             gamemsg(src, "Please specify a valid amount of warning points.", false, channel);
             return;
         }
-        this.clearOldWarnings(name);
+        //this.clearOldWarnings(name);
         var expirationTime = (new Date()).getTime() + (timeForWarningErase * pts);
+        var now = (new Date()).getTime();
         var ip;
         if (sys.id(name) !== undefined) {
             ip = sys.ip(sys.id(name));
@@ -6140,7 +6141,8 @@ function Mafia(mafiachan) {
             points: pts,
             comments: comments,
             //shove: shove,
-            expirationTime: expirationTime
+            expirationTime: expirationTime,
+            issueTime: now
         };
         if (mwarns.get(ip)) {
             var data = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]);
@@ -6266,7 +6268,7 @@ function Mafia(mafiachan) {
     this.checkWarns = function (src, commandData, channel) {
         //var warner = typeof src == "string" ? src : sys.name(src);
         var name = commandData.toLowerCase();
-        this.clearOldWarnings(name);
+        //this.clearOldWarnings(name);
         var ip;
         if (sys.id(name) !== undefined) {
             ip = sys.ip(sys.id(name));
@@ -6275,9 +6277,10 @@ function Mafia(mafiachan) {
         }
         if (mwarns.get(ip)) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
-                table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Points</th><th>Comments</th></tr>"];
+                table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
-                    var warning = info[i], row = [i + 1, warning.name, warning.warner, warning.rule, warning.points, warning.comments].map(function(e) {
+                    var issued = warning.issueTime ? getTimeString(new Date().getTime() - warning.issueTime) : "Before November 07, 2016";
+                    var warning = info[i], row = [i + 1, warning.name, warning.warner, warning.rule, issued, warning.comments].map(function(e) {
                         return "<td><center>" + e + "</center></td>";
                     });
                     table.push("<tr>" + row.join("") + "</tr>");
@@ -6297,7 +6300,7 @@ function Mafia(mafiachan) {
     this.myWarns = function (src, channel) {
         var name = typeof src == "string" ? src : sys.name(src);
         name = name.toLowerCase();
-        this.clearOldWarnings( name );
+        //this.clearOldWarnings(name);
         var ip;
         if (sys.id(name) !== undefined) {
             ip = sys.ip(sys.id(name));
@@ -6307,9 +6310,10 @@ function Mafia(mafiachan) {
         if (mwarns.get(ip)) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
                 shove = mwarns.get(ip).split(":::")[1].split("|||")[0] == "true";
-            var table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='3'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Comments</th></tr>"];
+            var table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
-                    var warning = info[i], row = [warning.warner, warning.rule, warning.comments].map(function(e) {
+                    var issued = warning.issueTime ? getTimeString(new Date().getTime() - warning.issueTime) : "Before November 07, 2016";
+                    var warning = info[i], row = [warning.warner, warning.rule, issued, warning.comments].map(function(e) {
                        return "<td><center>" + e + "</center></td>"; 
                     });
                     table.push("<tr>" + row.join("") + "</tr>");
