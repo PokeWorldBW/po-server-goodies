@@ -8505,10 +8505,80 @@ this.beforeChatMessage = function (src, message, channel) {
                     break;
                 default:
                     if (mafia.isInGame(srcname)) {
-                        this.showOwnRole(src);
+                        sys.sendHtmlMessage(src, border, mafiachan);
+                        if (mafia.theme.closedSetup !== "full") {
+                            var roles = Object.keys(this.players).map(function(name) {
+                                return this.players[name].role;
+                            }, mafia).sort(function(a, b) { /* Sorting to not give out the order of the roles per player */
+                                var tra = typeof a.actions.onlist === "string" ? mafia.theme.trrole(a.actions.onlist) : a.translation;
+                                var trb = typeof b.actions.onlist === "string" ? mafia.theme.trrole(b.actions.onlist) : b.translation;
+                                if (tra == trb)
+                                    return 0;
+                                else if (tra < trb)
+                                    return -1;
+                                else
+                                    return 1;
+                            }),
+                            sendPC = roles.map(function(role) {
+                                if (typeof role.actions.onlist === "string") {
+                                    var onlistRole = role.actions.onlist,
+                                        roleName = html_escape(this.theme.trrole(onlistRole)),
+                                        color = this.theme.sideColor[mafia.theme.roles[onlistRole].side];
+                                    return "<a href=\"po:send//roles " + mafia.theme.name + ":" + roleName + "\" style=\"color:" + color + "\">" + roleName + "</a>";
+                                } else {
+                                    var roleName = html_escape(role.translation),
+                                        color = this.theme.sideColor[role.side];
+                                    return "<a href=\"po:send//roles " + mafia.theme.name + ":" + roleName + "\" style=\"color:" + color + "\">" + roleName + "</a>";
+                                }
+                            }, mafia).join(", ") + ".",
+                            sendAndroid = roles.map(function(role) {
+                                if (typeof role.actions.onlist === "string") {
+                                    var onlistRole = role.actions.onlist,
+                                        roleName = html_escape(this.theme.trrole(onlistRole)),
+                                        color = this.theme.sideColor[mafia.theme.roles[onlistRole].side];
+                                    return "<posend m='/roles " + mafia.theme.name + ":" + roleName + /*"' style='color:" + color +*/ "'>" + roleName + "</a>";
+                                } else {
+                                    var roleName = html_escape(role.translation),
+                                        color = this.theme.sideColor[role.side];
+                                    return "<posend m='/roles " + mafia.theme.name + ":" + roleName + /*"' style='color:" + color +*/ "'>" + roleName + "</a>";
+                                }
+                            }, mafia).join(", ") + ".";
+                            gamemsg(srcname, sys.os(src) === "android" ? sendAndroid : sendPC, "±Current Roles", undefined, true);
+                        }
+                        var players = Object.keys(this.players).sort(),
+                            listPC = players.map(function(player) {
+                                return htmlLink(player, true);
+                            }).join(", ") + ".<ping/>",
+                            listAndroid = players.map(function(player) {
+                                return "<poappend m='" + player + "'>" + player + "</poappend>";
+                            }).join(", ") + ".<ping/>";
+                        gamemsg(srcname, sys.os(id) === "android" ? listAndroid : listPC, "±Current Players", undefined, true);
+                        if (mafia.theme.closedSetup !== "team" && !mafia.theme.closedSetup && mafia.theme.closedSetup !== "full") {
+                            var player = mafia.players[srcname];
+                            var side = player.role.side;
+                            gamemsg(srcname, mafia.getRolesForTeamS(side), "±Current Team");
+                        }
+                        var phase = "Unknown", state = "", number = mafia.state === "night" ? mafia.time.nights : mafia.time.days;
+                        switch (mafia.state) {
+                            case "night":
+                                phase = "Night";
+                                state = "";
+                                break;
+                            case "standby":
+                                phase = "Day";
+                                state = "(Standby)";
+                                break;
+                            case "day":
+                                phase = "Day";
+                                state = "(Voting)";
+                                break;
+                        }
+                        gamemsg(srcname, phase + " " + number + state, "±Time");
+                        sys.sendHtmlMessage(src, border, mafiachan);
                         if (mafia.state === "day" && !mafia.theme.silentVote) {
                             this.showVoteCount(srcname, []);
                         }
+                        this.showOwnRole(src);
                     } else {
                         gamemsg(srcname, "A " + (mafia.theme.name == defaultThemeName ? "" : mafia.theme.name + "-themed ") + "mafia game is in progress! You can join the next game by typing /join during signups after the game finishes!", "±Info");
                     }
