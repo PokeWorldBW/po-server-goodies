@@ -6195,7 +6195,7 @@ function Mafia(mafiachan) {
                 "&lt;shove&gt; is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
                 "Type /unwarn &lt;name&gt;꞉&lt;index&gt; to remove a warn from someone. Index is the number used to identify a warn. You can see the index of a warn with <a href=\"po:send//warnlog \">/warnlog</a> &lt;user&gt;. If index is left blank, the most recent warn will be removed.",
             ].forEach(function(line) {
-                sys.sendMessage(src, "<timestamp/> " + line, channel);
+                sys.sendHtmlMessage(src, "<timestamp/> " + line, channel);
             });
             sys.sendMessage(src, "", channel);
         }
@@ -6337,7 +6337,7 @@ function Mafia(mafiachan) {
                     name = info[0],
                     warn = JSON.parse(info[1].split("|||")[1]),
                     shove = info[1].split("|||")[0],
-                    row = [x, "<a href=\"po:send//warnlog " + name + "\">" + name + "</a>", warn.length, shove].map(function(e) {
+                    row = [ip, "<a href=\"po:send//warnlog " + name + "\">" + name + "</a>", warn.length, shove].map(function(e) {
                        return "<td><center>" + e + "</center></td>"; 
                     });
                 table.push("<tr>" + row.join("") + "</tr>");
