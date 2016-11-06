@@ -6279,10 +6279,11 @@ function Mafia(mafiachan) {
             var info = JSON.parse(mwarns.get(ip).split(":::")[1].split("|||")[1]),
                 table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
-                    var issued = warning.issueTime ? getTimeString(new Date().getTime() - warning.issueTime) : "Before November 07, 2016";
-                    var warning = info[i], row = [i + 1, warning.name, warning.warner, warning.rule, issued, warning.comments].map(function(e) {
-                        return "<td><center>" + e + "</center></td>";
-                    });
+                    var warning = info[i],
+                        issued = warning.issueTime ? getTimeString(new Date().getTime() - warning.issueTime) : "Before November 07, 2016",
+                        row = [i + 1, warning.name, warning.warner, warning.rule, issued, warning.comments].map(function(e) {
+                            return "<td><center>" + e + "</center></td>";
+                        });
                     table.push("<tr>" + row.join("") + "</tr>");
                 }
                 var shove = mwarns.get(ip).split(":::")[1].split("|||")[0];
@@ -6312,10 +6313,11 @@ function Mafia(mafiachan) {
                 shove = mwarns.get(ip).split(":::")[1].split("|||")[0] == "true";
             var table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var i = 0; i < info.length; i++) {
-                    var issued = warning.issueTime ? getTimeString(new Date().getTime() - warning.issueTime) : "Before November 07, 2016";
-                    var warning = info[i], row = [warning.warner, warning.rule, issued, warning.comments].map(function(e) {
-                       return "<td><center>" + e + "</center></td>"; 
-                    });
+                    var warning = info[i],
+                        issued = warning.issueTime ? getTimeString(new Date().getTime() - warning.issueTime) : "Before November 07, 2016",
+                        row = [warning.warner, warning.rule, issued, warning.comments].map(function(e) {
+                           return "<td><center>" + e + "</center></td>"; 
+                        });
                     table.push("<tr>" + row.join("") + "</tr>");
                 }
                 table.push("</table>");
