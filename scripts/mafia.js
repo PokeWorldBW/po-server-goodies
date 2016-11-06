@@ -6190,10 +6190,10 @@ function Mafia(mafiachan) {
                 "&lt;user&gt; is the target user you want to warn.",
                 "&lt;rule&gt; is the rule the user broke, such as AFK, Slay Abuse, Team Vote, Bot Quote, Dead Talk, Trolling, or a specific rule in /mafiarules.",
                 "&lt;duration&gt; is the amount of points for the warn. 1 point = " + getTimeString(timeForWarningErase / 1000) + ", increase with severity.",
-                "Some rules have a default amount of points which do not need to be specified. Type <a href=\"po:send//warnhelps points\">/warnhelp points</a> to see default point info.",
+                "Some rules have a default amount of points which do not need to be specified. Type <a href=\"po:send//warnhelp points\">/warnhelp points</a> to see default point info.",
                 "&lt;comments&gt; are the comments you want to leave for the user. Comments should be more detailed and rules more brief. This is helpful to explain to the person what they did wrong.",
                 "&lt;shove&gt; is true/false. If true, target will be shoved and cannot join the game unless they check /mywarns. Useful for AFKs or if someone does not respond to a PM.",
-                "Type /unwarn &lt;name&gt;꞉&lt;index&gt; to remove a warn from someone. Index is the number used to identify a warn. You can see the index of a warn with <a href=\"po:send//warnlog \">/warnlog</a> &lt;user&gt;. If index is left blank, the most recent warn will be removed.",
+                "Type /unwarn &lt;name&gt;꞉&lt;index&gt; to remove a warn from someone. Index is the number used to identify a warn. You can see the index of a warn with <a href=\"po:appendmsg//warnlog \">/warnlog</a> &lt;user&gt;. If index is left blank, the most recent warn will be removed.",
             ].forEach(function(line) {
                 sys.sendHtmlMessage(src, "<timestamp/> " + line, channel);
             });
@@ -6336,7 +6336,7 @@ function Mafia(mafiachan) {
                 var info = mwarns.get(ip).split(":::"),
                     name = info[0],
                     warn = JSON.parse(info[1].split("|||")[1]),
-                    shove = info[1].split("|||")[0],
+                    shove = info[1].split("|||")[0] === "true" ? "Yes" : "No",
                     row = [ip, "<a href=\"po:send//warnlog " + name + "\">" + name + "</a>", warn.length, shove].map(function(e) {
                        return "<td><center>" + e + "</center></td>"; 
                     });
@@ -6344,7 +6344,7 @@ function Mafia(mafiachan) {
             }
             table.push("</table>");
             sys.sendHtmlMessage(src, table.join(""), channel);
-            mafiabot.sendMessage(src, "Type <a href=\"po:appendmsg//warnlog \">/warnlog</a> [name] to see more details about a person.", channel);
+            mafiabot.sendHtmlMessage(src, "Type <a href=\"po:appendmsg//warnlog \">/warnlog</a> [name] to see more details about a person.", channel);
         }
     };
     this.possibleBotquote = function (mess) {
