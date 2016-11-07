@@ -763,7 +763,7 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
                     }
                     if(sys.id(authlist[x]) != undefined) {
                         var colour = script.getColor((sys.id(authlist[x])));
-                        sys.sendHtmlMessage(src, '<timestamp/><b><font color='+colour+'> ' + hAvailable + " " + utilities.html_escape(sys.name(sys.id(authlist[x]))) + '</font> ['+sys.dbAuth(sys.name(sys.id(authlist[x])))+']</b>',channel)
+                        sys.sendHtmlMessage(src, "<timestamp/><b><font color='" + colour + "'> <img src='item:318'width='20'height='20'> " + utilities.html_escape(sys.name(sys.id(authlist[x]))) + '</font> ['+sys.dbAuth(sys.name(sys.id(authlist[x])))+']</b>',channel)
                     }
                 }
             }
