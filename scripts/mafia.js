@@ -20,7 +20,6 @@ function Mafia(mafiachan) {
     this.version = "2016-11-06";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
-    var mwarns = script.mwarns;
     
     this.mafiaStats = require("mafiastats.js");
     this.mafiaChecker = require("mafiachecker.js");
@@ -42,6 +41,47 @@ function Mafia(mafiachan) {
     }
     if (!sys.getVal("unknownWarnIssueTime")) {
         sys.saveVal("unknownWarnIssueTime", new Date().getTime());
+    }
+    this.mafiaWarns = {};
+    if (sys.getFileContent(Config.dataDir + "mwarns.json") !== undefined) {
+        try {
+            this.mafiaWarns = JSON.parse(sys.getFileContent(Config.dataDir + "mwarns.json"));
+        } catch (e) {
+            mafiabot.sendAll("Error loading mafia warns: " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), sachannel);
+        }
+    }
+    // Get rid of this after update
+    function convertWarnsToJSON() { // https://puu.sh/samYS.png
+        if (sys.getFileContent(Config.dataDir + "mwarns.txt") !== undefined && sys.getFileContent(Config.dataDir + "mwarns.json") === undefined) {
+            var newWarns = {};
+            var mwarns = new MemoryHash(Config.dataDir + "mwarns.txt");
+            sys.appendToFile(Config.dataDir + "mwarns.json", ""); // cleanFile
+            
+            var now = new Date().getTime().toString();
+            for (var ip in mwarns.hash) {
+                var warning = mwarns.hash[ip],
+                    name = warning.split(":::")[0],
+                    shove = warning.split(":::")[1].split("|||")[0],
+                    info = JSON.parse(warning.split(":::")[1].split("|||")[1]);
+                newWarns[ip] = {
+                    names: [],
+                    shove: shove,
+                    warns: []
+                };
+                for (var i = 0; i < info.length; i++) {
+                    var warn = info[i], warns = newWarns[ip].warns;
+                    if (warns.indexOf(warn.name) !== -1) {
+                        warns.names.push(warn.name);
+                    }
+                    warn.issueTime = now;
+                    warns.push(warn);
+                }
+            }
+            this.mafiaWarns = newWarns;
+            this.saveWarns(newWarns);
+            
+            sys.deleteFile(Config.dataDir + "mwarns.txt");
+        }
     }
     this.unknownWarnIssueTime = +sys.getVal("unknownWarnIssueTime");
     this.eventsEnabled = true;
@@ -6100,6 +6140,12 @@ function Mafia(mafiachan) {
             msg(src, "A game is currently in progress. Use /slay to remove the player.");
         }
     };
+    this.saveWarns = function(obj) {
+        if (obj === undefined) {
+            obj = this.mafiaWarns;
+        }
+        sys.writeToFile(Config.dataDir + "mwarns.json", JSON.stringify(obj));
+    };
     this.warnUser = function (src, commandData, channel) { // /warn [target]:[rule]:[pts]:[comments]:[shove]
         var warner = typeof src == "string" ? src : sys.name(src);
         var cmd = commandData.split(":");
@@ -8655,7 +8701,7 @@ this.beforeChatMessage = function (src, message, channel) {
         this.themeManager.loadThemes();
         mafiachan = sys.channelId(MAFIA_CHANNEL);
         /*msgAll("Mafia was reloaded, please start a new game!");*/
-        mwarns = script.mwarns; // may not be defined after server restart
+        convertWarnsToJSON();
     };
     this.onHelp = function (src, commandData, channel) {
         if (commandData.toLowerCase() === "mafia") {
