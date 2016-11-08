@@ -69,12 +69,12 @@ function Mafia(mafiachan) {
                     warns: []
                 };
                 for (var i = 0; i < info.length; i++) {
-                    var warn = info[i], warns = newWarns[ip].warns;
-                    if (warns.names.indexOf(warn.name) !== -1) {
+                    var warn = info[i], warns = newWarns[ip];
+                    if (warns.names.indexOf(warn.name) === -1) {
                         warns.names.push(warn.name);
                     }
                     warn.issueTime = now;
-                    warns.push(warn);
+                    warns.warns.push(warn);
                 }
             }
             mafia.mafiaWarns = newWarns;
