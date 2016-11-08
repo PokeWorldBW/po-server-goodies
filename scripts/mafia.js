@@ -70,7 +70,7 @@ function Mafia(mafiachan) {
                 };
                 for (var i = 0; i < info.length; i++) {
                     var warn = info[i], warns = newWarns[ip].warns;
-                    if (warns.indexOf(warn.name) !== -1) {
+                    if (warns.names.indexOf(warn.name) !== -1) {
                         warns.names.push(warn.name);
                     }
                     warn.issueTime = now;
