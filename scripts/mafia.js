@@ -15,7 +15,6 @@ var MAFIA_CHANNEL = "Mafia";
 var is_command = require("utilities.js").is_command;
 var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
-var mwarns = new MemoryHash(Config.dataDir + "mwarns.txt");
 
 function Mafia(mafiachan) {
     this.version = "2016-11-06";
@@ -78,8 +77,8 @@ function Mafia(mafiachan) {
                     warns.push(warn);
                 }
             }
-            this.mafiaWarns = newWarns;
-            this.saveWarns(newWarns);
+            mafia.mafiaWarns = newWarns;
+            mafia.saveWarns(newWarns);
             
             sys.deleteFile(Config.dataDir + "mwarns.txt");
         }
