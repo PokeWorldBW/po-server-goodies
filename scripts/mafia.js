@@ -43,7 +43,7 @@ function Mafia(mafiachan) {
         sys.saveVal("unknownWarnIssueTime", new Date().getTime());
     }
     this.mafiaWarns = {};
-    if (sys.getFileContent(Config.dataDir + "mwarns.json") !== undefined) {
+    if (sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") !== -1) {
         try {
             this.mafiaWarns = JSON.parse(sys.getFileContent(Config.dataDir + "mwarns.json"));
         } catch (e) {
@@ -52,7 +52,7 @@ function Mafia(mafiachan) {
     }
     // Get rid of this after update
     function convertWarnsToJSON() { // https://puu.sh/samYS.png
-        if (sys.getFileContent(Config.dataDir + "mwarns.txt") !== undefined && sys.getFileContent(Config.dataDir + "mwarns.json") === undefined) {
+        if (sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") === -1 && sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") !== -1) {
             var newWarns = {};
             var mwarns = new MemoryHash(Config.dataDir + "mwarns.txt");
             sys.appendToFile(Config.dataDir + "mwarns.json", ""); // cleanFile
