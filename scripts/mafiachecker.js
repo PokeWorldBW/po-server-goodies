@@ -343,7 +343,7 @@ function mafiaChecker() {
                         if (checkType(action, ["object"], comm)) {
                             command = e;
                             commonMandatory = ["target", "common", "priority"];
-                            commonOptional = ["broadcast", "command", "limit", "msg", "failChance", "charges", "recharge", "initialrecharge", "rechargeMsg", "broadcastmsg", "inputmsg", "chargesmsg", "clearCharges", "addCharges", "suicideChance", "suicidemsg", "restrict", "cancel", "ignoreDistract", "compulsory", "noRepeat", "pierce", "pierceChance", "noFollow", "haxMultiplier", "maxHax", "userMustBeVisited", "targetMustBeVisited", "userMustVisit", "targetMustVisit", "bypass", "hide", "macro", "pinpoint", "pinpointFailMsg", "pinpointBroadcastFailMsg", "commandPriority"];
+                            commonOptional = ["broadcast", "command", "limit", "msg", "failChance", "charges", "recharge", "initialrecharge", "rechargeMsg", "broadcastmsg", "inputmsg", "chargesmsg", "clearCharges", "addCharges", "suicideChance", "suicidemsg", "restrict", "cancel", "ignoreDistract", "compulsory", "noRepeat", "pierce", "pierceChance", "noFollow", "haxMultiplier", "maxHax", "userMustBeVisited", "targetMustBeVisited", "userMustVisit", "targetMustVisit", "bypass", "hide", "macro", "pinpoint", "pinpointFailMsg", "pinpointBroadcastFailMsg", "isMulti"];
                             commandList = [];
                             if ("command" in action) {
                                 if (Array.isArray(action.command)) {
