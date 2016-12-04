@@ -902,11 +902,22 @@ function Mafia(mafiachan) {
         }
         if ("night" in obj.actions) {
             for (i in obj.actions.night) {
-                var priority = obj.actions.night[i].priority;
-                action = i;
-                var role = obj.role;
-                var hide = obj.actions.night[action].hide || false;
-                this.nightPriority.push({ 'priority': priority, 'action': action, 'role': role, 'hide': hide });
+                if(!obj.actions.night[i].isMulti) { // not multi, work as always has
+                    var priority = obj.actions.night[i].priority;
+                    action = i;
+                    var role = obj.role;
+                    var hide = obj.actions.night[action].hide || false;
+                    this.nightPriority.push({ 'priority': priority, 'action': action, 'role': role, 'hide': hide });
+                }
+                else if(obj.actions.night[i].isMulti) { // if multi, takes each command in "commands" separately. IMPORTANT: requires commands to be Object, not Array
+                    for(separateAction in obj.actions.night[i].command) { //grabs each command function as a separate action
+                        var priority = obj.actions.night[i].command[separateAction].priority;
+                        action = separateAction;
+                        var role = obj.role;
+                        var hide = obj.actions.night[action].hide || false;
+                        this.nightPriority.push({ 'priority': priority, 'action': action, 'role': role, 'hide': hide });
+                    }
+                }
             }
         }
         if ("standby" in obj.actions) {
