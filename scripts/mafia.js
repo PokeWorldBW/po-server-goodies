@@ -58,6 +58,7 @@ function Mafia(mafiachan) {
     // Get rid of this after update
     function convertWarnsToJSON() { // https://puu.sh/samYS.png
         if (sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") === -1 && sys.filesForDirectory(Config.dataDir).indexOf("mwarns.txt") !== -1) {
+            sys.sendAll("Converting mafia warn data...", mafiachan);
             var newWarns = {};
             var mwarns = new MemoryHash(Config.dataDir + "mwarns.txt");
             sys.appendToFile(Config.dataDir + "mwarns.json", ""); // cleanFile
