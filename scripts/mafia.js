@@ -27,6 +27,9 @@ function Mafia(mafiachan) {
     if (!this.nextEventTime) {
         this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;
     }
+    if (!this.defaultEventInterval) {
+        this.defaultEventInterval = 2 * 60 * 60 * 1000;
+    }
     if (sys.getVal("mafia_eventQueue") !== "") {
         this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
     } else {
@@ -42,6 +45,7 @@ function Mafia(mafiachan) {
     if (!sys.getVal("unknownWarnIssueTime")) {
         sys.saveVal("unknownWarnIssueTime", new Date().getTime());
     }
+    this.unknownWarnIssueTime = +sys.getVal("unknownWarnIssueTime");
     this.mafiaWarns = {};
     if (sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") !== -1) {
         try {
@@ -50,6 +54,7 @@ function Mafia(mafiachan) {
             mafiabot.sendAll("Error loading mafia warns: " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), sachannel);
         }
     }
+    /** TO-DO: make warnings and warn checking commands use JSON */
     // Get rid of this after update
     function convertWarnsToJSON() { // https://puu.sh/samYS.png
         if (sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") === -1 && sys.filesForDirectory(Config.dataDir).indexOf("mwarns.txt") !== -1) {
@@ -83,7 +88,6 @@ function Mafia(mafiachan) {
             sys.deleteFile(Config.dataDir + "mwarns.txt");
         }
     }
-    this.unknownWarnIssueTime = +sys.getVal("unknownWarnIssueTime");
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -1438,22 +1442,12 @@ function Mafia(mafiachan) {
             for (var c in data) {
                 if (data[c].hasOwnProperty("macro")) {
                     if (data[c].macro) {
-                        if (sys.os(player) === "android") {
-                            cmds.push("/" + c);
-                        }
-                        else {
-                            cmds.push(htmlLink("/" + c));
-                        }
+                        cmds.push(htmlLink("/" + c));
                     }
                     continue;
                 }
                 if (mafia.theme.macro) {
-                    if (sys.os(player) === "android") {
-                        cmds.push("/" + c);
-                    }
-                    else {
-                        cmds.push(htmlLink("/" + c));
-                    }
+                    cmds.push(htmlLink("/" + c));
                 }
             }
         }
@@ -1705,11 +1699,11 @@ function Mafia(mafiachan) {
             return;
         }
         if (forced) {
-            this.nextEventTime = new Date().getTime() + 2 * 60 * 60 * 1000;
+            this.nextEventTime = new Date().getTime() + this.defaultEventInterval;
         }
         else {
             while (this.nextEventTime < new Date().getTime()) {
-                this.nextEventTime += 2 * 60 * 60 * 1000;
+                this.nextEventTime += this.defaultEventInterval;
             }
         }
         if (!(this.eventQueue)) {
@@ -2278,7 +2272,7 @@ function Mafia(mafiachan) {
         for (var i = 0; i < channelUsers.length; i++) {
             var id = channelUsers[i];
             if (sys.isInChannel(id, mafiachan)) {
-                gamemsg(sys.name(id), sys.os(id) === "android" ? sendAndroid : sendPC, "±Current Roles", undefined, true);
+                gamemsg(sys.name(id), sendPC, "±Current Roles", undefined, true);
             }
         }
     };
@@ -2294,7 +2288,7 @@ function Mafia(mafiachan) {
         for (var i = 0; i < channelUsers.length; i++) {
             var id = channelUsers[i], name = sys.name(id);
             if (this.isInGame(name)) {
-                gamemsg(name, sys.os(id) === "android" ? listAndroid : listPC, "±Current Players", undefined, true);
+                gamemsg(name, listPC, "±Current Players", undefined, true);
             } else {
                 gamemsg(name, players.join(", ") + ".", "±Current Players");
             }
@@ -3541,7 +3535,7 @@ function Mafia(mafiachan) {
             commandData = decodeURIComponent(commandData); // HTML links for player names changes > to %3E; this changes %3E back to >
         }
         commandData = this.correctCase(commandData);
-        var target = commandData != noPlayer ? mafia.players[commandData] : null;
+        var target = (this.isInGame(commandData) ? mafia.players[commandData] : null);
 
         var commandObject = player.role.actions.standby[command];
         var commandName = command;
@@ -3556,7 +3550,7 @@ function Mafia(mafiachan) {
                     '~Self~': player.name,
                     '~Player~': player.name,
                     '~User~': player.name,
-                    '~Target~': (target.name),
+                    '~Target~': (typeof target == "string" ? target :target.name),
                     '~Role~': colorizeRole(player.role.role),
                     '~TargetRole~': (typeof target == "string" ? target :target.role.translation),
                     '~Side~': mafia.theme.trside(player.role.side),
@@ -7005,11 +6999,11 @@ function Mafia(mafiachan) {
                 targetName = commandData.substring(0, pos).replace(/ ,|, /g, ",").split(","),
                 message = commandData.substring(pos + 1, commandData.length);
             if (pos === -1 || message === "") {
-                gamemsg(sentName, "Please whisper an actual message. Syntax is /whisper [name]:[message]");
+                gamemsg(sys.name(src), "Please whisper an actual message. Syntax is /whisper [name]:[message]");
                 return;
             }
             if (targetName.length === 1) {
-                if (!this.isInGame(targetName[0])) {
+                if (!this.isInGame(this.correctCase(targetName[0]))) {
                     gamemsg(sys.name(src),"You can't whisper to someone who isn't in the game!");
                     return;
                 } else if (targetName[0].toLowerCase() === sys.name(src).toLowerCase()) {
@@ -7664,8 +7658,7 @@ function Mafia(mafiachan) {
             return;
         }
         if (command === "eventthemes") {
-            var themes = this.eventThemePool.map(function(theme) { return mafia.themeManager.themes[mafia.eventQueue[0]].name; }).sort();
-            mafiabot.sendMessage(src, "The themes that can be started as events are: " + readable(themes, "and") + "." , mafiachan);
+            this.showEventPool(src);
             return;
         }
         if (command === "featured") {
@@ -8185,11 +8178,19 @@ function Mafia(mafiachan) {
                         //this.showEvent; // this doesn't exist???
                     }
                     break;
+                case "interval":
+                    if (!isNaN(data[1]) && data[1] >= 1800) {
+                        this.defaultEventInterval = data[1] * 1000;
+                        mafiabot.sendHtmlMessage(src, "Event interval set to <b>" + getTimeString(data[1]) + "</b>")
+                    } else {
+                        msg(src, "Event interval must be at least 30 minutes.")
+                    }
+                    break;
                 default:
                     this.showEventQueue(src);
                     msg(src, "Use /event add:[theme] to add to queue, /event remove:[theme] to remove, /event jump:[theme] to add a theme to the front of the queue, /event trim:[theme] to cut the last, or /event shuffle to shuffle the queue.");
                     msg(src, "Edit the themes added to the event queue by default with /event addpool:[theme] and /event removepool:[theme].");
-                    msg(src, "Use /event forcestart to set the event time to now or /event time:[time from now in seconds] to set the time.");
+                    msg(src, "Use /event forcestart to set the event time to now, /event time:[time from now in seconds] to set the time, or /event interval:[time in seconds] to set the default time between events.");
             }
             return;
         }
