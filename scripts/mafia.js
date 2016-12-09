@@ -6286,28 +6286,30 @@ function Mafia(mafiachan) {
         }
         var info = this.getWarns(name);
         if (Object.keys(info).length > 1) {
-            var warns = [];
+            if (index === undefined) {
+                index = warns.length;
+            }
+            index--; // Command reads index starting at 1, but arrays start at 0
+            var removed, count = 0;
             for (var ip in info) {
                 if (ip === "shove") continue;
                 for (var i = 0; i < info[ip].length; i++) {
-                    warns.push(info[ip][i]);
+                    if (++count === index) {
+                        removed = this.mafiaWarns[ip].warns.splice(i, 1)[0];
+                        if (this.mafiaWarns[ip].warns.length === 0) {
+                            delete this.mafiaWarns[ip];
+                        } else {
+                            this.mafiaWarns[ip].shove = false;
+                        }
+                        this.saveWarns();
+                        break;
+                    }
                 }
             }
-            if (index > warns.length) {
-                mafiabot.sendMessage(sys.id(src), commandData[0] + " only has " + warns.length + " warns! Can't remove nonexistent warn #" + index + "!", channel);
+            if (!removed) {
+                mafiabot.sendMessage(sys.id(src), commandData[0] + " only has " + warns.length + " warns! Can't remove nonexistent warn #" + index + "!", channel);                    
             } else {
-                if (index === undefined) {
-                    index = warns.length;
-                }
-                index--; // Command reads index starting at 1, but arrays start at 0
-                var removed = warns.splice(index, 1)[0],
-                    info = "Rule: " + removed.rule + ", Comments: " + removed.comments;
-                if (warns.length === 0) {
-                    delete this.mafiaWarns[ip];
-                } else {
-                    this.mafiaWarns[ip].shove = false;
-                }
-                this.saveWarns();
+                var info = "Rule: " + removed.rule + ", Comments: " + removed.comments;
                 mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
                 if (channel !== sachannel) {
                     mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
@@ -6354,7 +6356,7 @@ function Mafia(mafiachan) {
         var info = this.getWarns(commandData);
         if (Object.keys(info).length > 1) { // will always have one key "shove"
                 var now = new Date().getTime(),
-                    warnCount = 1;
+                    count = 1;
                     table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='9'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>IP</th><th>Name</th><th>By</th><th>Rule</th><th>Points</th><th>Status</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var ip in info) {
                     if (ip === "shove") continue;
@@ -6362,7 +6364,7 @@ function Mafia(mafiachan) {
                         var warning = info[ip][i],
                             issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             relevance = now > warning.expirationTime ? "Expired" : "Active",
-                            row = [warnCount++, ip, warning.name, warning.warner, warning.rule, warning.points, relevance, issued, warning.comments].map(function(e) {
+                            row = [count++, ip, warning.name, warning.warner, warning.rule, warning.points, relevance, issued, warning.comments].map(function(e) {
                                 return "<td><center>" + e + "</center></td>";
                             });
                         table.push("<tr>" + row.join("") + "</tr>");
