@@ -6263,17 +6263,6 @@ function Mafia(mafiachan) {
     this.getWarns = function(name) {
         name = name.toLowerCase();
         var ip, ret = { shove: false };
-        if (sys.id(name) !== undefined) {
-            ip = sys.ip(sys.id(name));
-        } else {
-            ip = sys.dbIp(name);
-        }
-        if (this.mafiaWarns.hasOwnProperty(ip) && this.mafiaWarns[ip].warns.length > 0) {
-            ret[ip] = this.mafiaWarns[ip].warns;
-            if (this.mafiaWarns[ip].shove) {
-                ret.shove = true;
-            }
-        }
         for (var k in this.mafiaWarns) {
             if (this.mafiaWarns[k].names.indexOf(name) !== -1 && this.mafiaWarns[k].warns.length > 0) {
                 ret[k] = this.mafiaWarns[k].warns;
