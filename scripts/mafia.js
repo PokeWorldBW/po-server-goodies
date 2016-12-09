@@ -6275,7 +6275,7 @@ function Mafia(mafiachan) {
     };
     this.removeWarn = function (src, commandData, channel) {
         commandData = commandData.split(":");
-        var name = commandData[0], index = commandData[1], ip;
+        var name = commandData[0], index = +commandData[1];
         if (sys.dbIp(name) === undefined) {
             mafiabot.sendMessage(sys.id(src), "That user does not exist!", channel);
             return;
@@ -6307,9 +6307,9 @@ function Mafia(mafiachan) {
                 mafiabot.sendMessage(sys.id(src), commandData[0] + " only has " + count + " warns! Can't remove nonexistent warn #" + index + "!", channel);                    
             } else {
                 var info = "Rule: " + removed.rule + ", Comments: " + removed.comments;
-                mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
+                mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index ? index : count) + " [" + info + "] from " + commandData[0] + ".", sachannel);
                 if (channel !== sachannel) {
-                    mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", channel);
+                    mafiabot.sendMessage(sys.id(src), "You removed warn #" + (index ? index : count) + " [" + info + "] from " + commandData[0] + ".", channel);
                 }
             }
         } else {
