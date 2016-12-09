@@ -66,6 +66,7 @@ function Mafia(mafiachan) {
             sys.appendToFile(Config.dataDir + "mwarns.json", ""); // cleanFile
             
             for (var ip in mwarns.hash) {
+                sys.sendAll(ip, staffchannel);
                 var warning = mwarns.hash[ip],
                     name = warning.split(":::")[0],
                     shove = warning.split(":::")[1].split("|||")[0],
