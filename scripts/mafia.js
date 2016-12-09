@@ -6269,7 +6269,7 @@ function Mafia(mafiachan) {
             ip = sys.dbIp(name);
         }
         if (ip === undefined) {
-            mafiabot.sendMessage(sys.id(src), "The user \"" + commandData[0] + "\" doesn't exist!", channel);
+            mafiabot.sendMessage(sys.id(src), "That user doesn't exist!", channel);
             return;
         }
         if ((isNaN(index) || index < 1) && index !== undefined) {
@@ -6356,6 +6356,10 @@ function Mafia(mafiachan) {
     this.checkWarns = function (src, commandData, channel) {
         //var warner = typeof src == "string" ? src : sys.name(src);
         //this.clearOldWarnings(name);
+        if (ip === undefined) {
+            mafiabot.sendMessage(sys.id(src), "That user doesn't exist!", channel);
+            return;
+        }
         var info = this.getWarns(commandData);
         if (Object.keys(info).length > 1) { // will always have one key "shove"
                 var now = new Date().getTime(),
