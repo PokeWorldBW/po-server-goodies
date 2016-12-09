@@ -6268,6 +6268,10 @@ function Mafia(mafiachan) {
         } else {
             ip = sys.dbIp(name);
         }
+        if (ip === undefined) {
+            mafiabot.sendMessage(sys.id(src), "The user \"" + commandData[0] + "\" doesn't exist!", channel);
+            return;
+        }
         if ((isNaN(index) || index < 1) && index !== undefined) {
             mafiabot.sendMessage(sys.id(src), "Please enter a valid warn index number!", channel);
             return;
@@ -6376,7 +6380,7 @@ function Mafia(mafiachan) {
                 table.push("</table>");
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
         } else {
-            mafiabot.sendMessage(sys.id(src), commandData + " has no standing rule violations.", channel);
+            mafiabot.sendMessage(sys.id(src), commandData + " has no rule violations.", channel);
         }
     };
     this.myWarns = function(src, channel) {
