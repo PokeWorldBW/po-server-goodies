@@ -6154,7 +6154,7 @@ function Mafia(mafiachan) {
             mafiabot.sendHtmlMessage(sys.id(src), html_escape("Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.") + " Type <a href=\"po:send//warnhelp\"/>/warnhelp</a> for more info.", channel);
             return;
         } else if (sys.dbIp(name) === undefined) {
-            gamemsg(src, "That user does not exist!", false, channel);
+            mafiabot.sendMessage(sys.id(src), "That user does not exist!", channel);
             return;
         } else if (rule === undefined) {
             gamemsg(src,"Please specify a rule that has been violated.", false, channel);
@@ -6269,7 +6269,7 @@ function Mafia(mafiachan) {
             ip = sys.dbIp(name);
         }
         if (ip === undefined) {
-            mafiabot.sendMessage(sys.id(src), "That user doesn't exist!", channel);
+            mafiabot.sendMessage(sys.id(src), "That user does not exist!", channel);
             return;
         }
         if ((isNaN(index) || index < 1) && index !== undefined) {
@@ -6357,7 +6357,7 @@ function Mafia(mafiachan) {
         //var warner = typeof src == "string" ? src : sys.name(src);
         //this.clearOldWarnings(name);
         if (ip === undefined) {
-            mafiabot.sendMessage(sys.id(src), "That user doesn't exist!", channel);
+            mafiabot.sendMessage(sys.id(src), "That user does not exist!", channel);
             return;
         }
         var info = this.getWarns(commandData);
