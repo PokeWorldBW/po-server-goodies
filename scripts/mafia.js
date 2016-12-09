@@ -6306,7 +6306,7 @@ function Mafia(mafiachan) {
                 }
             }
             if (!removed) {
-                mafiabot.sendMessage(sys.id(src), commandData[0] + " only has " + warns.length + " warns! Can't remove nonexistent warn #" + index + "!", channel);                    
+                mafiabot.sendMessage(sys.id(src), commandData[0] + " only has " + count + " warns! Can't remove nonexistent warn #" + index + "!", channel);                    
             } else {
                 var info = "Rule: " + removed.rule + ", Comments: " + removed.comments;
                 mafiabot.sendAll(nonFlashing(src) + " removed warn #" + (index + 1) + " [" + info + "] from " + commandData[0] + ".", sachannel);
