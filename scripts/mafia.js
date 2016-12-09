@@ -6356,7 +6356,7 @@ function Mafia(mafiachan) {
     this.checkWarns = function (src, commandData, channel) {
         //var warner = typeof src == "string" ? src : sys.name(src);
         //this.clearOldWarnings(name);
-        if (ip === undefined) {
+        if (sys.dbIp(commandData) === undefined) {
             mafiabot.sendMessage(sys.id(src), "That user does not exist!", channel);
             return;
         }
