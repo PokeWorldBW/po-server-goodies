@@ -6368,9 +6368,9 @@ function Mafia(mafiachan) {
                     }
                 }
                 if (info.shove) {
-                    table.push("<tr><td colspan='6'><center>" + commandData + " <b>will be shoved</b> if they attempt to join a game.</center></td></tr>");
+                    table.push("<tr><td colspan='8'><center>" + commandData + " <b>will be shoved</b> if they attempt to join a game.</center></td></tr>");
                 } else {
-                    table.push("<tr><td colspan='6'><center>" + commandData + " will <b>not</b> be shoved if they attempt to join a game.</center></td></tr>");
+                    table.push("<tr><td colspan='8'><center>" + commandData + " will <b>not</b> be shoved if they attempt to join a game.</center></td></tr>");
                 }
                 table.push("</table>");
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
@@ -6387,9 +6387,9 @@ function Mafia(mafiachan) {
             var now = new Date().getTime(),
                 table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
             for (var ip in info) {
-                if (this.mafiaWarns[ip].shove) {
-                    this.mafiaWarns[ip].shove = false;
-                    this.saveWarns();
+                if (mafia.mafiaWarns[ip].shove) {
+                    mafia.mafiaWarns[ip].shove = false;
+                    mafia.saveWarns();
                 }
                 for (var i = 0; i < info[ip].length; i++) {
                     var warning = info[ip][i];
