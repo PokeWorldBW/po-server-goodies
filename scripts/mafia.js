@@ -56,9 +56,8 @@ function Mafia(mafiachan) {
             mafiabot.sendAll("Error loading mafia warns: " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), sachannel);
         }
     }
-    /** TO-DO: make warnings and warn checking commands use JSON */
     // Get rid of this after update
-    function convertWarnsToJSON() { // https://puu.sh/samYS.png
+    function convertWarnsToJSON() {
         if (sys.filesForDirectory(Config.dataDir).indexOf("mwarns.json") === -1 && sys.filesForDirectory(Config.dataDir).indexOf("mwarns.txt") !== -1) {
             sys.sendAll("Converting mafia warn data...", mafiachan);
             var newWarns = {};
