@@ -6424,7 +6424,7 @@ function Mafia(mafiachan) {
         } else {
             var names = [];
             for (var ip in this.mafiaWarns) {
-                names = names.concat(this.mafiaWarns[ip].names),
+                names = names.concat(this.mafiaWarns[ip].names);
             }
             names = removeDuplicates(names);
             for (var i = 0; i < names.length; i++) {
