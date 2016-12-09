@@ -6289,7 +6289,6 @@ function Mafia(mafiachan) {
             if (index === undefined) {
                 index = warns.length;
             }
-            index--; // Command reads index starting at 1, but arrays start at 0
             var removed, count = 0;
             for (var ip in info) {
                 if (ip === "shove") continue;
