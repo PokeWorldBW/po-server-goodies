@@ -6357,8 +6357,8 @@ function Mafia(mafiachan) {
                 var now = new Date().getTime(),
                     table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Status</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var ip in info) {
-                    for (var i = 0; i < info[ip].warns.length; i++) {
-                        var warning = info[ip].warns[i],
+                    for (var i = 0; i < info[ip].length; i++) {
+                        var warning = info[ip][i],
                             issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             relevance = now > warning.expirationTime ? "Expired" : "Active",
                             row = [i + 1, warning.name, warning.warner, warning.rule, relevance, issued, warning.comments].map(function(e) {
@@ -6384,14 +6384,17 @@ function Mafia(mafiachan) {
         //this.clearOldWarnings(name);
         var info = this.getWarns(name);
         if (Object.keys(info).length > 1) {
-            var now = new Date().getTime(),
+            var shove = false,
+                now = new Date().getTime(),
                 table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
             for (var ip in info) {
-                if (info[ip].shove) {
-                    info[ip].shove = false;
+                if (this.mafiaWarns[ip].shove) {
+                    shove = true;
+                    this.mafiaWarns[ip].shove = false;
+                    this.saveWarns();
                 }
-                for (var i = 0; i < info[ip].warns.length; i++) {
-                    var warning = info[ip].warns[i];
+                for (var i = 0; i < info[ip].length; i++) {
+                    var warning = info[ip][i];
                     if (now <= warning.expirationTime) {
                         var issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             row = [warning.warner, warning.rule, issued, warning.comments].map(function(e) {
@@ -6404,11 +6407,8 @@ function Mafia(mafiachan) {
             table.push("</table>");
             if (table.length > 2) {
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
-                if (info.shove) {
-                    this.saveWarns();
-                    if (this.state == "entry") {
-                        mafiabot.sendHtmlMessage(sys.id(src), "Now that you have checked your warns, you can <a href=\"po:send//join\">/join</a> the Mafia game!", channel, undefined, undefined, true);
-                    }
+                if (shove && this.state == "entry") {
+                    mafiabot.sendHtmlMessage(sys.id(src), "Now that you have checked your warns, you can <a href=\"po:send//join\">/join</a> the Mafia game!", channel, undefined, undefined, true);
                 }
             } else {
                 mafiabot.sendMessage(sys.id(src), "You have no standing rule violations.", channel);
