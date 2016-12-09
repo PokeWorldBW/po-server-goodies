@@ -6364,7 +6364,7 @@ function Mafia(mafiachan) {
                 for (var ip in info) {
                     for (var i = 0; i < info[ip].warns.length; i++) {
                         var warning = info[ip].warns[i],
-                            issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime) / 1000)),
+                            issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             relevance = now > warning.expirationTime ? "Expired" : "Active",
                             row = [i + 1, warning.name, warning.warner, warning.rule, relevance, issued, warning.comments].map(function(e) {
                                 return "<td><center>" + e + "</center></td>";
@@ -6404,7 +6404,7 @@ function Mafia(mafiachan) {
                 for (var i = 0; i < info[ip].warns.length; i++) {
                     var warning = info[ip].warns[i];
                     if (now <= warning.expirationTime) {
-                        var issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime) / 1000)),
+                        var issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             row = [warning.warner, warning.rule, issued, warning.comments].map(function(e) {
                                return "<td><center>" + e + "</center></td>"; 
                             });
@@ -6429,8 +6429,8 @@ function Mafia(mafiachan) {
         }
     };
     this.showAllWarns = function (src, commandData, channel) {
-        var warnsPerRow = 10;
-        var table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='" + warnsPerRow + "'>Mafia Warns</th></tr>"];
+        var namesPerRow = 10;
+        var table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='" + namesPerRow + "'>Mafia Warns</th></tr>"];
         if (Object.keys(this.mafiaWarns).length === 0) {
             mafiabot.sendMessage(src, "There are no active warns.", channel);
         } else {
@@ -6440,11 +6440,11 @@ function Mafia(mafiachan) {
             }
             names = removeDuplicates(names);
             for (var i = 0; i < names.length; i++) {
-                if (i % warnsPerRow === 0) {
+                if (i % namesPerRow === 0) {
                     table.push("<tr>");
                 }
                 table.push("<td><center><a href=\"po:send//warnlog " + name + "\">" + name + "</a></center></td>");
-                if (i % warnsPerRow === warnsPerRow - 1) {
+                if (i % namesPerRow === namesPerRow - 1) {
                     table.push("</tr>");
                 }
             }
