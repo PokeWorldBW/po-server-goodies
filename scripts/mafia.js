@@ -6432,7 +6432,7 @@ function Mafia(mafiachan) {
                 if (i % namesPerRow === 0) {
                     table.push("<tr>");
                 }
-                table.push("<td><center><a href=\"po:send//warnlog " + name + "\">" + name + "</a></center></td>");
+                table.push("<td><center><a href=\"po:send//warnlog " + names[i] + "\">" + names[i] + "</a></center></td>");
                 if (i % namesPerRow === namesPerRow - 1) {
                     table.push("</tr>");
                 }
