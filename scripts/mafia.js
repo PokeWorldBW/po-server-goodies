@@ -6352,13 +6352,8 @@ function Mafia(mafiachan) {
     this.checkWarns = function (src, commandData, channel) {
         //var warner = typeof src == "string" ? src : sys.name(src);
         //this.clearOldWarnings(name);
-        /*ip: {
-            names: [""],
-            shove: false,
-            warns: [{ name: "", warner: "", rule: "", points: 0, comments: "", expirationTime: 0, issueTime: 0}]
-        }*/
         var info = this.getWarns(commandData);
-        if (Object.keys(warns).length > 1) { // will always have one key "shove"
+        if (Object.keys(info).length > 1) { // will always have one key "shove"
                 var now = new Date().getTime(),
                     table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='6'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>Name</th><th>By</th><th>Rule</th><th>Status</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var ip in info) {
@@ -6387,14 +6382,8 @@ function Mafia(mafiachan) {
         var name = typeof src == "string" ? src : sys.name(src);
         name = name.toLowerCase();
         //this.clearOldWarnings(name);
-        var ip;
-        if (sys.id(name) !== undefined) {
-            ip = sys.ip(sys.id(name));
-        } else {
-            ip = sys.dbIp(name);
-        }
-        var info = this.getWarns(commandData);
-        if (Object.keys(warns).length > 1) {
+        var info = this.getWarns(name);
+        if (Object.keys(info).length > 1) {
             var now = new Date().getTime(),
                 table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
             for (var ip in info) {
