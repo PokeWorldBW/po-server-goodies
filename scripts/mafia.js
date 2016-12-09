@@ -6581,8 +6581,8 @@ function Mafia(mafiachan) {
             gamemsg(user, "You need to register to play mafia here! Click on the 'Register' button below and follow the instructions!");
             return false;
         }
-        var warnings = this.getWarns(sys.name(src));
-        if (warnings.length > 1 && warnings.shove) {
+        var warnings = this.getWarns(user);
+        if (Object.keys(warnings).length > 1 && warnings.shove) {
             gamemsg(user, "You have been warned for breaking a rule! You must type <a href=\"po:send//mywarns\">/mywarns</a> to check your warnings before you join.", undefined, undefined, true)
             return false;
         }
