@@ -6357,6 +6357,7 @@ function Mafia(mafiachan) {
                 var now = new Date().getTime(),
                     table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='9'>Mafia Warns for " + commandData + "</th></tr><tr><th>Index</th><th>IP</th><th>Name</th><th>By</th><th>Rule</th><th>Points</th><th>Status</th><th>Issued Ago</th><th>Comments</th></tr>"];
                 for (var ip in info) {
+                    if (ip === "shove") continue;
                     for (var i = 0; i < info[ip].length; i++) {
                         var warning = info[ip][i],
                             issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
@@ -6387,9 +6388,7 @@ function Mafia(mafiachan) {
             var now = new Date().getTime(),
                 table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
             for (var ip in info) {
-                sys.sendAll(ip, staffchannel);
-                sys.sendAll(Object.keys(info), staffchannel);
-                sys.sendAll(Object.keys(info[ip]), staffchannel);
+                if (ip === "shove") continue;
                 if (mafia.mafiaWarns[ip].shove) {
                     mafia.mafiaWarns[ip].shove = false;
                     mafia.saveWarns();
