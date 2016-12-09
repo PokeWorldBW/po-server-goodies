@@ -6275,12 +6275,12 @@ function Mafia(mafiachan) {
     };
     this.removeWarn = function (src, commandData, channel) {
         commandData = commandData.split(":");
-        var name = commandData[0], index = +commandData[1];
+        var name = commandData[0], index = commandData[1] ? +commandData[1] : "last";
         if (sys.dbIp(name) === undefined) {
             mafiabot.sendMessage(sys.id(src), "That user does not exist!", channel);
             return;
         }
-        if ((isNaN(index) || index < 1) && index !== undefined) {
+        if ((isNaN(index) || index < 1) && index !== "last") {
             mafiabot.sendMessage(sys.id(src), "Please enter a valid warn index number!", channel);
             return;
         }
@@ -6291,7 +6291,7 @@ function Mafia(mafiachan) {
             for (var ip in info) {
                 if (ip === "shove") continue;
                 for (var i = 0; i < info[ip].length; i++) {
-                    if (++count === index || (index === undefined && ip === last && i === l)) {
+                    if (++count === index || (index === "last" && ip === last && i === l)) {
                         removed = this.mafiaWarns[ip].warns.splice(i, 1)[0];
                         if (this.mafiaWarns[ip].warns.length === 0) {
                             delete this.mafiaWarns[ip];
