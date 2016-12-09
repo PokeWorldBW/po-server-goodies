@@ -6286,14 +6286,12 @@ function Mafia(mafiachan) {
         }
         var info = this.getWarns(name);
         if (Object.keys(info).length > 1) {
-            if (index === undefined) {
-                index = warns.length;
-            }
             var removed, count = 0;
+            var last = Object.keys(info).pop(), l = info[last].length - 1;
             for (var ip in info) {
                 if (ip === "shove") continue;
                 for (var i = 0; i < info[ip].length; i++) {
-                    if (++count === index) {
+                    if (++count === index || (index === undefined && ip === last && i === l)) {
                         removed = this.mafiaWarns[ip].warns.splice(i, 1)[0];
                         if (this.mafiaWarns[ip].warns.length === 0) {
                             delete this.mafiaWarns[ip];
