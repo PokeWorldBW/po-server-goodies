@@ -66,7 +66,6 @@ function Mafia(mafiachan) {
             sys.appendToFile(Config.dataDir + "mwarns.json", ""); // cleanFile
             
             for (var ip in mwarns.hash) {
-                sys.sendAll(ip, staffchannel);
                 var warning = mwarns.hash[ip],
                     name = warning.split(":::")[0],
                     shove = warning.split(":::")[1].split("|||")[0],
@@ -81,7 +80,7 @@ function Mafia(mafiachan) {
                     if (warns.names.indexOf(warn.name) === -1) {
                         warns.names.push(warn.name);
                     }
-                    if (!warn.hasOwnProperty(issueTime)) {
+                    if (!warn.hasOwnProperty("issueTime")) {
                         warn.issueTime = sys.getVal("unknownWarnIssueTime");
                     }
                     warns.warns.push(warn);
