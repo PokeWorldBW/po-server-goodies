@@ -6336,7 +6336,7 @@ function Mafia(mafiachan) {
         if (this.mafiaWarns.hasOwnProperty(ip) && this.mafiaWarns[ip].warns.length > 0) {
             ret[ip] = this.mafiaWarns[ip].warns;
             if (this.mafiaWarns[ip].shove) {
-                shove = true;
+                ret.shove = true;
             }
         }
         for (var k in this.mafiaWarns) {
@@ -6344,7 +6344,7 @@ function Mafia(mafiachan) {
                 ret[k] = this.mafiaWarns[k].warns;
             }
             if (this.mafiaWarns[k].shove) {
-                shove = true;
+                ret.shove = true;
             }
         }
         return ret;
@@ -6384,13 +6384,11 @@ function Mafia(mafiachan) {
         //this.clearOldWarnings(name);
         var info = this.getWarns(name);
         if (Object.keys(info).length > 1) {
-            var shove = false,
-                now = new Date().getTime(),
+            var now = new Date().getTime(),
                 table = ["<table border='1' cellpadding='4' cellspacing='0'><tr><th colspan='4'>Your Mafia Warns</th></tr><tr><th>Warner</th><th>Rule</th><th>Issued Ago</th><th>Comments</th></tr>"];
             for (var ip in info) {
-                if (this.mafiaWarns[ip].shove) {
-                    shove = true;
-                    this.mafiaWarns[ip].shove = false;
+                if (mafia.mafiaWarns[ip].shove) {
+                    mafia.mafiaWarns[ip].shove = false;
                     this.saveWarns();
                 }
                 for (var i = 0; i < info[ip].length; i++) {
@@ -6407,7 +6405,7 @@ function Mafia(mafiachan) {
             table.push("</table>");
             if (table.length > 2) {
                 sys.sendHtmlMessage(sys.id(src), table.join(""), channel);
-                if (shove && this.state == "entry") {
+                if (info.shove && this.state == "entry") {
                     mafiabot.sendHtmlMessage(sys.id(src), "Now that you have checked your warns, you can <a href=\"po:send//join\">/join</a> the Mafia game!", channel, undefined, undefined, true);
                 }
             } else {
