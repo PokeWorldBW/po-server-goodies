@@ -199,8 +199,8 @@ delete sys.maxAuth;
 sys.maxAuth = function(ip) {
     var max = 0, aliases = sys.aliases(ip);
     for (var i = 0; i < aliases.length; i++) {
-        if (sys.dbAuth(aliases[0]) > max) {
-            max = sys.dbAuth(aliases[0]);
+        if (sys.dbAuth(aliases[i]) > max) {
+            max = sys.dbAuth(aliases[i]);
         }
     }
     return max;
