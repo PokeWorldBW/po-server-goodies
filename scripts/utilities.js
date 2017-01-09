@@ -223,8 +223,7 @@ exports = {
         input = input.toLowerCase();
         if (input.indexOf("alola") > -1) {
             input = input.replace(/(-|\s){0,2}alola(n|-|\s){0,2}/i, ""); //Accounts for "Alola" and "Alolan" seperated by a space or hyphen at the beginning or end
-            input = input + "-Alolan";
-            return input;
+            return "Alolan " + input;
         }        
         switch (input) {
             case "deoxys-a": case "deoxys a": case "deoxys attack": 
@@ -278,29 +277,43 @@ exports = {
             case "aegislash b": case "aegislash-b": case "aegislash blade":
                 input = "Aegislash-Blade"; break;
             case "pumpkaboo-s": case "pumpkaboo s": case "pumpkaboo small":
-                commandData = "Pumpkaboo-Small"; break;
+                input = "Pumpkaboo-Small"; break;
             case "pumpkaboo-l": case "pumpkaboo l": case "pumpkaboo large":
-                commandData = "Pumpkaboo-Large"; break;
+                input = "Pumpkaboo-Large"; break;
             case "pumpkaboo-xl": case "pumpkaboo xl": case "pumpkaboo super":
-                commandData = "Pumpkaboo-Super"; break;
+                input = "Pumpkaboo-Super"; break;
             case "gourgeist-s": case "gourgeist s": case "gourgeist small":
-                commandData = "Gourgeist-Small"; break;
+                input = "Gourgeist-Small"; break;
             case "gourgeist-l": case "gourgeist l": case "gourgeist large":
-                commandData = "Gourgeist-Large"; break;
+                input = "Gourgeist-Large"; break;
             case "gourgeist-xl": case "gourgeist xl": case "gourgeist super":
-                commandData = "Gourgeist-Super"; break;
+                input = "Gourgeist-Super"; break;
+            case "burmy-g": case "burmy g": case "burmy sandy":
+                input = "Burmy-Sandy"; break;
+            case "burmy-s": case "burmy s": case "burmy trash":
+                input = "Burmy-Trash"; break;
             case "wormadam-g": case "wormadam g": case "wormadam sandy":
-                commandData = "Wormadam-Sandy"; break;
+                input = "Wormadam-Sandy"; break;
             case "wormadam-s": case "wormadam s": case "wormadam trash":
-                commandData = "Wormadam-Trash"; break;
+                input = "Wormadam-Trash"; break;
             case "floette ef": case "floette-ef": case "floette eternal":
-                commandData = "Floette-Eternal"; break;
+                input = "Floette-Eternal"; break;
             case "type null": case "typenull": case "type:null":
                 input = "Type: Null"; break; //will literally break without fix below
             case "tapukoko":
                 input = "Tapu Koko"; break;
+            case "tapulele":
+                input = "Tapu Lele"; break;
+            case "tapubulu":
+                input = "Tapu Bulu"; break;
+            case "tapufini":
+                input = "Tapu Fini"; break;
             case "jangmoo": case "jangmo o":
                 input = "Jangmo-o"; break;
+            case "hakamoo": case "hakamo o":
+                input = "Hakamo-o"; break;
+            case "kommoo": case "kommo o":
+                input = "Kommo-o"; break;
             case "oricorio baile": case "oricorio-baile":
                 input = "Oricorio"; break;
             case "oricorio pom pom": case "oricorio-pom-pom":
@@ -309,16 +322,22 @@ exports = {
                 input = "Oricorio-Pa'u"; break;
             case "oricorio sensu":
                 input = "Oricorio-Sensu"; break;
+            case "midday lycanroc": case "midday-lycanroc": case "lycanroc-midday": case "lycanroc midday":
+                input = "Lycanroc"; break;
+            case "midnight lycanroc": case "midnight-lycanroc": case "lycanroc midnight":
+                input = "Lycanroc-Midnight"; break;
             case "wishiwashi solo": case "wishiwashi-solo":
                 input = "Wishiwashi"; break;
             case "wishiwashi school":
                 input = "Wishiwashi-School"; break;
-            case "zygarde complete":
-                input = "Zygarde-Complete"; break;
+            case "ash-greninja":
+                input = "Ash Greninja"; break;
             case "zygarde 10%": case "zygarde-10": case "zygarde 10":
                 input = "Zygarde-10%"; break;
-            case "zygarde 50%": case "zygarde 50":
+            case "zygarde-50%": case "zygarde 50%": case "zygarde-50": case "zygarde 50":
                 input = "Zygarde"; break;
+            case "zygarde 100%": case "zygarde-100": case "zygarde-100%": case "zygarde 100": case "zygarde complete":
+                input = "Zygarde-Complete"; break;
             default: input = input.replace(/flabebe/i, "Flabébé");
         }
         return input;

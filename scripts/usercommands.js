@@ -108,7 +108,7 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
         }
         return;
     }
-    /*if ((command === "me" || command === "rainbow") && !SESSION.channels(channel).muteall) {
+    /*if ((command === "me" || command === "rainbow" || command === "fullrainbow") && !SESSION.channels(channel).muteall) {
         if (SESSION.channels(channel).meoff) {
             normalbot.sendMessage(src, "/me was turned off.", channel);
             return;
@@ -150,7 +150,7 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
         if (command === "me") {
             var colour = script.getColor(src);
             sendChanHtmlAll("<font color='" + colour + "'><timestamp/> *** <b>" + utilities.html_escape(sys.name(src)) + "</b> " + messagetosend + "</font>", channel);
-        } else if (command === "rainbow") {
+        } else if (command === "rainbow" || command === "fullrainbow") {
             if (script.isOfficialChan(channel) && sys.auth(src) < 1) {
                 return;
             }
@@ -177,7 +177,13 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
             if (auth) {
                 toSend.push("</i>");
             }
-            toSend.push(messagetosend);
+            if (command === "fullrainbow") {    
+                for (i = 0; i < messagetosend.length; ++i) {
+                    toSend.push("<span style='color:" + randColour() + "'>" + utilities.html_escape(messagetosend[i]) + "</span>");
+                }
+            } else {
+                toSend.push(messagetosend);                
+            }
             sendChanHtmlAll(toSend.join(""), channel);
         }
         script.afterChatMessage(src, "/" + command + " " + commandData, channel);
@@ -367,8 +373,8 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
             normalbot.sendMessage(src, "You cannot do that here!", channel);
             return;
         }
-        var r = sys.rand(1, 722);
-        var i = sys.rand(1, 244);
+        var r = sys.rand(1, 803);
+        var i = sys.rand(1, 379);
         var n = sys.rand(0, 25);
         var Message = ["<font color='#3daa68'> <timestamp/> <b>±"+command[0].toUpperCase()+command.slice(1).toLowerCase()+":</b></font> "];
         Message.push(utilities.html_escape(sys.name(src)) + " obtained ");
@@ -1132,8 +1138,8 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
             return;
         }
         commandData = utilities.inputToPokemon(commandData).split(":");
-        if (commandData == "Type") {
-            commandData = "Type: Null"; //easy fix for now. inb4 more pokemon with colons in their name
+        if (script.cmp(commandData[0], "Type")) {
+            commandData[0] = "Type: Null"; //easy fix for now. inb4 more pokemon with colons in their name
         }
         var forme = !isNaN(commandData[1]) ? commandData[1] : 0;
         commandData = commandData[0];
@@ -1141,7 +1147,7 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
         if (isNaN(commandData)) {
             pokeId = sys.pokeNum(commandData);
         } else {
-            if (commandData < 1 || commandData > 721) {
+            if (commandData < 1 || commandData > 802) {
                 normalbot.sendMessage(src, commandData + " is not a valid Pokédex number!", channel);
                 return;
             }
@@ -1161,7 +1167,7 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
         var levels = [5, 50, 100];
         sys.sendHtmlMessage(src, "", channel);
         sys.sendHtmlMessage(src, "<b><font size = 4># " + pokeId % 65536 + " " + sys.pokemon(pokeId) + "</font></b>", channel);
-        sys.sendHtmlMessage(src, "<img src='pokemon:num=" + pokeId + "&gen=6'><img src='pokemon:num=" + pokeId + "&shiny=true&gen=6'>", channel);
+        sys.sendHtmlMessage(src, "<img src='pokemon:num=" + pokeId + "&gen=7'><img src='pokemon:num=" + pokeId + "&shiny=true&gen=7'>", channel);
         sys.sendHtmlMessage(src, "<b>Type:</b> " + type1 + (type2 === "???" ? "" : "/" + type2), channel);
         sys.sendHtmlMessage(src, "<b>Abilities:</b> " + ability1 + (sys.pokemon(pokeId).substr(0, 5) === "Mega " ? "" : (ability2 === "(No Ability)" ? "" : ", " + ability2) + (ability3 === "(No Ability)" ? "" : ", " + ability3 + " (Hidden Ability)")), channel);
         sys.sendHtmlMessage(src, "<b>Height:</b> " + pokedex.getHeight(pokeId) + " m", channel);
@@ -1339,11 +1345,15 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
             return;
         }
         commandData = commandData.split(":");
-        if (commandData.length !== 2) {
+        if (commandData.length < 2 || commandData.length > 3) {
             normalbot.sendMessage(src, "Incorrect syntax! Format for this command is: /canlearn Pokemon:move", channel);
             return;
         }
-        var pokeId = sys.pokeNum(commandData[0]);
+        if (commandData.length === 3) { // type: null
+            commandData[0] += commandData[1];
+            commandData[1] = commandData[2];
+        }
+        var pokeId = sys.pokeNum(utilities.inputToPokemon(commandData[0]));
         var moveId = sys.moveNum(commandData[1]);
         if (!pokeId) {
             if (!moveId) {
@@ -1406,6 +1416,14 @@ exports.handleCommand = function (src, command, commandData, tar, channel) {
             team = commandData[1];
         }
         if (tier) {
+            var ccbftiers = ["Challenge Cup", "CC 1v1", "Wifi CC 1v1", "Inverted Challenge Cup", "Hackmons Challenge Cup", "Hackmons CC 1v1", "Hackmons Wifi CC 1v1", "Hackmons Inverted CC", "Battle Factory", "Battle Factory 6v6"];
+            for (var f in ccbftiers) {
+                if (ccbftiers[f] === tier) { break; } // if they are changing to a ccbftier, this won't matter.
+                if (ccbftiers[f] === sys.tier(src, team)) {
+                    normalbot.sendMessage(src, "You cannot switch from " + ccbftiers[f] + " without loading a new team first.", channel);
+                    return;
+                }
+            }
             if (!tier_checker.has_legal_team_for_tier(src, team, tier)) {
                 normalbot.sendMessage(src, "You cannot switch to " + tier + ".", channel);
             }
