@@ -626,6 +626,7 @@ exports.handleCommand = function(src, command, commandData, tar, channel) {
         }
         normalbot.sendAll("File " + fileName + " was updated!", staffchannel);
         normalbot.sendMessage(src, "You should also update scripts and relevant plugins!!", channel);
+        return;
     }
     if (command == "updatescripts") {
         normalbot.sendMessage(src, "Fetching scripts...", channel);
