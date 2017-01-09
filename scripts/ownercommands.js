@@ -599,7 +599,7 @@ exports.handleCommand = function(src, command, commandData, tar, channel) {
     }
     if (command === "updatefile") {
         var files = ["crc32.js", "utilities.js", "bot.js", "memoryhash.js", "pokedex.js"];
-        if (files.indexOf(commandData.toLowerCase()) === -1) {
+        if (commandData === "" || files.indexOf(commandData.toLowerCase()) === -1) {
             normalbot.sendMessage(src, "File '" + commandData + "' not found.", channel);
             return;
         }
@@ -625,7 +625,6 @@ exports.handleCommand = function(src, command, commandData, tar, channel) {
                 break;
         }
         normalbot.sendAll("File " + fileName + " was updated!", staffchannel);
-        normalbot.sendMessage(src, "You should also update scripts and relevant plugins!!", channel);
         return;
     }
     if (command == "updatescripts") {
