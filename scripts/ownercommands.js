@@ -597,7 +597,7 @@ exports.handleCommand = function(src, command, commandData, tar, channel) {
         normalbot.sendAll("Updated global functions!", staffchannel);
         return;
     }
-    if (commmand === "updatefile") {
+    if (command === "updatefile") {
         var files = ["crc32.js", "utilities.js", "bot.js", "memoryhash.js", "pokedex.js"];
         if (files.indexOf(commandData.toLowerCase()) === -1) {
             normalbot.sendMessage(src, "File '" + commandData + "' not found.", channel);
