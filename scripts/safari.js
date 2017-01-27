@@ -19696,7 +19696,6 @@ function Safari() {
         sys.appendToFile(crossLog, now() + "|||Trivia|||" + name.toCorrectCase() + "|||" + rew + "\n");
     };
     this.mafiaPromo = function(list) {
-        return;
         var amt = list.length;
         if (list.length === 0) {
             return;
