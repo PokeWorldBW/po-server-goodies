@@ -133,8 +133,7 @@ function Mafia(mafiachan) {
         defaultGameBot = {
             name: "Game",
             color: "#3DAA68"
-        },
-        safchan = sys.channelId("Safari");
+        };
 
     var savePlayedGames = function (entry) {
         sys.writeToFile(MAFIA_SAVE_FILE, JSON.stringify(PreviousGames));
@@ -2077,8 +2076,8 @@ function Mafia(mafiachan) {
                     this.advertiseToChannel(sys.channelId('Mafia Social'), src === "Event");
                 }
                 if (src === "Event") {
-                    if (sys.existChannel(sys.channel(safchan))) {
-                        this.advertiseToChannel(safchan, src === "Event");
+                    if (sys.existChannel(sys.channel(safarichan))) {
+                        this.advertiseToChannel(safarichan, src === "Event");
                     }
                 }
             }
