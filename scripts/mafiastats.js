@@ -139,7 +139,7 @@ function mafiaStats() {
         output.push("<i>Total Games Played: " + total + "</i>");
         output.push("");
         for (var x = 0; x < gamesPlayed.length; x++) {
-            output.push(++count + ": <b><a href = '" + gamesPlayed[x][0].replace(/\ /g, "_") + "_stats.html'> " + gamesPlayed[x][0] + "</a></b>. Played " + gamesPlayed[x][1] + " times. Average players: " + gamesPlayed[x][2]);
+            output.push(++count + ": <b><a href = '" + gamesPlayed[x][0].replace(/\ /g, "_") + "_stats.html'> " + gamesPlayed[x][0] + "</a></b>. Played " + gamesPlayed[x][1] + " time" + (gamesPlayed[x][1] > 1 ? "s" : "") + ". Average players: " + gamesPlayed[x][2]);
             this.compileWinData(gamesPlayed[x][0]);
         }
         output.push("");
