@@ -3407,19 +3407,17 @@ function Mafia(mafiachan) {
             }
             mafia.saveCurrentGame(mafia.theme.trside(winSide));
             if ("rolesWin" in mafia.theme) {
-                var p,
-                    theme = mafia.mafiaStats.theme,
-                    numPlayers = mafia.mafiaStats.players,
-                    data = mafia.mafiaStats.data;
+                var p, theme = mafia.mafiaStats.theme, numPlayers = mafia.mafiaStats.players, data = mafia.mafiaStats.data;
+                // This is admittedly bad design... but the other option is to clutter mafiaStats.result
                 for (p = 0; p < roles.length - 1; p++) {
-                    var result = roles[p];
-                    if (!data[theme][result]) {
-                        data[theme][result] = {};
+                    var role = roles[p];
+                    if (!data[theme][role]) {
+                        data[theme][role] = {};
                     }
-                    if (data[theme][result][numPlayers]) {
-                        data[theme][result][numPlayers] += 1;
+                    if (data[theme][role][numPlayers]) {
+                        data[theme][role][numPlayers] += 1;
                     } else {
-                        data[theme][result][numPlayers] = 1;
+                        data[theme][role][numPlayers] = 1;
                     }
                 }
                 mafia.mafiaStats.result(roles[p]);
@@ -5149,8 +5147,8 @@ function Mafia(mafiachan) {
                             }
                             else if (command == "indoctrinate") {
                                 var temp = target.role;
-                                target.role = {}; // need to create new reference
-                                for (var x in temp) {
+                                target.role = {};
+                                for (var x in temp) { // Need to copy attributes to a new object in case there is more than one of this role; don't want to change the side of everyone with the same role!
                                     target.role[x] = temp[x];
                                 }
                                 if (Array.isArray(Action.newSide)) {
