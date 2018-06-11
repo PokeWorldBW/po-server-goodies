@@ -3407,12 +3407,10 @@ function Mafia(mafiachan) {
             }
             mafia.saveCurrentGame(mafia.theme.trside(winSide));
             if ("rolesWin" in mafia.theme) {
-                var p, theme = mafia.mafiaStats.theme, numPlayers = mafia.mafiaStats.players, data = mafia.mafiaStats.data;
-                    for (var p in roles) {
-                        mafia.mafiaStats.result(roles[p], false);
-                    }
+                for (var p in roles) {
+                    mafia.mafiaStats.result(roles[p], false);
                 }
-                mafia.mafiaStats.result(""); // Hope no one gets the smart idea to make an emptry string the name of a side
+                mafia.mafiaStats.result(""); // Hopefully no one gets the 'smart' idea to make an emptry string the name of a side
             } else {
                 mafia.mafiaStats.result(mafia.theme.trside(winSide));
             }
