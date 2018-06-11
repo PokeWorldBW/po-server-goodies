@@ -3408,19 +3408,11 @@ function Mafia(mafiachan) {
             mafia.saveCurrentGame(mafia.theme.trside(winSide));
             if ("rolesWin" in mafia.theme) {
                 var p, theme = mafia.mafiaStats.theme, numPlayers = mafia.mafiaStats.players, data = mafia.mafiaStats.data;
-                // This is admittedly bad design... but the other option is to clutter mafiaStats.result
-                for (p = 0; p < roles.length - 1; p++) {
-                    var role = roles[p];
-                    if (!data[theme][role]) {
-                        data[theme][role] = {};
-                    }
-                    if (data[theme][role][numPlayers]) {
-                        data[theme][role][numPlayers] += 1;
-                    } else {
-                        data[theme][role][numPlayers] = 1;
+                    for (var p in roles) {
+                        mafia.mafiaStats.result(roles[p], false);
                     }
                 }
-                mafia.mafiaStats.result(roles[p]);
+                mafia.mafiaStats.result(null);
             } else {
                 mafia.mafiaStats.result(mafia.theme.trside(winSide));
             }

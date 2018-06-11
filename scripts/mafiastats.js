@@ -56,14 +56,20 @@ function mafiaStats() {
         this.players = 0;
         this.theme = null;
     };
-    this.result = function (result) {
+    this.result = function (result, done) {
         if (result === "dead") {
             this.clear();
             return;
         }
-        this.saveData(result);
+        if (result !== null) {
+            this.saveResult(result);
+        }
+        if (done !== false) {
+            this.saveData();
+            this.clear();
+        }
     };
-    this.saveData = function (result) {
+    this.saveResult = function (result) {
         var data = this.data,
             theme = this.theme,
             players = this.players;
@@ -78,6 +84,14 @@ function mafiaStats() {
         }
         else {
             data[theme][result][players] = 1;
+        }    
+    };
+    this.saveData = function () {
+        var data = this.data,
+            theme = this.theme,
+            players = this.players;
+        if (!data[theme]) {
+            data[theme] = {};
         }
         if (data[theme].gamesPlayed) {
             data[theme].gamesPlayed += 1;
@@ -87,7 +101,6 @@ function mafiaStats() {
         }
         this.saveHourData();
         this.saveFile();
-        this.clear();
     };
     this.saveHourData = function () {
         var data = this.data,
