@@ -143,6 +143,7 @@ delete require.cache['tierchecks.js'];
 var tier_checker = require('tierchecks.js');
 delete require.cache['pokedex.js'];
 var pokedex = require('pokedex.js');
+var mafia = require("mafia.js");
 
 // declare prototypes
 Object.defineProperty(Array.prototype, "contains", {
