@@ -4311,6 +4311,7 @@ function Mafia(mafiachan) {
             }
 
             currentStalk.push("Players: " + Object.keys(mafia.players).map(name_trrole, mafia.theme).join(", "));
+            mafia.mafiaStats.updateJoinData(mafia.signups);
 
             gamemsgAll(null, "The Roles have been Decided! ");
             mafia.usersToShove = {};
@@ -8900,7 +8901,7 @@ this.beforeChatMessage = function (src, message, channel) {
                 sys.sendMessage(src, x, channel);
             });
             if (SESSION.channels(mafiachan).isChannelMember(src)) {
-                this.commands.member.forEach(function (x) {
+                this.commands.queue.forEach(function (x) {
                     sys.sendMessage(src, x, channel);
                 });
                 

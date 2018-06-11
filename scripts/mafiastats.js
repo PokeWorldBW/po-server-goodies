@@ -121,27 +121,44 @@ function mafiaStats() {
     };
     this.updateStartData = function (name, theme) {
         var data = this.data, lname = name.toLowerCase();
-        if (!data.startData) {
-            data.startData = {};
+        if (!data.userData) {
+            data.userData = {};
         }
-        if (!data.startData.hasOwnProperty(lname)) {
-            data.startData[lname] = {};
-            data.startData[lname].themes = {};
-            data.startData[lname].capitalization = name;
+        if (!data.userData.hasOwnProperty(lname)) {
+            data.userData[lname] = {};
+            data.userData[lname].themes = {};
+            data.userData[lname].capitalization = name;
             if (name === "*Event") {
-                data.startData[lname].capitalization = "<i>Event</i>";
+                data.userData[lname].capitalization = "<i>Event</i>";
             }
             if (name === "*voted") {
-                data.startData[lname].capitalization = "<i>voted</i>";
+                data.userData[lname].capitalization = "<i>voted</i>";
             }
-            data.startData[lname].total = 0;
+            data.userData[lname].totalStarts = 0;
+            data.userData[lname].totalJoins = 0;
         }
-        if (!data.startData[lname].themes.hasOwnProperty(theme)) {
-            data.startData[lname].themes[theme] = 1;
+        if (!data.userData[lname].themes.hasOwnProperty(theme)) {
+            data.userData[lname].themes[theme] = 1;
         } else {
-            data.startData[lname].themes[theme] += 1;
+            data.userData[lname].themes[theme] += 1;
         }
-        data.startData[lname].total += 1;
+        data.userData[lname].totalStarts += 1;
+    };
+    this.updateJoinData = function (players) {
+        var data = this.data;
+        if (Array.isArray(players)) {
+            for (var x = 0; x < players.length; x++) {
+                var lname = players[x].toLowerCase();
+                if (!data.userData.hasOwnProperty(lname)) {
+                    data.userData[lname] = {};
+                    data.userData[lname].themes = {};
+                    data.userData[lname].capitalization = players[x];
+                    data.userData[lname].totalStarts = 0;
+                    data[userData][lname].totalJoins = 0;
+                }
+                data[userData][lname].totalJoins += 1;
+            }
+        }
     };
     this.compileData = function () {
         var data = this.getData();
@@ -177,7 +194,7 @@ function mafiaStats() {
         var keys = Object.keys(data);
         var total = 0;
         for (var x = 0; x < keys.length; x++) {
-            if (keys[x] !== "hoursData" && keys[x] !== "startData") { //should have really planned ahead...
+            if (keys[x] !== "hoursData" && keys[x] !== "userData") { //should have really planned ahead...
                 var average = this.getAverage(keys[x]);
                 total += data[keys[x]].gamesPlayed;
                 gamesPlayed.push([keys[x], data[keys[x]].gamesPlayed, average]);
@@ -267,18 +284,18 @@ function mafiaStats() {
         return output;
     };
     this.compileStartData = function () {
-        var sData = this.data.startData;
+        var sData = this.data.userData;
         if (!sData) {
             sData = {};
         }
         var output = [html.title.format("Games Started Per Player")];
         output.push("");
         var total = 0;
-        var keys = Object.keys(sData).sort(function(a, b) { return sData[b].total - sData[a].total; });
+        var keys = Object.keys(sData).sort(function(a, b) { return sData[b].totalStarts - sData[a].totalStarts; });
         var format = "{0}. {1}. Started {2} game{3}. Favorite: {4} (Started {5} time{6})";
         for (var x = 0; x < keys.length; x++) {
             var player = sData[keys[x]];
-            total += player.total;
+            total += player.totalStarts;
             var favorite = null;
             for (var t in player.themes) {
                 if (favorite === null) {
@@ -289,7 +306,7 @@ function mafiaStats() {
                     }
                 }
             }
-            output.push(format.format(x + 1, player.capitalization, player.total, player.total > 1 ? "s" : "", favorite, player.themes[favorite], player.themes[favorite] > 1 ? "s" : ""));
+            output.push(format.format(x + 1, player.capitalization, player.totalStarts, player.totalStarts > 1 ? "s" : "", favorite, player.themes[favorite], player.themes[favorite] > 1 ? "s" : ""));
         }
         output.splice(1, 0, "<i>Total Games Started: " + total + "</i>")
         return output;
