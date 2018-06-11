@@ -4459,9 +4459,7 @@ function Mafia(mafiachan) {
                             failedmsg = (Action.failmsg || "You couldn't ~Action~ this night!").replace(/~Action~/g, o.action);
                             gamemsg(names[f], failedmsg);
                         }
-                        //debug
-                        sys.sendAll(typeof targets);
-                        sys.sendAll(targets);
+
                         if (Action.alternateTargets) {
                             mafia.players[names[f]].lastTargets = targets.map(function(str) { return str.substring(0, str.indexOf(":")); });
                         }
@@ -4475,9 +4473,7 @@ function Mafia(mafiachan) {
                     player = mafia.players[names[j]];
                     var targets = mafia.getTargetsFor(player, o.action);
                     var target, t; // current target
-                    //debug
-                    sys.sendAll(typeof targets);
-                    sys.sendAll(targets);
+
                     if (Action.alternateTargets) {
                         player.lastTargets = targets.map(function(str) { return str.substring(0, str.indexOf(":")); });
                     }
@@ -6669,8 +6665,6 @@ function Mafia(mafiachan) {
         var canTarget = player.role.actions.night[command].target;
 
         this.addPhaseStalkAction(name, command, target.name, afterCommandData, redirectData);
-        //debug
-        sys.sendAll(player.lastTargets);
         if (["Any", "Self", "OnlySelf", "OnlyTeam"].indexOf(canTarget) == -1 && commandData == name) {
             gamemsg(name, "Nope, this won't work... You can't target yourself!", "±Hint");
             return;
