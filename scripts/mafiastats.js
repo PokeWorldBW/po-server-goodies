@@ -154,9 +154,9 @@ function mafiaStats() {
                     data.userData[lname].themes = {};
                     data.userData[lname].capitalization = players[x];
                     data.userData[lname].totalStarts = 0;
-                    data[userData][lname].totalJoins = 0;
+                    data.userData[lname].totalJoins = 0;
                 }
-                data[userData][lname].totalJoins += 1;
+                data.userData.[lname].totalJoins += 1;
             }
         }
     };
