@@ -4245,7 +4245,7 @@ function Mafia(mafiachan) {
                     }
                 }
 
-                mafia.players[mafia.signups[i]] = { 'name': mafia.signups[i], 'role': mafia.theme.roles[playerRole], 'targets': {}, 'recharges': {}, 'dayrecharges': {}, 'charges' : {}, 'daycharges': {}, 'evadeCharges': {}, "restrictions": [], "addVote": {}, "addVoteshield": {} };
+                mafia.players[mafia.signups[i]] = { 'name': mafia.signups[i], 'role': mafia.theme.roles[playerRole], 'targets': {}, 'recharges': {}, 'dayrecharges': {}, 'charges' : {}, 'daycharges': {}, 'evadeCharges': {}, 'restrictions': [], 'addVote': {}, 'addVoteshield': {}, 'lastTargets': [] };
                 var initPlayer = mafia.players[mafia.signups[i]];
                 spawnedRoles.push(initPlayer.role.role);
                 if ("night" in initPlayer.role.actions) {
@@ -4454,9 +4454,13 @@ function Mafia(mafiachan) {
                 //Fail chance for common:Role and Team
                 if (["Role", "Team"].indexOf(Action.common) != -1 && "failChance" in Action && Action.failChance > Math.random()) {
                     for (var f in names) {
-                        if (mafia.getTargetsFor(mafia.players[names[f]], o.action).length > 0) {
-                             failedmsg = (Action.failmsg || "You couldn't ~Action~ this night!").replace(/~Action~/g, o.action);
+                        var targets = mafia.getTargetsFor(mafia.players[names[f]], o.action);
+                        if (targets.length > 0) {
+                            failedmsg = (Action.failmsg || "You couldn't ~Action~ this night!").replace(/~Action~/g, o.action);
                             gamemsg(names[f], failedmsg);
+                        }
+                        if (Action.alternateTargets) {
+                            mafia.players[names[f]].lastTargets = targets;
                         }
                     }
                     continue;
@@ -4468,6 +4472,10 @@ function Mafia(mafiachan) {
                     player = mafia.players[names[j]];
                     var targets = mafia.getTargetsFor(player, o.action);
                     var target, t; // current target
+                    
+                    if (Action.alternateTargets) {
+                        player.lastTargets = targets;
+                    }
 
                     //Fail chance for common:Self
                     if (Action.common == "Self" && "failChance" in Action && Action.failChance > Math.random()) {
@@ -5146,8 +5154,7 @@ function Mafia(mafiachan) {
                                 }
                                 if (Array.isArray(Action.newSide)) {
                                     target.role.side = Action.newSide.random();
-                                }
-                                else {
+                                } else {
                                     target.role.side = Action.newSide;
                                 }
                                 var pmsg = ("indoctrinatemsg" in Action ? Action.indoctrinatemsg : "You have been changed to the ~NewSide~ side!").replace(/~NewSide~/g, mafia.theme.trside(target.role.side));
@@ -6659,19 +6666,22 @@ function Mafia(mafiachan) {
         this.addPhaseStalkAction(name, command, target.name, afterCommandData, redirectData);
 
         if (["Any", "Self", "OnlySelf", "OnlyTeam"].indexOf(canTarget) == -1 && commandData == name) {
-            gamemsg(name, "Nope, this wont work... You can't target yourself!", "±Hint");
+            gamemsg(name, "Nope, this won't work... You can't target yourself!", "±Hint");
             return;
         } else if (canTarget == "OnlySelf" && commandData != name) {
             gamemsg(name, "You can only use this action on yourself!", "±Hint");
             return;
         } else if (canTarget == 'AnyButTeam' && player.role.side == target.role.side
          || canTarget == 'AnyButRole' && player.role.role == target.role.role) {
-            gamemsg(name, "Nope, this wont work... You can't target your partners!", "±Hint");
+            gamemsg(name, "Nope, this won't work... You can't target your partners!", "±Hint");
             return;
         } else if ((canTarget == "OnlyTeammates" && player == target)
          || (["OnlyTeam", "OnlyTeammates"].indexOf(canTarget) !== -1 && player.role.side != target.role.side)) {
             gamemsg(name, "You can only use this action on your teammates!", "±Hint");
             return;
+        } else if (player.role.actions.night[command].alternateTargets && player.lastTargets.indexOf(commandData) !== -1) {
+            gamemsg(name, "Nope, this won't work... You can't target the same person two nights in a row!", "±Hint");
+            return;            
         }
 
         var recharge = mafia.getRecharge(player, "night", command);
@@ -8566,7 +8576,7 @@ function Mafia(mafiachan) {
                 mafiabot.sendMessage(src, mafia.theme.name + " does not have the " + role + " role!", mafiachan);
                 return;
             }
-            mafia.players[player] = { 'name': player, 'role': mafia.theme.roles[role], 'targets': {}, 'recharges': {}, 'dayrecharges': {}, 'charges' : {}, 'daycharges': {}, 'evadeCharges': {}, "restrictions": [], "addVote": {}, "addVoteshield": {}, "extraVote": 0, "extraVoteshield": 0, 'targets': {}, 'targetsData': {}, 'dayKill': undefined, 'revealUse': undefined, 'exposeUse': undefined, 'guarded': undefined, 'safeguarded': undefined, 'restrictions': [], 'redirectTo': undefined, 'redirectActions': undefined, 'guardActions': [], 'shieldmsg': undefined, 'protectmsg': undefined, 'safeguardmsg': undefined, 'guardmsg': undefined, 'haxCount': {} };
+            mafia.players[player] = { 'name': player, 'role': mafia.theme.roles[role], 'targets': {}, 'recharges': {}, 'dayrecharges': {}, 'charges' : {}, 'daycharges': {}, 'evadeCharges': {}, 'restrictions': [], 'addVote': {}, 'addVoteshield': {}, 'extraVote': 0, 'extraVoteshield': 0, 'lastTargets': [], 'targetsData': {}, 'dayKill': undefined, 'revealUse': undefined, 'exposeUse': undefined, 'guarded': undefined, 'safeguarded': undefined, 'restrictions': [], 'redirectTo': undefined, 'redirectActions': undefined, 'guardActions': [], 'shieldmsg': undefined, 'protectmsg': undefined, 'safeguardmsg': undefined, 'guardmsg': undefined, 'haxCount': {} };
             var initPlayer = mafia.players[player];
             if ("night" in initPlayer.role.actions) {
                 for (var act in initPlayer.role.actions.night) {
