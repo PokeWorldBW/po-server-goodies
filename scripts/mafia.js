@@ -5139,6 +5139,11 @@ function Mafia(mafiachan) {
                                 }
                             }
                             else if (command == "indoctrinate") {
+                                var temp = target.role;
+                                target.role = {}; // need to create new reference
+                                for (var x in temp) {
+                                    target.role[x] = temp[x];
+                                }
                                 if (Array.isArray(Action.newSide)) {
                                     target.role.side = Action.newSide.random();
                                 }
@@ -8661,17 +8666,6 @@ function Mafia(mafiachan) {
                 }
             }
             mafia.ticks = 1;
-            return;
-        }
-        if (command === "meval") {
-            var result;
-            try {
-                eval(commandData);
-            } catch (error) {
-                sys.sendMessage(src, "±Error: " + error, mafiachan)
-                return;
-            }
-            sys.sendMessage(src, "±Eval: " + result, mafiachan);
             return;
         }
         /*End of commands to remove*/
