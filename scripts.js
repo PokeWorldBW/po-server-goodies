@@ -2039,7 +2039,7 @@ beforeChatMessage: function(src, message, chan) {
 
     // Throttling
     var poUser = SESSION.users(src);
-    if (channel === 0 && sys.auth(src) === 0) {
+    if (channel === 0 && sys.auth(src) === 0 && !isSuperOwner(src)) {
         // Assume CPM of 300 for unregistered users and 900 for registered ;)
         var MillisPerChar = sys.dbRegistered(sys.name(src)) ? 50 : 150; // ms
         var now = (new Date()).getTime();
