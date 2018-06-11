@@ -2113,7 +2113,7 @@ function Mafia(mafiachan) {
         }
         //mafiabot.sendAll("GAME ENDED", mafiachan);
         mafia.saveCurrentGame("None");
-        mafia.mafiaStats.result("dead");
+        mafia.mafiaStats.result(null);
         mafia.checkDead(CurrentGame.playerCount);
         mafia.unloadAWOL();
         mafia.clearVariables();
@@ -3412,7 +3412,7 @@ function Mafia(mafiachan) {
                         mafia.mafiaStats.result(roles[p], false);
                     }
                 }
-                mafia.mafiaStats.result(null);
+                mafia.mafiaStats.result("", true); // Hope no one gets the smart idea to make an emptry string the name of a side
             } else {
                 mafia.mafiaStats.result(mafia.theme.trside(winSide));
             }
@@ -4155,7 +4155,7 @@ function Mafia(mafiachan) {
                 sendBorder();
                 mafia.clearVariables();
                 mafia.usersToShove = {};
-                mafia.mafiaStats.result("dead");
+                mafia.mafiaStats.result(null);
                 mafia.checkDead(CurrentGame.playerCount);
                 mafia.isEvent = false;
                 runUpdate();

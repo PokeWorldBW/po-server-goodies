@@ -57,11 +57,11 @@ function mafiaStats() {
         this.theme = null;
     };
     this.result = function (result, done) {
-        if (result === "dead") {
+        if (result === null) {
             this.clear();
             return;
         }
-        if (result !== null) {
+        if (result !== "") {
             this.saveResult(result);
         }
         if (done !== false) {
