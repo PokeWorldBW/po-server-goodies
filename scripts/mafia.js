@@ -3401,11 +3401,23 @@ function Mafia(mafiachan) {
             }
             mafia.saveCurrentGame(mafia.theme.trside(winSide));
             if ("rolesWin" in mafia.theme) {
-                for (var p in roles) {
-                    mafia.mafiaStats.result(roles[p]);
+                var p,
+                    theme = mafia.mafiaStats.theme,
+                    players = mafia.mafiaStats.players;
+                for (p = 0; p < roles.length - 1; p++) {
+                    var result = roles[p];
+                    if (!data[theme][result]) {
+                        data[theme][result] = {};
+                    }
+                    if (data[theme][result][players]) {
+                        data[theme][result][players] += 1;
+                    }
+                    else {
+                        data[theme][result][players] = 1;
+                    }
                 }
-            }
-            else {
+                mafia.mafiaStats.result(roles[p]);
+            } else {
                 mafia.mafiaStats.result(mafia.theme.trside(winSide));
             }
             currentStalk.push("Winners: " + mafia.theme.trside(winSide) + " (" + readable(players, "and") + ")");
