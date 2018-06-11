@@ -8663,8 +8663,16 @@ function Mafia(mafiachan) {
             mafia.ticks = 1;
             return;
         }
-        if (command === "get") {
-            mafiabot.sendMessage(src, commandData + ": " + mafia[commandData], mafiachan)
+        if (command === "meval") {
+            var result;
+            try {
+                eval(commandData);
+            } catch (error) {
+                sys.sendMessage(src, "±Error: " + error, mafiachan)
+                return;
+            }
+            sys.sendMessage(src, "±Eval: " + result, mafiachan);
+            return;
         }
         /*End of commands to remove*/
         throw ("no valid command");
