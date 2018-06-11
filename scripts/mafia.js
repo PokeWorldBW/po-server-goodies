@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2018-06-10a";
+    this.version = "2018-06-11";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     
@@ -7906,7 +7906,7 @@ function Mafia(mafiachan) {
             if (!theme) {
                 msg(src, "No such theme!");
             } else {
-                this.queue.push({srcname, theme});
+                this.queue.push([srcname, theme]);
                 msgAll(nonFlashing(sys.name(src)) + " added " + theme + " to the queue.");
                 //msgAll(nonFlashing(sys.name(src)) + " added " + theme + " to the Mafia theme queue.", sachannel);
             }
