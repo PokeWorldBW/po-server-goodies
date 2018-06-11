@@ -29,8 +29,10 @@ function Mafia(mafiachan) {
     } else {
         this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;
     }
-    if (!this.defaultEventInterval) {
-        this.defaultEventInterval = 1 * 60 * 60 * 1000;
+    if (!isNaN(sys.getVal("mafia_defaultEventInterval"))) {
+        this.defaultEventInterval = +sys.getVal("mafia_defaultEventInterval");
+    } else {
+        this.defaultEventInterval = new Date().getTime() + 1 * 60 * 60 * 1000;
     }
     if (sys.getVal("mafia_eventQueue") !== "") {
         this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
@@ -7724,12 +7726,15 @@ function Mafia(mafiachan) {
                 mafiabot.sendHtmlMessage(src, "Next Mafia Event begins in <b>" + getTimeString(Math.floor(timer / 1000)) + "</b>!", mafiachan);
             }
             if (this.eventQueue.length > 0) {
-                mafiabot.sendHtmlMessage(src, "The theme for the next event is <b>" + this.themeManager.themes[this.eventQueue[0]].name + "</b>!", mafiachan);
+                mafiabot.sendHtmlMessage(src, "The theme for the next event is <b>" + casedtheme(this.eventQueue[0]) + "</b>!", mafiachan);
             }
             return;
         }
         if (command === "eventthemes") {
-            this.showEventPool(src);
+            var themes = this.eventThemePool.map(function(theme) { return casedtheme(theme); }).filter(function(theme, position, array) {
+                return array.indexOf(theme) === position;
+            }).sort();
+            mafiabot.sendMessage(src, "The themes that can be started as events are: " + readable(themes, "and") + "." , mafiachan);
             return;
         }
         if (command === "featured") {
@@ -8340,8 +8345,9 @@ function Mafia(mafiachan) {
                     }
                     break;
                 case "interval":
-                    if (!isNaN(data[1]) && data[1] >= 1800) {
+                    if (!isNaN(data[1]) /*&& data[1] >= 1800*/) {
                         this.defaultEventInterval = data[1] * 1000;
+                        sys.saveVal("mafia_defaultEventInterval", data[1] * 1000);
                         mafiabot.sendHtmlMessage(src, "Event interval set to <b>" + getTimeString(data[1]) + "</b>")
                     } else {
                         msg(src, "Event interval must be at least 30 minutes.")
