@@ -4139,6 +4139,11 @@ function Mafia(mafiachan) {
         }
         return true;
     };
+    
+    /*REMOVE*/
+    this.getPlayers = function() {
+      return mafia.players;  
+    };
 
     this.handlers = {
         entry: function () {
@@ -8632,7 +8637,7 @@ function Mafia(mafiachan) {
             if (typeof mafia.theme.roles[role].side == "object") {
                 if ("random" in mafia.theme.roles[role].side) {
                     var side = randomSample(mafia.theme.roles[role].side.random);
-                    mafia.players[mafia.signups[i]].role.side = side;
+                    mafia.players[player].role.side = side;
                 }
             }
             mafiabot.sendAll(sys.name(src) + " added player " + player + "! (Role: " + mafia.theme.roles[role].translation + " [" + role + "])", mafiachan);
