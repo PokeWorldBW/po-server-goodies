@@ -8359,9 +8359,9 @@ function Mafia(mafiachan) {
                     if (!isNaN(data[1]) /*&& data[1] >= 1800*/) {
                         this.defaultEventInterval = data[1] * 1000;
                         sys.saveVal("mafia_defaultEventInterval", data[1] * 1000);
-                        mafiabot.sendHtmlMessage(src, "Event interval set to <b>" + getTimeString(data[1]) + "</b>")
+                        mafiabot.sendHtmlMessage(src, "Event interval set to <b>" + getTimeString(data[1]) + "</b>", channel);
                     } else {
-                        msg(src, "Event interval must be at least 30 minutes.")
+                        msg(src, "Event interval must be at least 30 minutes.", channel);
                     }
                     break;
                 default:
