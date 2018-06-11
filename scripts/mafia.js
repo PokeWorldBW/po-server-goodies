@@ -7906,9 +7906,10 @@ function Mafia(mafiachan) {
             if (!theme) {
                 msg(src, "No such theme!");
             } else {
+                theme = casedtheme(theme);
                 mafia.queue.push([srcname, theme]);
-                msgAll(nonFlashing(sys.name(src)) + " added " + casedtheme(theme) + " to the queue.");
-                //msgAll(nonFlashing(sys.name(src)) + " added " + casedtheme(theme) + " to the Mafia theme queue.", sachannel);
+                msgAll(nonFlashing(sys.name(src)) + " added " + theme + " to the queue.");
+                //msgAll(nonFlashing(sys.name(src)) + " added " + theme + " to the Mafia theme queue.", sachannel);
             }
             return;
         }
@@ -7926,9 +7927,9 @@ function Mafia(mafiachan) {
                     if (x < 0 || x >= mafia.queue.length) {
                         msg(src, "Theme #" + x + " could not be found in the queue!");
                     } else {
-                        var t = mafia.queue.splice(x, 1);
-                        msgAll(nonFlashing(sys.name(src)) + " removed " + casedtheme(t) + " from the queue.");
-                        //msgAll(nonFlashing(sys.name(src)) + " removed " + casedtheme(t) + " from the Mafia theme queue.", sachannel);
+                        var t = mafia.queue.splice(x, 1)[0];
+                        msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the queue.");
+                        //msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the Mafia theme queue.", sachannel);
                     }
                 } else {
                     msg(src, "No such theme!");
@@ -7937,9 +7938,9 @@ function Mafia(mafiachan) {
                 for (var i = 0; i < mafia.queue.length; i++) {
                     var q = mafia.queue[i];
                     if (q[1] === theme) {
-                        var t = mafia.queue.splice(i, 1);
-                        msgAll(nonFlashing(sys.name(src)) + " removed " + casedtheme(t[1]) + " from the queue.");
-                        //msgAll(nonFlashing(sys.name(src)) + " removed " + casedtheme(t[1]) + " from the Mafia theme queue.", sachannel);
+                        var t = mafia.queue.splice(i, 1)[0];
+                        msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the queue.");
+                        //msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the Mafia theme queue.", sachannel);
                         return;
                     }
                 }
