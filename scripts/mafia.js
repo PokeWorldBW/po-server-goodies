@@ -416,10 +416,10 @@ function Mafia(mafiachan) {
                 module.source = source;
                 module.init();
                 mafia.endGame(false);
+                mafia.needsUpdating = false;
                 sendChanAll("Update Complete!", mafiachan);
             });
             sendChanAll("Updating Mafia Script...", mafiachan);
-            mafia.needsUpdating = false;
         }
     }
 
@@ -4148,6 +4148,7 @@ function Mafia(mafiachan) {
                 mafia.mafiaStats.result("dead");
                 mafia.checkDead(CurrentGame.playerCount);
                 mafia.isEvent = false;
+                runUpdate();
                 return;
             }
 
