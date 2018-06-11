@@ -1680,13 +1680,12 @@ function Mafia(mafiachan) {
         }
         if (forced) {
             this.nextEventTime = new Date().getTime() + this.defaultEventInterval;
-        }
-        else {
+        } else {
             while (this.nextEventTime < new Date().getTime()) {
                 this.nextEventTime += this.defaultEventInterval;
             }
-            sys.saveVal("mafia_nextEventTime", this.nextEventTime);
         }
+        sys.saveVal("mafia_nextEventTime", this.nextEventTime);
         if (!(this.eventQueue)) {
             this.eventQueue = [defaultThemeName];
         }
@@ -3412,8 +3411,7 @@ function Mafia(mafiachan) {
                     }
                     if (data[theme][result][numPlayers]) {
                         data[theme][result][numPlayers] += 1;
-                    }
-                    else {
+                    } else {
                         data[theme][result][numPlayers] = 1;
                     }
                 }
