@@ -36,7 +36,7 @@ function mafiaStats() {
     };
     this.stepEvent = function () {
         var date = new Date();
-        if (date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
+        if (/*date.getUTCMinutes() === 0 &&*/ date.getUTCSeconds() === 0) {
             this.compileData();
         }
     };
