@@ -1951,11 +1951,8 @@ function Mafia(mafiachan) {
         // Prevent a single player from dominating the theme selections.
         // We exclude mafia admins from this.
         var i;
-        sys.sendAll(src);
-        sys.sendAll(typeof src);
         if (src && typeof src === "number") {
             if (this.invalidName(src)) {
-                sys.sendAll("asjdoij");
                 return;
             }
 
@@ -2065,7 +2062,7 @@ function Mafia(mafiachan) {
         mafia.state = "entry";
         mafia.ticks = src === "Event" ? 150 : 60;
 
-        if (src !== null && src !== "Event") {
+        if (src !== null && typeof src === "number") {
             if (!this.canJoin(src)) {
                 return;
             }
