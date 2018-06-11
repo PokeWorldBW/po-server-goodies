@@ -1658,7 +1658,7 @@ function Mafia(mafiachan) {
             // Try to start a game from queue
             if (this.state === "blank" && !mafia.needsUpdating && mafia.queueingEnabled && mafia.queue.length > 0) {
                 var info = mafia.queue.splice(0, 1);
-                sys.sendAll(info);
+                sys.sendAll(info.theme);
                 this.startGame(info.name, info.theme);
             }
         }
