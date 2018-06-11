@@ -1658,9 +1658,6 @@ function Mafia(mafiachan) {
             // Try to start a game from queue
             if (this.state === "blank" && !mafia.needsUpdating && mafia.queueingEnabled && mafia.queue.length > 0) {
                 var info = mafia.queue.splice(0, 1)[0];
-                sys.sendAll(info);
-                sys.sendAll(info[0]);
-                sys.sendAll(info[1])
                 this.startGame(info[0], info[1]);
             }
         }
@@ -1949,8 +1946,6 @@ function Mafia(mafiachan) {
             }
             return;
         }
-        sys.sendAll("herE");
-        sys.sendAll(commandData);
         var themeName = commandData == noPlayer ? defaultThemeName : this.getThemeName(commandData);
 
         // Prevent a single player from dominating the theme selections.
@@ -1959,8 +1954,10 @@ function Mafia(mafiachan) {
         sys.sendAll(src);
         sys.sendAll(typeof src);
         if (src && typeof src === "number") {
-            if (this.invalidName(src))
+            if (this.invalidName(src)) {
+                sys.sendAll("asjdoij");
                 return;
+            }
 
             var PlayerCheck = PreviousGames.slice(-5).reverse();
             if (!this.isMafiaAdmin(src)) {
