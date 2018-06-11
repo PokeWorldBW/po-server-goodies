@@ -261,9 +261,8 @@ function mafiaStats() {
         var output = [html.title.format("Games Started Per Player")];
         output.push("");
         var total = 0;
-        var keys = Object.keys(sData).sort(function(a, b) { return sData[a]["*total"] - sData[b]["*total"]; });
-        // data.startData[name][theme] = 1;
-        var format = "{0}. {1}. Started {2} games. Favorite: {3} (Started {4} times)";
+        var keys = Object.keys(sData).sort(function(a, b) { return sData[a].total - sData[b].total; });
+        var format = "{0}. {1}. Started {2} games. Favorite: {3} (Started {4} time{5})";
         for (var x = 0; x < keys.length; x++) {
             var player = sData[keys[x]];
             total += player.total;
@@ -277,7 +276,7 @@ function mafiaStats() {
                     }
                 }
             }
-            output.push(format.format(x + 1, player.capitalization, player.total, favorite, player.themes[favorite]));
+            output.push(format.format(x + 1, player.capitalization, player.total, favorite, player.themes[favorite], player.themes[favorite] > 1 ? "s" : ""));
         }
         output.splice(1, 0, "<i>Total Games Started: " + total + "</i>")
         return output;
