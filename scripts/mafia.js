@@ -1657,8 +1657,8 @@ function Mafia(mafiachan) {
         } else {
             // Try to start a game from queue
             if (this.state === "blank" && !mafia.needsUpdating && this.queueingEnabled && this.queue.length > 0) {
-                this.startGame(this.queue[0][0], this.queue[0][1]);
-                this.queue.splice(0, 1);
+                var info = this.queue.splice(0, 1);
+                this.startGame(info[0], info[1]);
             }
         }
     };
