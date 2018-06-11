@@ -1659,9 +1659,7 @@ function Mafia(mafiachan) {
             if (this.state === "blank" && !mafia.needsUpdating && mafia.queueingEnabled && mafia.queue.length > 0) {
                 var info = mafia.queue.splice(0, 1);
                 sys.sendAll(info);
-                sys.sendAll(info[0]);
-                sys.sendAll(info[1]);
-                this.startGame(info[0], info[1]);
+                this.startGame(info.name, info.theme);
             }
         }
     };
@@ -7912,7 +7910,7 @@ function Mafia(mafiachan) {
             if (!theme) {
                 msg(src, "No such theme!");
             } else {
-                mafia.queue.push([srcname, theme]);
+                mafia.queue.push({ name: srcname, theme: theme });
                 msgAll(nonFlashing(sys.name(src)) + " added " + casedtheme(theme) + " to the queue.");
                 //msgAll(nonFlashing(sys.name(src)) + " added " + casedtheme(theme) + " to the Mafia theme queue.", sachannel);
             }
@@ -7942,7 +7940,7 @@ function Mafia(mafiachan) {
             } else {
                 for (var i = 0; i < mafia.queue.length; i++) {
                     var q = mafia.queue[i];
-                    if (q[i][1] === theme) {
+                    if (q.theme === theme) {
                         var t = mafia.queue.splice(i, 1);
                         msgAll(nonFlashing(sys.name(src)) + " removed " + casedtheme(t[1]) + " from the queue.");
                         //msgAll(nonFlashing(sys.name(src)) + " removed " + casedtheme(t[1]) + " from the Mafia theme queue.", sachannel);
