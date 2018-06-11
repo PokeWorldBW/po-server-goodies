@@ -1952,7 +1952,9 @@ function Mafia(mafiachan) {
         // Prevent a single player from dominating the theme selections.
         // We exclude mafia admins from this.
         var i;
-        if (src && typeof src == "number") {
+        sys.sendAll(src);
+        sys.sendAll(typeof src);
+        if (src && typeof src === "number") {
             if (this.invalidName(src))
                 return;
 
@@ -8855,7 +8857,7 @@ this.beforeChatMessage = function (src, message, channel) {
         try {
             this.tickDown();
         } catch (err) {
-            dualBroadcast("Error occurred in Mafia step on line " + (err.lineNumber ? " on line " + err.lineNumber : "") + ": " + err);
+            dualBroadcast("Error occurred in Mafia step" + (err.lineNumber ? " on line " + err.lineNumber : "") + ": " + err);
         }
     };
     this.init = function () {
