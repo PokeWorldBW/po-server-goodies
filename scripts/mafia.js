@@ -3412,7 +3412,7 @@ function Mafia(mafiachan) {
                         mafia.mafiaStats.result(roles[p], false);
                     }
                 }
-                mafia.mafiaStats.result("", true); // Hope no one gets the smart idea to make an emptry string the name of a side
+                mafia.mafiaStats.result(""); // Hope no one gets the smart idea to make an emptry string the name of a side
             } else {
                 mafia.mafiaStats.result(mafia.theme.trside(winSide));
             }
