@@ -3403,18 +3403,18 @@ function Mafia(mafiachan) {
             if ("rolesWin" in mafia.theme) {
                 var p,
                     theme = mafia.mafiaStats.theme,
-                    players = mafia.mafiaStats.players,
+                    numPlayers = mafia.mafiaStats.players,
                     data = mafia.mafiaStats.data;
                 for (p = 0; p < roles.length - 1; p++) {
                     var result = roles[p];
                     if (!data[theme][result]) {
                         data[theme][result] = {};
                     }
-                    if (data[theme][result][players]) {
-                        data[theme][result][players] += 1;
+                    if (data[theme][result][numPlayers]) {
+                        data[theme][result][numPlayers] += 1;
                     }
                     else {
-                        data[theme][result][players] = 1;
+                        data[theme][result][numPlayers] = 1;
                     }
                 }
                 mafia.mafiaStats.result(roles[p]);
