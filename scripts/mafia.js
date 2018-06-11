@@ -4139,11 +4139,6 @@ function Mafia(mafiachan) {
         }
         return true;
     };
-    
-    /*REMOVE*/
-    this.getPlayers = function() {
-      return mafia.players;  
-    };
 
     this.handlers = {
         entry: function () {
@@ -8643,7 +8638,7 @@ function Mafia(mafiachan) {
             mafiabot.sendAll(sys.name(src) + " added player " + player + "! (Role: " + mafia.theme.roles[role].translation + " [" + role + "])", mafiachan);
             return;
         }
-        if (command == "pushall") {
+        if (command === "pushall") {
             if (mafia.state != "entry") {
                 mafiabot.sendChanMessage(src, "Pushing makes no sense outside entry...");
                 return;
@@ -8667,6 +8662,9 @@ function Mafia(mafiachan) {
             }
             mafia.ticks = 1;
             return;
+        }
+        if (command === "get") {
+            mafiabot.sendMessage(src, commandData + ": " + mafia[commandData], mafiachan)
         }
         /*End of commands to remove*/
         throw ("no valid command");

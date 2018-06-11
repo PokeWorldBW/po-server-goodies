@@ -31,10 +31,10 @@ var Config = {
         notPlayingMsg: "±Game: A game is in progress. Please type /join to join the next mafia game."
     },
     DreamWorldTiers: ["All Gen Hackmons", "ORAS Hackmons", "ORAS Balanced Hackmons", "No Preview OU", "No Preview Ubers", "DW LC", "DW UU", "DW LU", "Gen 5 1v1 Ubers", "Gen 5 1v1", "Challenge Cup", "CC 1v1", "DW Uber Triples", "No Preview OU Triples", "No Preview Uber Doubles", "No Preview OU Doubles", "Shanai Cup", "Shanai Cup 1.5", "Shanai Cup STAT", "Original Shanai Cup TEST", "Monocolour", "Clear Skies DW"],
-    superOwners: ["PokeWorldBW", "Server"],
-    superAdmins: ["Miki Sayaka", "Fate Testarossa"],
+    superOwners: ["Yttrium", "Server"],
+    superAdmins: ["Miki Sayaka"],
     superMods: ["Karp Karpity"],
-    doNotShowIfOffline: ["Zzy", "waehofen", "Dark Phoenix", "Human Destroyer", "Master12345", "Michu", "Mavs>Heat"],    
+    doNotShowIfOffline: ["Zzy", "waehofen", "Dark Phoenix", "Human Destroyer", "Master12345", "Mavs>Heat"],    
     canJoinStaffChannel: [],
     disallowStaffChannel: [],
     topic_delimiter: " | ",
@@ -143,7 +143,6 @@ delete require.cache['tierchecks.js'];
 var tier_checker = require('tierchecks.js');
 delete require.cache['pokedex.js'];
 var pokedex = require('pokedex.js');
-var mafia = require("mafia.js");
 
 // declare prototypes
 Object.defineProperty(Array.prototype, "contains", {
