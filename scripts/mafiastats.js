@@ -261,7 +261,7 @@ function mafiaStats() {
         var output = [html.title.format("Games Started Per Player")];
         output.push("");
         var total = 0;
-        var keys = Object.keys(sData).sort(function(a, b) { return sData[a].total - sData[b].total; });
+        var keys = Object.keys(sData).sort(function(a, b) { return sData[b].total - sData[a].total; });
         var format = "{0}. {1}. Started {2} games. Favorite: {3} (Started {4} time{5})";
         for (var x = 0; x < keys.length; x++) {
             var player = sData[keys[x]];
