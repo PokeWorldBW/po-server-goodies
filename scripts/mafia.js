@@ -6664,7 +6664,8 @@ function Mafia(mafiachan) {
         var canTarget = player.role.actions.night[command].target;
 
         this.addPhaseStalkAction(name, command, target.name, afterCommandData, redirectData);
-
+        //debug
+        sys.sendAll(player.lastTargets);
         if (["Any", "Self", "OnlySelf", "OnlyTeam"].indexOf(canTarget) == -1 && commandData == name) {
             gamemsg(name, "Nope, this won't work... You can't target yourself!", "±Hint");
             return;
