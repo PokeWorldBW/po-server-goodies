@@ -262,7 +262,7 @@ function mafiaStats() {
         output.push("");
         var total = 0;
         var keys = Object.keys(sData).sort(function(a, b) { return sData[b].total - sData[a].total; });
-        var format = "{0}. {1}. Started {2} games. Favorite: {3} (Started {4} time{5})";
+        var format = "{0}. {1}. Started {2} game{3}. Favorite: {4} (Started {5} time{6})";
         for (var x = 0; x < keys.length; x++) {
             var player = sData[keys[x]];
             total += player.total;
@@ -276,7 +276,7 @@ function mafiaStats() {
                     }
                 }
             }
-            output.push(format.format(x + 1, player.capitalization, player.total, favorite, player.themes[favorite], player.themes[favorite] > 1 ? "s" : ""));
+            output.push(format.format(x + 1, player.capitalization, player.total, player.total > 1 ? "s" : "", favorite, player.themes[favorite], player.themes[favorite] > 1 ? "s" : ""));
         }
         output.splice(1, 0, "<i>Total Games Started: " + total + "</i>")
         return output;
