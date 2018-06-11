@@ -1656,8 +1656,8 @@ function Mafia(mafiachan) {
             this.startEvent();
         } else {
             // Try to start a game from queue
-            if (this.state === "blank" && !mafia.needsUpdating && this.queueingEnabled && this.queue.length > 0) {
-                var info = this.queue.splice(0, 1);
+            if (this.state === "blank" && !mafia.needsUpdating && mafia.queueingEnabled && mafia.queue.length > 0) {
+                var info = mafia.queue.splice(0, 1);
                 this.startGame(info[0], info[1]);
             }
         }
@@ -7879,14 +7879,14 @@ function Mafia(mafiachan) {
         }
         
         if (command === "queue") {
-            if (!this.queueingEnabled) {
+            if (!mafia.queueingEnabled) {
                 msg(src, "Theme queueing is currently disabled.");
-            } else if (this.queue.length === 0) {
+            } else if (mafia.queue.length === 0) {
                 msg(src, "There are no themes in the queue.");
             } else {
                 var mess = ["*** Upcoming Mafia Themes ***"];
-                for (var i = 0; i < this.queue.length; i++) {
-                    var info = this.queue[i];
+                for (var i = 0; i < mafia.queue.length; i++) {
+                    var info = mafia.queue[i];
                     mess.push((i + 1) + ") " + info[1] + ": Added by " + info[0]);
                 }
                 dump(src, mess);
@@ -7900,7 +7900,7 @@ function Mafia(mafiachan) {
         }
         
         if (command === "enqueue" || command === "enq") {
-            if (!this.queueingEnabled) {
+            if (!mafia.queueingEnabled) {
                 msg(src, "Theme queueing is currently disabled.");
                 return;
             }
@@ -7908,7 +7908,7 @@ function Mafia(mafiachan) {
             if (!theme) {
                 msg(src, "No such theme!");
             } else {
-                this.queue.push([srcname, theme]);
+                mafia.queue.push([srcname, theme]);
                 msgAll(nonFlashing(sys.name(src)) + " added " + theme + " to the queue.");
                 //msgAll(nonFlashing(sys.name(src)) + " added " + theme + " to the Mafia theme queue.", sachannel);
             }
@@ -7916,7 +7916,7 @@ function Mafia(mafiachan) {
         }
         
         if (command === "dequeue" || command === "deq") {
-            if (!this.queueingEnabled) {
+            if (!mafia.queueingEnabled) {
                 msg(src, "Theme queueing is currently disabled.");
                 return;
             }
@@ -7925,10 +7925,10 @@ function Mafia(mafiachan) {
                 var x = parseInt(commandData, 10);
                 if (!isNaN(x)) {
                     x++;
-                    if (x < 0 || x >= this.queue.length) {
+                    if (x < 0 || x >= mafia.queue.length) {
                         msg(src, "Theme #" + x + " could not be found in the queue!");
                     } else {
-                        var t = this.queue.splice(x, 1);
+                        var t = mafia.queue.splice(x, 1);
                         msgAll(nonFlashing(sys.name(src)) + " removed " + t + " from the queue.");
                         //msgAll(nonFlashing(sys.name(src)) + " removed " + t + " from the Mafia theme queue.", sachannel);
                     }
@@ -7936,10 +7936,10 @@ function Mafia(mafiachan) {
                     msg(src, "No such theme!");
                 }
             } else {
-                for (var i = 0; i < this.queue.length; i++) {
-                    var q = this.queue[i];
+                for (var i = 0; i < mafia.queue.length; i++) {
+                    var q = mafia.queue[i];
                     if (q[i][1] === theme) {
-                        var t = this.queue.splice(i, 1);
+                        var t = mafia.queue.splice(i, 1);
                         msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the queue.");
                         //msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the Mafia theme queue.", sachannel);
                         return;
@@ -8177,17 +8177,17 @@ function Mafia(mafiachan) {
 ///        }
 
         if (command === "enablequeue") {
-            this.queueingEnabled = true;
+            mafia.queueingEnabled = true;
             msgAll(nonFlashing(sys.name(src)) + " enabled theme queueing.");
             msgAll(nonFlashing(sys.name(src)) + " enabled theme queueing in #Mafia.", sachannel);
             return;
         }
         
         if (command === "disablequeue") {
-            this.queueingEnabled = false;
+            mafia.queueingEnabled = false;
             msgAll(nonFlashing(sys.name(src)) + " disabled theme queueing.");
             msgAll(nonFlashing(sys.name(src)) + " disabled theme queueing in #Mafia.", sachannel);
-            this.queue = [];
+            mafia.queue = [];
             return;
         }
 
