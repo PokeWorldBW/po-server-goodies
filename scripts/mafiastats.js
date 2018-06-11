@@ -278,7 +278,7 @@ function mafiaStats() {
                 }
             }
             format.format();
-            output.push(format.format(x + 1, player.capitalization, player.total, favorite, player.themes[favorite]);
+            output.push(format.format(x + 1, player.capitalization, player.total, favorite, player.themes[favorite]));
         }
         output.splice(1, 0, "<i>Total Games Started: " + total + "</i>")
         return output;
