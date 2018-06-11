@@ -171,7 +171,7 @@ function Mafia(mafiachan) {
         if (mess === null) {
             mess = "";
         }
-        if (channel === undefined) {
+        if (channel === undefined || channel == null) {
             channel = mafiachan;
         }
         if ((!botName && mess.indexOf("±") === -1 && mess.indexOf(":") !== (parseInt(mess.length, 10) - 1) && mess.substring(0, Config.Mafia.max_name_length + 2).indexOf(": ") !== -1) || mess.indexOf("***") === 0) {
@@ -201,7 +201,7 @@ function Mafia(mafiachan) {
         if (mess === null) {
             mess = "";
         }
-        if (channel === undefined) {
+        if (channel === undefined || channel === null) {
             channel = mafiachan;
         }
         if ((!botName && mess.indexOf("±") === -1 && mess.indexOf(":") !== (parseInt(mess.length, 10) - 1) && mess.substring(0, Config.Mafia.max_name_length + 2).indexOf(": ") !== -1) || mess.indexOf("***") === 0) {
