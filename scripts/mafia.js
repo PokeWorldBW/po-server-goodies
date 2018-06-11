@@ -4463,7 +4463,7 @@ function Mafia(mafiachan) {
                         sys.sendAll(typeof targets);
                         sys.sendAll(targets);
                         if (Action.alternateTargets) {
-                            mafia.players[names[f]].lastTargets = targets;
+                            mafia.players[names[f]].lastTargets = targets.map(function(str) { return str.substring(0, str.indexOf(":")); });
                         }
                     }
                     continue;
@@ -4479,7 +4479,7 @@ function Mafia(mafiachan) {
                     sys.sendAll(typeof targets);
                     sys.sendAll(targets);
                     if (Action.alternateTargets) {
-                        player.lastTargets = targets;
+                        player.lastTargets = targets.map(function(str) { return str.substring(0, str.indexOf(":")); });
                     }
 
                     //Fail chance for common:Self
