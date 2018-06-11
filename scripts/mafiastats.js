@@ -1,6 +1,5 @@
 /* mafiastats.js 
     TODO:
-    Add starting stats
     Allow for past stats to be saved (currently the data deletes itself every month)
     Add more templates for easier html editing (some done)
     Add table with wins/players for specific themes
@@ -107,6 +106,30 @@ function mafiaStats() {
         data.hoursData[date.getUTCHours()].players += players;
         data.hoursData[date.getUTCHours()].gamesPlayed += 1;
     };
+    this.updateStartData = function (name, theme) {
+        var data = this.data, lname = name.toLowerCase();
+        if (!data.startData) {
+            data.startData = {};
+        }
+        if (!data.startData.hasOwnProperty(lname)) {
+            data.startData[lname] = {};
+            data.startData[lname].themes = {};
+            data.startData[lname].capitalization = name;
+            if (name === "*Event") {
+                data.startData[lname].capitalization = "<i>Event</i>";
+            }
+            if (name === "*voted") {
+                data.startData[lname].capitalization = "<i>voted</i>";
+            }
+            data.startData[lname].total = 0;
+        }
+        if (!data.startData[lname].themes.hasOwnProperty(theme)) {
+            data.startData[lname].themes[theme] = 1;
+        } else {
+            data.startData[lname].themes[theme] += 1;
+        }
+        data.startData[lname].total += 1;
+    };
     this.compileData = function () {
         var data = this.getData();
         var gamesPlayed = data[0];
@@ -125,6 +148,11 @@ function mafiaStats() {
             output.push(hourData[x]);
         }
         output.push("");
+        var startData = this.compileStartData();
+        for (var x = 0; x < startData.length; x++) {
+            out.push(startData[x]);
+        }
+        output.push("");
         var date = new Date();
         var current = date.getUTCFullYear() + "-" + ("0" + (date.getUTCMonth() + 1)).slice(-2) + "-" + ("0" + date.getUTCDate()).slice(-2) + " " + ("0" + date.getUTCHours()).slice(-2) + ":" + ("0" + date.getUTCMinutes()).slice(-2) + ":" + ("0" + date.getUTCSeconds()).slice(-2) + " (UTC)";
         output.push(html.date.format(current));
@@ -136,7 +164,7 @@ function mafiaStats() {
         var keys = Object.keys(data);
         var total = 0;
         for (var x = 0; x < keys.length; x++) {
-            if (keys[x] !== "hoursData") { //should have really planned ahead...
+            if (keys[x] !== "hoursData" && keys[x] !== "startData") { //should have really planned ahead...
                 var average = this.getAverage(keys[x]);
                 total += data[keys[x]].gamesPlayed;
                 gamesPlayed.push([keys[x], data[keys[x]].gamesPlayed, average]);
@@ -223,6 +251,36 @@ function mafiaStats() {
             var average = Math.round(hData[x].players / hData[x].gamesPlayed * 100) / 100;
             output.push("Games Played between " + x + ":00 and " + x + ":59, " + hData[x].gamesPlayed + ". Average Players: " + (average ? average : "0"));
         }
+        return output;
+    };
+    this.compileStartData = function () {
+        var sData = this.data.startData;
+        if (!sData) {
+            sData = {};
+        }
+        var output = [html.title.format("Games Started Per Player")];
+        output.push("");
+        var total = 0;
+        var keys = Object.keys(sData).sort(function(a, b) { return sData[a]["*total"] - sData[b]["*total"]; });
+        // data.startData[name][theme] = 1;
+        var format = "{0}. {1}. Started {2} games. Favorite: {3} (Started {4} times)";
+        for (var x = 0; x < keys.length; x++) {
+            var player = sData[keys[x]];
+            total += player.total;
+            var favorite = null;
+            for (var t in player.themes) {
+                if (favorite === null) {
+                    favorite = t;
+                } else {
+                    if (player.themes[t] > player.themes[favorite]) {
+                        favorite = t;
+                    }
+                }
+            }
+            format.format();
+            output.push(format.format(x + 1, player.capitalization, player.total, favorite, player.themes[favorite]);
+        }
+        output.splice(1, 0, "<i>Total Games Started: " + total + "</i>")
         return output;
     };
     this.update = function () {

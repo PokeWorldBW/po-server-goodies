@@ -1996,18 +1996,12 @@ function Mafia(mafiachan) {
 
         border = this.theme.border ? this.theme.border : DEFAULT_BORDER;
         CurrentGame = { who: src !== null ? srcname : "voted", what: themeName, when: parseInt(sys.time(), 10), playerCount: 0, winner: "" };
+        if (src === null || (src === "Event")) { // to distinguish from users whose names may be "Event" or "voted"
+            CurrentGame.who = "*" + CurrentGame.who;
+        }
 
-        if (src !== null && src !== "Event") {
-            sendChanAll("", mafiachan);
-            sendBorder();
-            if (this.theme.name == defaultThemeName) {
-                gamemsgAll(srcname + " started a game!");
-            } else {
-                gamemsgAll(srcname + " started a game with theme " + this.theme.name + (this.theme.altname ? " (" + this.theme.altname + ")" : "") + "!");
-            }
-            gamemsgAll("Type <a href=\"po:send//join\">/Join</a> to enter the game!", undefined, undefined, true);
-            sendBorder();
-            sendChanAll("", mafiachan);
+        if (src === null) {
+            mafia.mafiaStats.updateStartData("*voted", this.theme.name);
         } else if (src == "Event") {
             sendBorder();
             if (this.theme.name == defaultThemeName) {
@@ -2018,6 +2012,19 @@ function Mafia(mafiachan) {
             gamemsgAll("Type <a href=\"po:send//join\">/Join</a> to enter the game!", undefined, undefined, true);
             sendBorder();
             sendChanAll("", mafiachan);
+            mafia.mafiaStats.updateStartData("*Event", this.theme.name);
+        } else {
+            sendChanAll("", mafiachan);
+            sendBorder();
+            if (this.theme.name == defaultThemeName) {
+                gamemsgAll(srcname + " started a game!");
+            } else {
+                gamemsgAll(srcname + " started a game with theme " + this.theme.name + (this.theme.altname ? " (" + this.theme.altname + ")" : "") + "!");
+            }
+            gamemsgAll("Type <a href=\"po:send//join\">/Join</a> to enter the game!", undefined, undefined, true);
+            sendBorder();
+            sendChanAll("", mafiachan);
+            mafia.mafiaStats.updateStartData(srcname, this.theme.name);            
         }
 
         var playerson = sys.playerIds();
@@ -7659,7 +7666,7 @@ function Mafia(mafiachan) {
             var t = parseInt(sys.time(), 10);
             for (var i = 0; i < recentGames.length; ++i) {
                 var game = recentGames[i];
-                mess.push('<tr><td>' + casedtheme(game.what) + '</td><td>' + game.who + '</td><td>' + getTimeString(t - game.when) + ' ago </td><td>' + game.playerCount + '</td><td>' + (game.duration ? game.duration : "") + '</td><td>' + (game.winner ? game.winner : "") + '</td></tr>');
+                mess.push('<tr><td>' + casedtheme(game.what) + '</td><td>' + (game.who.charAt(0) === '*' ? "<i>" + game.who.substring(1) + "</i>" : game.who) + '</td><td>' + getTimeString(t - game.when) + ' ago </td><td>' + game.playerCount + '</td><td>' + (game.duration ? game.duration : "") + '</td><td>' + (game.winner ? game.winner : "") + '</td></tr>');
             }
             mess.push("</table>");
             sys.sendHtmlMessage(src, mess.join(""), channel);
