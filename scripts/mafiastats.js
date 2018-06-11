@@ -150,7 +150,7 @@ function mafiaStats() {
         output.push("");
         var startData = this.compileStartData();
         for (var x = 0; x < startData.length; x++) {
-            out.push(startData[x]);
+            output.push(startData[x]);
         }
         output.push("");
         var date = new Date();
