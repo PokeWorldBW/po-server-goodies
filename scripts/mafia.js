@@ -4459,6 +4459,9 @@ function Mafia(mafiachan) {
                             failedmsg = (Action.failmsg || "You couldn't ~Action~ this night!").replace(/~Action~/g, o.action);
                             gamemsg(names[f], failedmsg);
                         }
+                        //debug
+                        sys.sendAll(typeof targets);
+                        sys.sendAll(targets);
                         if (Action.alternateTargets) {
                             mafia.players[names[f]].lastTargets = targets;
                         }
@@ -4472,7 +4475,9 @@ function Mafia(mafiachan) {
                     player = mafia.players[names[j]];
                     var targets = mafia.getTargetsFor(player, o.action);
                     var target, t; // current target
-                    
+                    //debug
+                    sys.sendAll(typeof targets);
+                    sys.sendAll(targets);
                     if (Action.alternateTargets) {
                         player.lastTargets = targets;
                     }
