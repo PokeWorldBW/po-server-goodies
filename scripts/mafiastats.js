@@ -228,7 +228,7 @@ function mafiaStats() {
         }
         var keys = Object.keys(tData);
         var totalTeam = [];
-        var gameTotal = 0;
+        //var gameTotal = 0;
         for (var x = 0; x < keys.length; x++) {
             if (keys[x] !== "gamesPlayed") {
                 var total = 0;
@@ -238,7 +238,7 @@ function mafiaStats() {
                     totalPlayers += tKeys[y] * tData[keys[x]][tKeys[y]];
                     total += tData[keys[x]][tKeys[y]];
                 }
-                gameTotal += total;
+                //gameTotal += total;
                 var average = Math.round(totalPlayers / total * 100) / 100;
                 totalTeam.push([keys[x], total, average]);
             }
@@ -247,11 +247,11 @@ function mafiaStats() {
             return b[1] - a[1];
         });
         if (returnval) {
-            return [totalTeam, gameTotal];
+            return [totalTeam, tData.gamesPlayed];
         }
         var count = 0;
         var output = [html.title.format("Times Won")];
-        output.push("<i>Theme Played: " + gameTotal + " times</i>");
+        output.push("<i>Theme Played: " + tData.gamesPlayed + " times</i>");
         output.push("");
         for (var x = 0; x < totalTeam.length; x++) {
             output.push(++count + ": <b>" + totalTeam[x][0] + "</b>. Times Won: " + totalTeam[x][1] + ". Average Players per win: " + totalTeam[x][2]);
@@ -295,6 +295,9 @@ function mafiaStats() {
         var format = "{0}. {1}. Started {2} game{3}. Favorite: {4} (Started {5} time{6})";
         for (var x = 0; x < keys.length; x++) {
             var player = sData[keys[x]];
+            if (player.totalStarts === 0) {
+                break;
+            }
             total += player.totalStarts;
             var favorite = null;
             for (var t in player.themes) {
