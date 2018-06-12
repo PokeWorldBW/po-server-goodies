@@ -2551,6 +2551,13 @@ function Mafia(mafiachan) {
                 command = selfUsers[p][a];
                 action = role.actions.night[command];
                 list = this.findPossibleTargets(player, action.target);
+                if (action.alternateTargets && player.lastTargets.length > 0) {
+                    for (var i = list.length - 1; i >= 0; i--) { // iterate backwards to avoid messing up the loop when deleting elemnts
+                        if (player.lastTargets.indexOf(list[i]) !== -1) {
+                            list.splice(i, 1);
+                        }
+                    }
+                }
                 if (list.length > 0) {
                     limit = action.limit || 1;
                     charges = mafia.getCharges(player, "night", command);
@@ -2579,6 +2586,13 @@ function Mafia(mafiachan) {
                 command = roleUsers[p][a];
                 action = role.actions.night[command];
                 list = this.findPossibleTargets(player, action.target);
+                if (action.alternateTargets && player.lastTargets.length > 0) {
+                    for (var i = list.length - 1; i >= 0; i--) { // iterate backwards to avoid messing up the loop when deleting elemnts
+                        if (player.lastTargets.indexOf(list[i]) !== -1) {
+                            list.splice(i, 1);
+                        }
+                    }
+                }
                 if (list.length > 0) {
                     limit = action.limit || 1;
                     charges = mafia.getCharges(player, "night", command);
@@ -2616,6 +2630,13 @@ function Mafia(mafiachan) {
                 role = player.role;
                 action = role.actions.night[command];
                 list = this.findPossibleTargets(player, action.target);
+                if (action.alternateTargets && player.lastTargets.length > 0) {
+                    for (var i = list.length - 1; i >= 0; i--) { // iterate backwards to avoid messing up the loop when deleting elemnts
+                        if (player.lastTargets.indexOf(list[i]) !== -1) {
+                            list.splice(i, 1);
+                        }
+                    }
+                }
                 if (list.length > 0) {
                     limit = action.limit || 1;
                     charges = mafia.getCharges(player, "night", command);
