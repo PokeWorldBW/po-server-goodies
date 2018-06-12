@@ -369,11 +369,14 @@ function mafiaStats() {
         sys.sendMessage(src, "±Stats: For more details, check http://server.pokemon-online.eu/mafiathemes/" + theme + "_stats.html", channel);
     };
     this.getTopPlayers = function (src, channel, amount) {
+        var data = this.data.userData;
+        if (!data) {
+            data = {};
+        }
         amount = parseInt(amount, 10);
         if (amount === undefined || isNaN(amount) || amount <= 0) {
             amount = 10;
-        }
-        var data = this.data.userData;       
+        }     
         var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; });         
         sys.sendMessage(src, "", channel);
         sys.sendMessage(src, "*** TOP " + amount + " ACTIVE PLAYERS ***", channel);
