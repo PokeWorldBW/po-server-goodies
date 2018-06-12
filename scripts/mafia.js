@@ -1947,6 +1947,7 @@ function Mafia(mafiachan) {
             }
             return;
         }
+        
         var themeName = commandData == noPlayer ? defaultThemeName : this.getThemeName(commandData);
 
         // Prevent a single player from dominating the theme selections.
@@ -6654,6 +6655,7 @@ function Mafia(mafiachan) {
         var canTarget = player.role.actions.night[command].target;
 
         this.addPhaseStalkAction(name, command, target.name, afterCommandData, redirectData);
+        
         if (["Any", "Self", "OnlySelf", "OnlyTeam"].indexOf(canTarget) == -1 && commandData == name) {
             gamemsg(name, "Nope, this won't work... You can't target yourself!", "±Hint");
             return;
