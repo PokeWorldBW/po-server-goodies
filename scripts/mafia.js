@@ -24,12 +24,12 @@ function Mafia(mafiachan) {
     this.mafiaStats = require("mafiastats.js");
     this.mafiaChecker = require("mafiachecker.js");
     sys.makeDir(Config.dataDir + "mafiathemes/");
-    if (!isNaN(sys.getVal("mafia_nextEventTime"))) {
+    if (sys.getVal("mafia_defaultEventInterval") !== "" && !isNaN(sys.getVal("mafia_nextEventTime"))) {
         this.nextEventTime = +sys.getVal("mafia_nextEventTime");
     } else {
         this.nextEventTime = new Date().getTime() + 1 * 60 * 60 * 1000;
     }
-    if (!isNaN(sys.getVal("mafia_defaultEventInterval"))) {
+    if (sys.getVal("mafia_defaultEventInterval") !== "" && !isNaN(sys.getVal("mafia_defaultEventInterval"))) {
         this.defaultEventInterval = +sys.getVal("mafia_defaultEventInterval");
     } else {
         this.defaultEventInterval = new Date().getTime() + 1 * 60 * 60 * 1000;
@@ -8384,18 +8384,19 @@ function Mafia(mafiachan) {
                     break;
                 case "time":
                     if (!isNaN(data[1])) {
-                        this.nextEventTime = new Date().getTime() + 1000 * data[1];
+                        this.nextEventTime = new Date().getTime() + 1000 * (+data[1]);
                         sys.saveVal("mafia_nextEventTime", this.nextEventTime);
                         //this.showEvent; // this doesn't exist???
                     }
                     break;
                 case "interval":
-                    if (!isNaN(data[1]) /*&& data[1] >= 1800*/) {
-                        this.defaultEventInterval = data[1] * 1000;
-                        sys.saveVal("mafia_defaultEventInterval", data[1] * 1000);
-                        mafiabot.sendHtmlMessage(src, "Event interval set to <b>" + getTimeString(data[1]) + "</b>", channel);
+                    var interval = +data[1];
+                    if (!isNaN(data[1]) && interval > 0) {
+                        this.defaultEventInterval = interval * 1000;
+                        sys.saveVal("mafia_defaultEventInterval", interval * 1000);
+                        mafiabot.sendHtmlMessage(src, "Event interval set to <b>" + getTimeString(interval) + "</b>", channel);
                     } else {
-                        msg(src, "Event interval must be at least 30 minutes.", channel);
+                        msg(src, "Event interval must be a positive number.", channel);
                     }
                     break;
                 default:
