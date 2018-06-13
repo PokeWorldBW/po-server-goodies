@@ -3289,7 +3289,7 @@ function Mafia(mafiachan) {
             if (p === name) {
                 continue;
             }
-            if (!(mafia.players[p].role.actions.hasOwnProperty("voteHax"))) {
+            if (!mafia.players[p].role.actions.hasOwnProperty("voteHax")) {
                 continue;
             }
             var voteHaxData = mafia.players[p].role.actions.voteHax,
@@ -3297,7 +3297,7 @@ function Mafia(mafiachan) {
                 haxperc = voteHaxData.chance ? voteHaxData.chance : 1;
                 var avoid = player.role.actions.avoidVoteHax;
             if (Array.isArray(avoid)) {
-                if (avoid.indexOf(mafia.players[p].role) !== -1) {
+                if (avoid.indexOf(mafia.players[p].role.role) !== -1) {
                     avoid = true;
                 }
                 else {
@@ -3305,7 +3305,7 @@ function Mafia(mafiachan) {
                 }
             }
             if (haxperc > Math.random() && (!avoid)) {
-                gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[p].role)));
+                gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[p].role.role)));
             }
         }
 
