@@ -1419,7 +1419,7 @@ function Mafia(mafiachan) {
                 if (charges !== undefined && charges === 0) {
                     continue;
                 }
-                var recharge = mafia.getRecharge(player, state, commandName);
+                var recharge = mafia.getRecharge(player, state, c);
                 if (recharge !== undefined && recharge > 0) {
                     continue;
                 }
