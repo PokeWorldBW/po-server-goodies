@@ -178,7 +178,7 @@ function Mafia(mafiachan) {
             sys.sendMessage(id, mess, channel);
         } else {
             var colon = mess.indexOf(": ");
-            if ((Config.Mafia.max_name_length + 2) >= colon || mess.charAt(0) === '±') {
+            if ((Config.Mafia.max_name_length + 2) >= colon || mess.charAt(0) === "±") {
                 if (!botName && colon !== -1) {
                     botName = mess.substring(0, colon);
                     mess = mess.slice(colon + 2);
@@ -208,7 +208,7 @@ function Mafia(mafiachan) {
             sys.sendAll(mess, channel);
         } else {
             var colon = mess.indexOf(": ");
-            if ((Config.Mafia.max_name_length + 2) >= colon || mess.charAt(0) === '±') {
+            if ((Config.Mafia.max_name_length + 2) >= colon || mess.charAt(0) === "±") {
                 if (!botName && colon !== -1) {
                     botName = mess.substring(0, colon);
                     mess = mess.slice(colon + 2);
