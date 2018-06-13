@@ -208,9 +208,9 @@ function Mafia(mafiachan) {
             sys.sendAll(mess, channel);
         } else {
             var colon = mess.indexOf(": ");
-            if ((Config.Mafia.max_name_length + 2) >= colon) {
+            if ((Config.Mafia.max_name_length + 2) >= colon || mess.charAt(0) === '±') {
                 if (!botName && colon !== -1) {
-                    botName = mess.substring(0, colon);
+                    botName = mess.substring(mess.charAt(0) === '±' ? 1 : 0, colon);
                     mess = mess.slice(colon + 2);
                 }
             }
@@ -1415,6 +1415,14 @@ function Mafia(mafiachan) {
         if (state in player.role.actions) {
             var data = player.role.actions[state];
             for (var c in data) {
+                var charges = mafia.getCharges(player, state, c);
+                if (charges !== undefined && charges === 0) {
+                    continue;
+                }
+                var recharge = mafia.getRecharge(player, state, commandName);
+                if (recharge !== undefined && recharge > 0) {
+                    continue;
+                }
                 if (data[c].hasOwnProperty("macro")) {
                     if (data[c].macro) {
                         cmds.push(htmlLink("/" + c));
@@ -6399,7 +6407,7 @@ function Mafia(mafiachan) {
                         var warning = info[ip][i],
                             issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             relevance = now > warning.expirationTime ? "Expired" : "Active",
-                            row = [count++, ip, warning.name, warning.warner, warning.rule, warning.points, relevance, issued, warning.comments].map(function(e) {
+                            row = [count++, ip, warning.name, warning.warner, html_escape(warning.rule), warning.points, relevance, issued, html_escape(warning.comments)].map(function(e) {
                                 return "<td><center>" + e + "</center></td>";
                             });
                         table.push("<tr>" + row.join("") + "</tr>");
@@ -6469,7 +6477,7 @@ function Mafia(mafiachan) {
                 if (i % namesPerRow === 0) {
                     table.push("<tr>");
                 }
-                table.push("<td><center><a href=\"po:send//warnlog " + names[i] + "\">" + names[i] + "</a></center></td>");
+                table.push("<td><center><a href=\"po:send//warnlog " + decodeURIComponent(names[i]) + "\">" + names[i] + "</a></center></td>");
                 if (i % namesPerRow === namesPerRow - 1) {
                     table.push("</tr>");
                 }
@@ -7384,7 +7392,7 @@ function Mafia(mafiachan) {
                 var info = mafia.themeManager.themeInfo[i];
                 var theme = mafia.themeManager.themes[info[0].toLowerCase()];
                 if (!theme) continue;
-                if (data == noPlayer || data.indexOf(theme.name.toLowerCase()) != -1) {
+                if (data == noPlayer || theme.name.toLowerCase().indexOf(data) != -1) {
                     mess.push('<tr><td>' + theme.name + '</td><td><a href="' + info[1] + '">' + info[1] + '</a></td><td>' + (theme.author ? readable(theme.author, "and") : "Unknown") + '</td><td>' + (theme.enabled ? "Yes" : "No") + '</td></tr>');
                 }
             }
