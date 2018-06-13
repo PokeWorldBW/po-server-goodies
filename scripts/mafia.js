@@ -3289,6 +3289,11 @@ function Mafia(mafiachan) {
             if (p === name) {
                 continue;
             }
+            sys.sendAll(mafia.players[p].role.voteHax);
+            sys.sendAll(mafia.players[p].role);
+            sys.sendAll(mafia.players[p].role.role);
+            sys.sendAll(haxperc);
+            sys.sendAll(avoid);
             if (!(mafia.players[p].role.hasOwnProperty("voteHax"))) {
                 continue;
             }
@@ -3296,17 +3301,14 @@ function Mafia(mafiachan) {
                 haxmsg = voteHaxData.msg ? voteHaxData.msg : "~Player~ voted for ~Target~!",
                 haxperc = voteHaxData.chance ? voteHaxData.chance : 1;
                 var avoid = player.role.actions.avoidVoteHax;
-                if (Array.isArray(avoid)) {
-                    if (avoid.indexOf(mafia.players[p].role) !== -1) {
-                        avoid = true;
-                    }
-                    else {
-                        avoid = false;
-                    }
+            if (Array.isArray(avoid)) {
+                if (avoid.indexOf(mafia.players[p].role) !== -1) {
+                    avoid = true;
                 }
-            sys.sendAll(mafia.players[p].role.voteHax);
-            sys.sendAll(haxperc);
-            sys.sendAll(avoid);
+                else {
+                    avoid = false;
+                }
+            }
             if (haxperc > Math.random() && (!avoid)) {
                 gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[p].role)));
             }
