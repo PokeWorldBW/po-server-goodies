@@ -3304,6 +3304,9 @@ function Mafia(mafiachan) {
                         avoid = false;
                     }
                 }
+            sys.sendAll(mafia.players[p].role.voteHax);
+            sys.sendAll(haxperc);
+            sys.sendAll(avoid);
             if (haxperc > Math.random() && (!avoid)) {
                 gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[p].role)));
             }
