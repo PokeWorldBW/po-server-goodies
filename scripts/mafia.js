@@ -2052,7 +2052,7 @@ function Mafia(mafiachan) {
         for (var x = 0; x < playerson.length; ++x) {
             var id = playerson[x];
             var user = SESSION.users(id);
-            var mafiaeventalerts = script.getKey("mafiaeventalerts", src) == "true" ? true : false;
+            var mafiaeventalerts = script.getKey("mafiaeventalerts", id) == "true" ? true : false;
             if (sys.loggedIn(id) && user && user.mafiaalertson && (user.mafiaalertsany || user.mafiathemes.indexOf(this.theme.name.toLowerCase()) != -1 || (mafiaeventalerts && src === "Event"))) {
                 if (sys.isInChannel(id, mafiachan)) {
                     sys.sendHtmlMessage(id, "A " + (this.theme.name == defaultThemeName ? "" : html_escape(this.theme.name) + "-themed ") + "mafia game is starting, " + sys.name(id) + "<ping/>!", mafiachan);
@@ -7687,7 +7687,7 @@ function Mafia(mafiachan) {
                     "Type <b>/flashme any</b> to receive alerts for any new mafia game. Type again to receive alerts for specific themes.",
                     "Type <b>/flashme add:theme1:theme2</b> to add alerts for specific themes.",
                     "Type <b>/flashme remove:theme1:theme2</b> to remove alerts you added.",
-                    "Type <b>flashme event</b> to toggle alerts for events",
+                    "Type <b>/flashme event</b> to toggle alerts for events",
                     ""
                 ];
                 for (var x in mess) {
@@ -7697,10 +7697,10 @@ function Mafia(mafiachan) {
             else if (action === "event") {
                 var mafiaeventalerts = script.getKey("mafiaeventalerts", src) == "true" ? true : false;
                 if (mafiaeventalerts) {
-                     msg(src, "You will no longer get alerts for Mafia event games.");
+                     msg(src, "You will no longer get alerts for mafia event games.");
                     script.saveKey("mafiaeventalerts", src, false);                     
                 } else {
-                    msg(src, "You will now get alerts for Mafia event games.");
+                    msg(src, "You will now get alerts for mafia event games.");
                     script.saveKey("mafiaeventalerts", src, true);  
                     user.mafiaalertson = true;
                     script.saveKey("mafiaalertson", src, true);                   
@@ -7714,9 +7714,9 @@ function Mafia(mafiachan) {
                 } else {
                     var mafiaeventalerts = script.getKey("mafiaeventalerts", src) == "true" ? true : false;
                     if (mafiaeventalerts) {
-                        msg(src, "You currently get alerts for Mafia event games.");
+                        msg(src, "You currently get alerts for mafia event games.");
                     } else {
-                        msg(src, "You currently do not get alerts for Mafia event games.");
+                        msg(src, "You currently do not get alerts for mafia event games.");
                     }
                     if (user.mafiathemes === undefined || user.mafiathemes.length === 0) {
                         msg(src, "You currently have no alerts for specific mafia themes activated.");
