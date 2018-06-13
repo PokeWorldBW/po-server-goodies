@@ -1784,8 +1784,9 @@ function Mafia(mafiachan) {
         var srcname = sys.name(src);
         if (mafia.needsUpdating) {
             if (src !== null && typeof src === "number") {
-                gamemsg(srcname, "Mafia is updated, please be patient.");
+                gamemsg(srcname, "Mafia is updating, please be patient.");
             }
+            return;
         }
         if (SESSION.channels(mafiachan).muteall && !SESSION.channels(mafiachan).isChannelOperator(src) && sys.auth(src) === 0) {
             gamemsg(srcname, "You can't start a voting when the channel is silenced.");
@@ -1941,8 +1942,9 @@ function Mafia(mafiachan) {
         var srcname = typeof src === "string" ? src : sys.name(src);
         if (mafia.needsUpdating) {
             if (src !== null && typeof src === "number") {
-                gamemsg(srcname, "Mafia is updated, please be patient.");
+                gamemsg(srcname, "Mafia is updating, please be patient.");
             }
+            return;
         }
         if (src !== null && typeof src == "number" && SESSION.channels(mafiachan).muteall && !SESSION.channels(mafiachan).isChannelOperator(src) && sys.auth(src) === 0) {
             gamemsg(srcname, "You can't start a game when the channel is silenced.");
