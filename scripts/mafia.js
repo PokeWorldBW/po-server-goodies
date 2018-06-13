@@ -2052,7 +2052,8 @@ function Mafia(mafiachan) {
         for (var x = 0; x < playerson.length; ++x) {
             var id = playerson[x];
             var user = SESSION.users(id);
-            if (sys.loggedIn(id) && user && user.mafiaalertson && (user.mafiaalertsany || user.mafiathemes.indexOf(this.theme.name.toLowerCase()) != -1)) {
+            var mafiaeventalerts = script.getKey("mafiaeventalerts", src) == "true" ? true : false;
+            if (sys.loggedIn(id) && user && user.mafiaalertson && (user.mafiaalertsany || user.mafiathemes.indexOf(this.theme.name.toLowerCase()) != -1 || (mafiaeventalerts && src === "Event"))) {
                 if (sys.isInChannel(id, mafiachan)) {
                     sys.sendHtmlMessage(id, "A " + (this.theme.name == defaultThemeName ? "" : html_escape(this.theme.name) + "-themed ") + "mafia game is starting, " + sys.name(id) + "<ping/>!", mafiachan);
                     continue;
@@ -7640,9 +7641,8 @@ function Mafia(mafiachan) {
                 if (themesAdded.length > 0) {
                     msg(src, "Added alert for the themes: " + readable(themesAdded, "and") + ". ");
                     script.saveKey("mafiathemes", src, user.mafiathemes.join("*"));
-
                     user.mafiaalertsany = false;
-                    msg(src, "You will get alerts for specific themes only. To only receive alerts for any theme, use /flashme any.");
+                    msg(src, "You will get alerts for specific themes only. To receive alerts for any theme, use /flashme any.");
                     script.saveKey("mafiaalertsany", src, user.mafiaalertsany);
                 }
                 if (repeatedThemes.length > 0) {
@@ -7681,27 +7681,48 @@ function Mafia(mafiachan) {
             else if (action == "help") {
                 var mess = [
                     "",
-                    "<b>How to use the Flash Me:</b>",
+                    "<b>How to use Flash Me:</b>",
                     "Type <b>/flashme</b> to see your current alerts.",
                     "Type <b>/flashme on</b> or <b>/flashme off</b> to turn your alerts on or off.",
                     "Type <b>/flashme any</b> to receive alerts for any new mafia game. Type again to receive alerts for specific themes.",
                     "Type <b>/flashme add:theme1:theme2</b> to add alerts for specific themes.",
                     "Type <b>/flashme remove:theme1:theme2</b> to remove alerts you added.",
+                    "Type <b>flashme event</b> to toggle alerts for events",
                     ""
                 ];
                 for (var x in mess) {
                     sys.sendHtmlMessage(src, mess[x], mafiachan);
                 }
             }
+            else if (action === "event") {
+                var mafiaeventalerts = script.getKey("mafiaeventalerts", src) == "true" ? true : false;
+                if (mafiaeventalerts) {
+                     msg(src, "You will no longer get alerts for Mafia event games.");
+                    script.saveKey("mafiaeventalerts", src, false);                     
+                } else {
+                    msg(src, "You will now get alerts for Mafia event games.");
+                    script.saveKey("mafiaeventalerts", src, true);  
+                    user.mafiaalertson = true;
+                    script.saveKey("mafiaalertson", src, true);                   
+                }           
+            }
             else {
                 if (!user.mafiaalertson) {
                     msg(src, "You currently have /flashme deactivated (you can enable it by typing /flashme on).");
                 } else if (user.mafiaalertsany) {
                     msg(src, "You currently get alerts for any theme. ");
-                } else if (user.mafiathemes === undefined || user.mafiathemes.length === 0) {
-                    msg(src, "You currently have no alerts for mafia themes activated.");
                 } else {
-                    msg(src, "You currently get alerts for the following themes: " + readable(user.mafiathemes.sort(), "and") + ". ");
+                    var mafiaeventalerts = script.getKey("mafiaeventalerts", src) == "true" ? true : false;
+                    if (mafiaeventalerts) {
+                        msg(src, "You currently get alerts for Mafia event games.");
+                    } else {
+                        msg(src, "You currently do not get alerts for Mafia event games.");
+                    }
+                    if (user.mafiathemes === undefined || user.mafiathemes.length === 0) {
+                        msg(src, "You currently have no alerts for specific mafia themes activated.");
+                    } else {
+                        msg(src, "You currently get alerts for the following themes: " + readable(user.mafiathemes.sort(), "and") + ". ");
+                    }
                 }
                 msg(src, "To learn how to set alerts, type /flashme help");
             }
