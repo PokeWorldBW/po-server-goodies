@@ -1782,6 +1782,11 @@ function Mafia(mafiachan) {
     };
     this.userVote = function (src, commandData) {
         var srcname = sys.name(src);
+        if (mafia.needsUpdating) {
+            if (src !== null && typeof src === "number") {
+                gamemsg(srcname, "Mafia is updated, please be patient.");
+            }
+        }
         if (SESSION.channels(mafiachan).muteall && !SESSION.channels(mafiachan).isChannelOperator(src) && sys.auth(src) === 0) {
             gamemsg(srcname, "You can't start a voting when the channel is silenced.");
             return;
@@ -1934,7 +1939,12 @@ function Mafia(mafiachan) {
     };
     this.startGame = function (src, commandData) {
         var srcname = typeof src === "string" ? src : sys.name(src);
-        if (typeof src == "number" && SESSION.channels(mafiachan).muteall && !SESSION.channels(mafiachan).isChannelOperator(src) && sys.auth(src) === 0) {
+        if (mafia.needsUpdating) {
+            if (src !== null && typeof src === "number") {
+                gamemsg(srcname, "Mafia is updated, please be patient.");
+            }
+        }
+        if (src !== null && typeof src == "number" && SESSION.channels(mafiachan).muteall && !SESSION.channels(mafiachan).isChannelOperator(src) && sys.auth(src) === 0) {
             gamemsg(srcname, "You can't start a game when the channel is silenced.");
             return;
         }
@@ -1946,7 +1956,7 @@ function Mafia(mafiachan) {
             }
             SESSION.users(src).mafia_start = now;
         }
-        if (this.state != "blank" && typeof src == "number") {
+        if (this.state != "blank" && src !== null && typeof src == "number") {
             gamemsg(srcname, "A game is going on. Wait until it's finished before trying to start another one");
             if (this.state == "entry") {
                 gamemsg(srcname, "You can join the current game by typing <a href=\"po:send//join\">/join</a>!", undefined, mafiachan, true);
@@ -5962,6 +5972,7 @@ function Mafia(mafiachan) {
                 }
             } else {
                 gamemsgAll("Really? No votes, so no game.");
+                runUpdate();
             }
         }
     };
