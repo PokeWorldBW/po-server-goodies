@@ -3305,7 +3305,7 @@ function Mafia(mafiachan) {
                 }
             }
             if (haxperc > Math.random() && (!avoid)) {
-                gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(mafia.players[p].role.role)));
+                gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(player.role.role)));
             }
         }
 
