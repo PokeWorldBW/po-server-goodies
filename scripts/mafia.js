@@ -3289,15 +3289,10 @@ function Mafia(mafiachan) {
             if (p === name) {
                 continue;
             }
-            sys.sendAll(mafia.players[p].role.voteHax);
-            sys.sendAll(mafia.players[p].role);
-            sys.sendAll(mafia.players[p].role.role);
-            sys.sendAll(haxperc);
-            sys.sendAll(avoid);
-            if (!(mafia.players[p].role.hasOwnProperty("voteHax"))) {
+            if (!(mafia.players[p].role.actions.hasOwnProperty("voteHax"))) {
                 continue;
             }
-            var voteHaxData = mafia.players[p].role.voteHax,
+            var voteHaxData = mafia.players[p].role.actions.voteHax,
                 haxmsg = voteHaxData.msg ? voteHaxData.msg : "~Player~ voted for ~Target~!",
                 haxperc = voteHaxData.chance ? voteHaxData.chance : 1;
                 var avoid = player.role.actions.avoidVoteHax;
