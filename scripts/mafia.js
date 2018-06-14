@@ -3295,16 +3295,11 @@ function Mafia(mafiachan) {
             var voteHaxData = mafia.players[p].role.actions.voteHax,
                 haxmsg = voteHaxData.msg ? voteHaxData.msg : "~Player~ voted for ~Target~!",
                 haxperc = voteHaxData.chance ? voteHaxData.chance : 1;
-                var avoid = player.role.actions.avoidVoteHax;
-            if (Array.isArray(avoid)) {
-                if (avoid.indexOf(mafia.players[p].role.role) !== -1) {
-                    avoid = true;
-                }
-                else {
-                    avoid = false;
-                }
+            var avoid = false, avoidVoteHax = player.role.actions.avoidVoteHax;
+            if (Array.isArray(avoidVoteHax)) {
+                avoid = avoidVoteHax.indexOf(mafia.players[p].role.role) !== -1;
             }
-            if (haxperc > Math.random() && (!avoid)) {
+            if (haxperc > Math.random() && !avoid) {
                 gamemsg(p, haxmsg.replace(/~Target~/g, commandData).replace(/~Player~/g, name).replace(/~Role~/g, colorizeRole(player.role.role)));
             }
         }
