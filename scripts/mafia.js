@@ -8011,11 +8011,10 @@ function Mafia(mafiachan) {
             if (!theme) {
                 var x = parseInt(commandData, 10);
                 if (!isNaN(x)) {
-                    x--;
-                    if (x < 0 || x >= mafia.queue.length) {
+                    if (x < 1 || x > mafia.queue.length) {
                         msg(src, "Theme #" + x + " could not be found in the queue!");
                     } else {
-                        var t = mafia.queue.splice(x, 1)[0];
+                        var t = mafia.queue.splice(x - 1, 1)[0];
                         msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the queue.");
                         //msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the Mafia theme queue.", sachannel);
                     }
@@ -8023,10 +8022,9 @@ function Mafia(mafiachan) {
                     msg(src, "No such theme!");
                 }
             } else {
-                sys.sendAll("THEME: " + theme);
+                theme = casedtheme(theme);
                 for (var i = 0; i < mafia.queue.length; i++) {
                     var q = mafia.queue[i];
-                    sys.sendAll(q + " " + q[0] + " " + q[1] + " " + q.length);
                     if (q[1] === theme) {
                         var t = mafia.queue.splice(i, 1)[0];
                         msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the queue.");
@@ -8425,6 +8423,7 @@ function Mafia(mafiachan) {
                     if (!isNaN(data[1])) {
                         this.nextEventTime = new Date().getTime() + 60000 * (+data[1]);
                         sys.saveVal("mafia_nextEventTime", this.nextEventTime);
+                        mafiabot.sendHtmlMessage(src, "The next event will start in <b>" + getTimeString(60 * (+data[1])) + "</b>", channel);
                         //this.showEvent; // this doesn't exist???
                     }
                     break;
