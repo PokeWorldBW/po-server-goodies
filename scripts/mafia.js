@@ -32,7 +32,7 @@ function Mafia(mafiachan) {
     if (sys.getVal("mafia_defaultEventInterval") !== "" && !isNaN(sys.getVal("mafia_defaultEventInterval"))) {
         this.defaultEventInterval = +sys.getVal("mafia_defaultEventInterval");
     } else {
-        this.defaultEventInterval = new Date().getTime() + 1 * 60 * 60 * 1000;
+        this.defaultEventInterval = 1 * 60 * 60 * 1000;
     }
     if (sys.getVal("mafia_eventQueue") !== "") {
         this.eventQueue = sys.getVal("mafia_eventQueue").split(",");
@@ -8011,7 +8011,7 @@ function Mafia(mafiachan) {
             if (!theme) {
                 var x = parseInt(commandData, 10);
                 if (!isNaN(x)) {
-                    x++;
+                    x--;
                     if (x < 0 || x >= mafia.queue.length) {
                         msg(src, "Theme #" + x + " could not be found in the queue!");
                     } else {
@@ -8023,8 +8023,10 @@ function Mafia(mafiachan) {
                     msg(src, "No such theme!");
                 }
             } else {
+                sys.sendAll("THEME: " + theme);
                 for (var i = 0; i < mafia.queue.length; i++) {
                     var q = mafia.queue[i];
+                    sys.sendAll(q + " " + q[0] + " " + q[1] + " " + q.length);
                     if (q[1] === theme) {
                         var t = mafia.queue.splice(i, 1)[0];
                         msgAll(nonFlashing(sys.name(src)) + " removed " + t[1] + " from the queue.");
@@ -8421,13 +8423,13 @@ function Mafia(mafiachan) {
                     break;
                 case "time":
                     if (!isNaN(data[1])) {
-                        this.nextEventTime = new Date().getTime() + 1000 * (+data[1]);
+                        this.nextEventTime = new Date().getTime() + 60000 * (+data[1]);
                         sys.saveVal("mafia_nextEventTime", this.nextEventTime);
                         //this.showEvent; // this doesn't exist???
                     }
                     break;
                 case "interval":
-                    var interval = +data[1];
+                    var interval = +data[1] * 60;
                     if (!isNaN(data[1]) && interval > 0) {
                         this.defaultEventInterval = interval * 1000;
                         sys.saveVal("mafia_defaultEventInterval", interval * 1000);
