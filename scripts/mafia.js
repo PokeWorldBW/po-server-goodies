@@ -4555,9 +4555,6 @@ function Mafia(mafiachan) {
                         var pos2 = targetName.indexOf('@');
                         var pos3 = targetName.indexOf('/');
                         var userInputAction = targetName.substring(pos3 + 1); //keeps track of who input the action
-                        sys.sendAll("userInputAction: '" + userInputAction + "'");
-                        sys.sendAll("player.name: '" + player.name + "'");
-                        sys.sendAll(userInputAction === player.name);
                         var targetName = targetName.substring(0, pos3);
                         var targetData, targetRedirect;
                         if (pos === -1) {
@@ -4735,12 +4732,12 @@ function Mafia(mafiachan) {
                                         mafia.removeTargets(target);
                                         continue outer;
                                     }
-                                    else if ((targetMode.mode == "killattacker" || targetMode.mode == "killattackerevenifprotected") && bp.indexOf("killattacker") === -1 && userInputAction === player.name) { // revenge the person that set the kill
+                                    else if ((targetMode.mode == "killattacker" || targetMode.mode == "killattackerevenifprotected") && bp.indexOf("killattacker") === -1) {
                                         revenge = true;
                                         if (targetMode.msg)
                                             revengetext = targetMode.msg;
                                     }
-                                    else if ((targetMode.mode == "poisonattacker" || targetMode.mode == "poisonattackerevenifprotected") && bp.indexOf("poisonattacker") === -1 && userInputAction === player.name) {
+                                    else if ((targetMode.mode == "poisonattacker" || targetMode.mode == "poisonattackerevenifprotected") && bp.indexOf("poisonattacker") === -1) {
                                         poisonrevenge = targetMode.count || 2;
                                         poisonDeadMessage = targetMode.poisonDeadMessage;
                                         if (targetMode.msg)
@@ -5363,17 +5360,18 @@ function Mafia(mafiachan) {
                             }
 
                             //Post-Action effects here
+                            var revengePlayer = mafia.players[userInputAction];
                             if (revenge) {
-                                gamemsg(player.name, revengetext);
-                                mafia.kill(player);
+                                gamemsg(revengePlayer.name, revengetext);
+                                mafia.kill(revengePlayer);
                                 nightkill = true;
                                 continue outer;
                             } else if (poisonrevenge > 0) {
-                                if (player.poisoned === undefined || player.poisonCount - player.poisoned >= poisonrevenge) {
-                                    gamemsg(player.name, poisonrevengetext);
-                                    player.poisoned = 1;
-                                    player.poisonCount = poisonrevenge;
-                                    player.poisonDeadMessage = poisonDeadMessage;
+                                if (revengePlayer.poisoned === undefined || revengePlayer.poisonCount - revengePlayer.poisoned >= poisonrevenge) {
+                                    gamemsg(revengePlayer.name, poisonrevengetext);
+                                    revengePlayer.poisoned = 1;
+                                    revengePlayer.poisonCount = poisonrevenge;
+                                    revengePlayer.poisonDeadMessage = poisonDeadMessage;
                                 }
                             }
                         }
