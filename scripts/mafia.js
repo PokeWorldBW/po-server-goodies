@@ -4555,6 +4555,8 @@ function Mafia(mafiachan) {
                         var pos2 = targetName.indexOf('@');
                         var pos3 = targetName.indexOf('/');
                         var userInputAction = targetName.substring(pos3); //keeps track of who input the action
+                        sys.sendAll("userInputAction: '" + userInputAction + "'");
+                        sys.sendAll("player.name: '" + player.name + "'");
                         var targetName = targetName.substring(0, pos3);
                         var targetData, targetRedirect;
                         if (pos === -1) {
