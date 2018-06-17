@@ -4554,7 +4554,7 @@ function Mafia(mafiachan) {
                         var pos = targetName.indexOf(':');
                         var pos2 = targetName.indexOf('@');
                         var pos3 = targetName.indexOf('/');
-                        //var userInputAction = targetName.substring(pos3); //keeps track of who input the action
+                        var userInputAction = targetName.substring(pos3); //keeps track of who input the action
                         var targetName = targetName.substring(0, pos3);
                         var targetData, targetRedirect;
                         if (pos === -1) {
@@ -4732,12 +4732,12 @@ function Mafia(mafiachan) {
                                         mafia.removeTargets(target);
                                         continue outer;
                                     }
-                                    else if ((targetMode.mode == "killattacker" || targetMode.mode == "killattackerevenifprotected") && bp.indexOf("killattacker") === -1) {
+                                    else if ((targetMode.mode == "killattacker" || targetMode.mode == "killattackerevenifprotected") && bp.indexOf("killattacker") === -1 && userInputAction === player.name) { // revenge the person that set the kill
                                         revenge = true;
                                         if (targetMode.msg)
                                             revengetext = targetMode.msg;
                                     }
-                                    else if ((targetMode.mode == "poisonattacker" || targetMode.mode == "poisonattackerevenifprotected") && bp.indexOf("poisonattacker") === -1) {
+                                    else if ((targetMode.mode == "poisonattacker" || targetMode.mode == "poisonattackerevenifprotected") && bp.indexOf("poisonattacker") === -1 && userInputAction === player.name) {
                                         poisonrevenge = targetMode.count || 2;
                                         poisonDeadMessage = targetMode.poisonDeadMessage;
                                         if (targetMode.msg)
@@ -5336,28 +5336,28 @@ function Mafia(mafiachan) {
                                 var disguisemsg = ("disguisemsg" in Action ? Action.disguisemsg : "You disguised your target (~Target~) as ~Disguise~!").replace(/~Disguise~/g, mafia.theme.trrole(target.disguiseRole));
                                 gamemsg(player.name, formatArgs(disguisemsg, nightargs), undefined, undefined, true);
                             }
-                    if ("addVote" in Action && mafia.isInGame(target.name) && targets.length > 0) {
-                        var dur = Math.floor("addVoteDuration" in Action ? Action.addVoteDuration : -1);
-                        target.addVote = {
-                            "duration": dur,
-                            "value": Action.addVote
-                        };
-                    }
-                    if ("addVoteshield" in Action && mafia.isInGame(target.name) && targets.length > 0) {
-                        var dur = Math.floor("addVoteshieldDuration" in Action ? Action.addVoteshieldDuration : -1);
-                        target.addVoteshield = {
-                            "duration": dur,
-                            "value": Action.addVoteshield
-                        };
-                    }
-                    if ("suicideChance" in Action && mafia.isInGame(player.name) && targets.length > 0) {
-                        if (Action.suicideChance > Math.random()) {
-                            pmsg = ("suicidemsg" in Action ? Action.suicidemsg : "You died while trying to ~Action~ during this night!").replace(/~Action~/g, o.action);
-                            gamemsg(player.name, pmsg);
-                            mafia.kill(player);
-                            nightkill = true;
-                        }
-                    }
+                            if ("addVote" in Action && mafia.isInGame(target.name) && targets.length > 0) {
+                                var dur = Math.floor("addVoteDuration" in Action ? Action.addVoteDuration : -1);
+                                target.addVote = {
+                                    "duration": dur,
+                                    "value": Action.addVote
+                                };
+                            }
+                            if ("addVoteshield" in Action && mafia.isInGame(target.name) && targets.length > 0) {
+                                var dur = Math.floor("addVoteshieldDuration" in Action ? Action.addVoteshieldDuration : -1);
+                                target.addVoteshield = {
+                                    "duration": dur,
+                                    "value": Action.addVoteshield
+                                };
+                            }
+                            if ("suicideChance" in Action && mafia.isInGame(player.name) && targets.length > 0) {
+                                if (Action.suicideChance > Math.random()) {
+                                    pmsg = ("suicidemsg" in Action ? Action.suicidemsg : "You died while trying to ~Action~ during this night!").replace(/~Action~/g, o.action);
+                                    gamemsg(player.name, pmsg);
+                                    mafia.kill(player);
+                                    nightkill = true;
+                                }
+                            }
 
                             //Post-Action effects here
                             if (revenge) {
