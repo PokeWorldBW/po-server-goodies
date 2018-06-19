@@ -4599,7 +4599,7 @@ function Mafia(mafiachan) {
                                 if ("pinpointBroadcastFailMsg" in Action) {
                                     pinpointBroadcastFailMsg = Action.pinpointBroadcastFailMsg.replace(/~Command~/g, o.action).replace(/~Target~/g, targetName).replace(/~GuessedRole~/g, targetData);
                                     gamemsgAll(pinpointBroadcastFailMsg);
-                                    }
+                                }
                                 continue;
                             }
                         }
@@ -6738,9 +6738,9 @@ function Mafia(mafiachan) {
                         isRoleInTheme = true;
                         afterCommandData = mafia.theme.roles[roleName].translation;
                         break;
-                        }
                     }
                 }
+            }
             if (!isRoleInTheme) {
                 gamemsg(name, "Please supply a valid role name! The format is /" + command + ' [name]:[role name].' );
                 return;
@@ -6903,8 +6903,8 @@ function Mafia(mafiachan) {
 
     this.commands = {
         user: ["/mafiaadmins: To get a list of current Mafia Admins.",
-            "/start: Starts a Game of Mafia with specified theme. Can also use /starttheme.",
-            "/vote: Start voting for a new game theme or vote! Can also use /votetheme.",
+            "/start: To starts a Game of Mafia with specified theme. Can also use /starttheme.",
+            "/vote: To start voting for a new game theme or vote! Can also use /votetheme.",
             "/join: To join a Mafia game.",
             "/unjoin: To unjoin a Mafia game during signups.",
             "/help: For info on how to win in a game.",
@@ -6931,12 +6931,12 @@ function Mafia(mafiachan) {
             "/disable: To disable a Mafia Theme. Only the Theme Author or an MA can disable a theme.",
             "/disabledc: To opt out of dead chat for the current game only. Use /enabledc to re-enable.",
             "/seedisabled: Lists all disabled themes (excluding non-peak).",
-            "/nonpeaks: Lists all non-peak themes. Also states the status of non-peak themes as a whole.",
-            "/eventthemes: Lists the event theme pool.",
-            "/queue: Shows the Mafia Theme Queue."],
+            "/nonpeaks: To list all non-peak themes. Also states the status of non-peak themes as a whole.",
+            "/eventthemes: To list the event theme pool.",
+            "/queue: To show the Mafia Theme Queue."],
         queue: [
-            "/enqueue: Adds a theme to the theme queue. Mainly useful when hosting Game Nights. Can also use /enq",
-            "/dequeue: Removes a theme from the theme queue. Can either use theme name or index number in /queue to identify which theme to remove. Can also use /deq"],
+            "/enqueue: To add a theme to the theme queue. Mainly useful when hosting Game Nights. Can also use /enq",
+            "/dequeue: T remove a theme from the theme queue. Can either use theme name or index number in /queue to identify which theme to remove. Can also use /deq"],
         ma: ["/slay: To slay users in a Mafia game. Use /unslay to cancel.",
             "/shove: To remove users before a game starts. Use /unshove to cancel.",
             "/warn: To warn a user for violation of a rule. Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.",
@@ -6956,8 +6956,8 @@ function Mafia(mafiachan) {
             "/add: To add a Mafia Theme.",
             "/enable: To enable a previously disabled Mafia Theme.",
             "/enablenonpeak: To enable all non-peak Mafia Themes. Disable with /disablenonpeak.",
-            "/enablequeue: Enables the Mafia Theme Queue system. Mainly useful for hosting Game Nights",
-            "/disablequeue: Disables the Mafia Theme Queue system."],
+            "/enablequeue: To enable the Mafia Theme Queue system. Mainly useful for hosting Game Nights",
+            "/disablequeue: To disable the Mafia Theme Queue system."],
 ///            "/disableunder X: Disables all themes that support less than X players. (X must be over 30). You will need to manually re-enable."],
         sma: ["/push: To force a user into the current theme during sign ups.",
             "/supdate: To silently add or update a theme.",
@@ -6973,8 +6973,10 @@ function Mafia(mafiachan) {
             "/featurelink: To change the link used for Featured Theme Text. Leave blank to clear.",
             "/featureint: To change how often the \"Featured Theme\" message displays. Time is in minutes between 30 and 240. Leave blank to reset to 60 minutes.",
             "/forcefeature: To force the \"Featured Theme\" message to display.",
-            "/enableall: Enables all disabled themes, excluding non-peak.",
-            "/aliases: View the aliases of a user."],
+            "/enableall: To enable all disabled themes, excluding non-peak.",
+            "/aliases: To view the aliases of a user.",
+            "/topplayers X: To view how many games each mafia player has joined. Filtered by players who have played at least X games.",
+            "/resetjoindata: Resets the data shown by /topplayers"],
         owner: ["/mafiasuperadmin: To promote a user to Super Mafia Admin. Use /smafiasuperadmin for a silent promotion.",
             "/mafiasuperadminoff: To demote a user from Super Mafia Admin. Use /smafiasuperadminoff for a silent demotion."]
     };
@@ -8265,24 +8267,13 @@ function Mafia(mafiachan) {
 
         if (command === "enablequeue") {
             mafia.queueingEnabled = true;
-            msgAll(nonFlashing(sys.name(src)) + " enabled theme queueing.");
-            msgAll(nonFlashing(sys.name(src)) + " enabled theme queueing in #Mafia.", sachannel);
+            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(sys.name(src)) + " enabled Mafia theme queueing.");
             return;
         }     
         if (command === "disablequeue") {
             mafia.queueingEnabled = false;
-            msgAll(nonFlashing(sys.name(src)) + " disabled theme queueing.");
-            msgAll(nonFlashing(sys.name(src)) + " disabled theme queueing in #Mafia.", sachannel);
             mafia.queue = [];
-            return;
-        }
-        if (command === "topplayers") { // add to global commands
-            mafia.mafiaStats.getTopPlayers(src, channel, commandData);
-            return;
-        }
-        if (command === "resetjoins") { // add to global commands
-            mafia.mafiaStats.resetJoinData();
-            // send a message too, one to VR and one to self if not in VR
+            dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(sys.name(src)) + " disabled Mafia theme queueing.");
             return;
         }
         if (command === "mafiaversion") {
@@ -8563,6 +8554,22 @@ function Mafia(mafiachan) {
             } else {
                 msg(src, "No peak themes are disabled.");
             }
+            return;
+        }
+        if (command === "topplayers") {
+            mafia.mafiaStats.getTopPlayers(src, channel, commandData);
+            return;
+        }
+        if (command === "resetjoindata") {
+            if (commandData.toLowerCase() === "confirm") {
+                mafia.mafiaStats.resetJoinData();
+                mafiabot.sendAll(nonFlashing(sys.name(src)) + " reset the mafia player join data!" , sachannel);
+                if (channel !== sachannel) {
+                    mafiabot.sendMessage(src, "You reset the mafia player join data!", channel);
+                }
+            } else {
+                mafiabot.sendMessage(src, "Are you sure you want to reset the data on how many games each mafia player has joined? Type '/resetjoindata confirm' to confirm.", channel);
+            } 
             return;
         }
         /*REMOVE: The following commands*/
