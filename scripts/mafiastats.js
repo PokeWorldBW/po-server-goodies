@@ -124,6 +124,8 @@ function mafiaStats() {
                 startData: {},
                 joinData: {}
             };
+        } else if (!this.data.userData.startData) {
+            this.data.userData.startData = {};
         }
         var startData = this.data.userData.startData, lname = name.toLowerCase();
         if (!startData.hasOwnProperty(lname)) {
@@ -151,6 +153,8 @@ function mafiaStats() {
                 startData: {},
                 joinData: {}
             };
+        } else if (!this.data.userData.joinData) {
+            this.data.userData.joinData = {};
         }
         var joinData = this.data.userData.joinData;
         if (Array.isArray(players)) {
