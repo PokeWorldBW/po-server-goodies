@@ -8,7 +8,7 @@ function mafiaChecker() {
         noMinor,
         noFatal,
         globalStats,
-        possibleNightActions = ["kill", "protect", "bomb", "dayprotect", "daydistract", "inspect", "distract", "poison", "safeguard", "stalk", "watch", "convert", "curse", "copy", "indoctrinate", "detox", "dispel", "shield", "guard", "massconvert", "disguise", "redirect", "dummy", "dummy2", "dummy3", "dummy4", "dummy5", "dummy6", "dummy7", "dummy8", "dummy9", "dummy10"],
+        possibleNightActions = ["kill", "protect", "bomb", "dayprotect", "daydistract", "inspect", "distract", "poison", "safeguard", "stalk", "watch", "convert", "curse", "copy", "indoctrinate", "detox", "dispel", "shield", "guard", "massconvert", "disguise", "redirect", "dummy"],
         badCommands = ["me", "commands", "start", "votetheme", "starttheme", "help", "roles", "sides", "myrole", "mafiarules", "themes", "themeinfo", "changelog", "details", "priority", "flashme", "playedgames", "update", "join", "unjoin", "mafiaadmins", "mafiaban", "mafiaunban", "passma", "mafiaadmin", "mafiaadminoff", "mafiasadmin", "mafiasuperadmin", "mafiasadminoff", "mafiasuperadminoff", "push", "slay", "shove", "end", "readlog", "add", "remove", "disable", "enable", "updateafter", "importold", "mafiaban", "mafiaunban", "mafiabans", "ban", "mute", "kick", "k", "mas", "ck", "cmute", "admin", "op", "owner", "invite", "member", "deadmin", "deregister", "deop", "demember", "deadmin", "lt", "featured", "featuretheme", "featurelink", "featuretext", "forcefeature", "ctogglecaps", "ctoggleflood", "topic", "cauth", "register", "deinvite", "cmeon", "cmeoff", "csilence", "csilenceoff", "cunmute", "cmutes", "cbans", "inviteonly", "ctoggleswear", "tempban", "say", "pokemon", "nature", "natures", "item", "ability", "notice", "featuredtheme", "warn", "rescind", "warnlog", "votecount", "vc", "whisper", "w", "tutorial", "teamtalk", "tt", "spawn", "tips", "pg", "topthemes", "windata", "update", "supdate", "nextevent", "eventthemes", "madmins", "disabledc", "enabledc", "seedisabled", "nonpeaks", "mywarns", "queue", "enqueue", "enq", "dequeue", "deq", "warnhelp", "unwarn", "checkwarns", "mafiawarns", "allwarns", "whodungoofd", "targetlog", "passmas", "enablenonpeak", "disablenonpeak", "unshove", "unslay", "enablequeue", "disablequeue", "topplayers", "resetjoindata", "mafiaversion", "smafiaadmin", "smafiasadmin", "smafiasuperadmin", "aliases", "smafiaadminoff", "smafiasadminoff", "smafiasuperadminoff", "sremove", "event", "delayevent", "updatestats", "featureint", "enableall"],
         dummy = /^dummy(?:\d+)?$/;
     
@@ -342,16 +342,16 @@ function mafiaChecker() {
                     for (e in role.actions) {
                         if (attributes.indexOf(e) === -1 && !dummy.test(e)) {
                             if (lower.indexOf(e.toLowerCase()) !== -1) {
-                                addMinorError('Attribute "' + e + '" for "' + act + '" should be written as "' + attributes[lower.indexOf(e.toLowerCase())] + '".');
+                                addMinorError("Attribute \"" + e + "\" for \"" + act + "\" should be written as \"" + attributes[lower.indexOf(e.toLowerCase())] + "\".");
                             } else if (dummy.test(e.toLowerCase())) {
-                                addMinorError('Attribute "' + e + '" for "' + act + '" should be written as "' + e.toLowerCase() + '".');
+                                addMinorError("Attribute \"" + e + "\" for \"" + act + "\" should be written as \"" + e.toLowerCase() + "\".");
                             } else {
-                                addMinorError(act + ' has an extra attribute "' + e + '".');
+                                addMinorError(act + " has an extra attribute \"" + e + "\".");
                             }
                         }
                     }
                 } else {
-                    addFatalError(act + ' is not a valid object.');
+                    addFatalError(act + " is not a valid object.");
                 }                
                 
                 if (checkType(role.actions.night, ["object"], act + ".night")) {
@@ -458,7 +458,7 @@ function mafiaChecker() {
                                         break;
                                     default:
                                     if (dummy.test(c)) {
-                                        commonOptional = commonOptional.concat([c + "usermsg", c + "targetmsg", c + "broadcastmsg", c + "Pierce"])
+                                        commonOptional = commonOptional.concat([c + "usermsg", c + "targetmsg", c + "broadcastmsg", c + "Pierce"]);
                                     }
                                 }
                             }
