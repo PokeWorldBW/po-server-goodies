@@ -195,7 +195,7 @@ function Mafia(mafiachan) {
         return true;
     }
     function gamemsgAll(mess, botName, channel, html) {
-        if (mess === undefined || mess === "" || mess === null) {
+        if (mess === undefined || mess === "") {
             return false;
         }
         if (mess === null) { // botName can be valid
