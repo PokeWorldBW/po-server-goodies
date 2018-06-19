@@ -8269,8 +8269,7 @@ function Mafia(mafiachan) {
             msgAll(nonFlashing(sys.name(src)) + " enabled theme queueing.");
             msgAll(nonFlashing(sys.name(src)) + " enabled theme queueing in #Mafia.", sachannel);
             return;
-        }
-        
+        }     
         if (command === "disablequeue") {
             mafia.queueingEnabled = false;
             msgAll(nonFlashing(sys.name(src)) + " disabled theme queueing.");
@@ -8278,6 +8277,15 @@ function Mafia(mafiachan) {
             mafia.queue = [];
             return;
         }
+        if (command === "topplayers") { // add to global commands
+            mafia.mafiaStats.getTopPlayers(src, channel, commandData);
+            return;
+        }
+        if (command === "resetjoins") { // add to global commands
+            mafia.mafiaStats.resetJoinData();
+            // send a message too, one to VR and one to self if not in VR
+            return;
+        } 
 
         if (!this.isMafiaSuperAdmin(src))
             throw ("no valid command");
@@ -8755,9 +8763,9 @@ function Mafia(mafiachan) {
     };
 
 this.beforeChatMessage = function (src, message, channel) {
-        if (channel !== 0 && channel == mafiachan && mafia.ticks > 0 && mafia.gameInProgress()) {
+        if (channel !== 0 && channel == mafiachan && mafia.ticks > 0 && mafia.gameInProgress() && message !== "." && message !== "t" && message !== "。") {
             if (mafia.dead.indexOf(sys.name(src).toLowerCase()) !== -1) {
-                if (!(is_command(message) && message.substr(1, 2).toLowerCase() != "me") && message !== "." && message !== "t") {
+                if (!(is_command(message) && message.substr(1, 2).toLowerCase() != "me")) {
                     if (SESSION.users(src).smute.active && sys.auth(src) < 1) {
                         sys.sendMessage(src, sys.name(src) + ": [Dead] " + message, mafiachan);
                     } else {

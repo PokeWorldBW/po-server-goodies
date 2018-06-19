@@ -159,6 +159,13 @@ function mafiaStats() {
             }
         }
     };
+    this.resetJoinData = function() {
+        var data = this.data.userData;
+        var keys = Object.keys(data);
+        for (var x = 0; x < keys.length; x++) {
+            data[keys[x]].totalJoins = 0;
+        }
+    };
     this.compileData = function () {
         var data = this.getData();
         var gamesPlayed = data[0];
@@ -367,25 +374,22 @@ function mafiaStats() {
         sys.sendMessage(src, "", channel);
         sys.sendMessage(src, "±Stats: For more details, check http://server.pokemon-online.eu/mafiathemes/" + theme + "_stats.html", channel);
     };
-    this.getTopPlayers = function (src, channel, amount) {
+    this.getTopPlayers = function (src, channel, min) {
         var data = this.data.userData;
         if (!data) {
             data = {};
         }
-        amount = parseInt(amount, 10);
-        if (amount === undefined || isNaN(amount) || amount <= 0) {
-            amount = 10;
+        min = parseInt(min, 10);
+        if (min === undefined || isNaN(min) || min <= 0) {
+            min = 10;
         }     
-        var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; });         
+        var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; }).filter(function(p) { return data[p].totalsJoins > min; });         
         sys.sendMessage(src, "", channel);
-        sys.sendMessage(src, "*** TOP " + amount + " ACTIVE PLAYERS ***", channel);
-        sys.sendMessage(src, "Total Unique Player Names: " + keys.length, channel);
+        sys.sendMessage(src, "*** Players Who Have Played At Least " + min + " Games ***", channel);
+        //sys.sendMessage(src, "Total Unique Player Names: " + keys.length, channel);
         sys.sendMessage(src, "", channel);
         var format = "{0}: {1} joined {2} game{3}";
-        for (var x = 0; x < amount; x++) {
-            if (x >= keys.length) {
-                break;
-            }
+        for (var x = 0; x < keys.length; x++) {
             var player = data[keys[x]];
             sys.sendMessage(src, format.format(x + 1, player.capitalization, player.totalJoins, player.totalJoins === 1 ? "" : "s"), channel);
         }
