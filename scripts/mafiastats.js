@@ -371,7 +371,7 @@ function mafiaStats() {
         sys.sendMessage(src, "", channel);
         var count = 0;
         for (var x = 0; x < gamesPlayed.length; x++) {
-            sys.sendMessage(src, ++count + ": " + gamesPlayed[x][0] + ". Played " + gamesPlayed[x][1] + " times. Average Players: " + gamesPlayed[x][2], channel);
+            sys.sendMessage(src, ++count + ": " + gamesPlayed[x][0] + ". Played " + gamesPlayed[x][1] + " time" + (gamesPlayed[x][1] === 1 ? "" : "s") + ". Average Players: " + gamesPlayed[x][2], channel);
         }
     };
     this.getWinData = function (src, channel, theme) {
