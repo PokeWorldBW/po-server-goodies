@@ -9,7 +9,7 @@ function mafiaChecker() {
         noFatal,
         globalStats,
         possibleNightActions = ["kill", "protect", "bomb", "dayprotect", "daydistract", "inspect", "distract", "poison", "safeguard", "stalk", "watch", "convert", "curse", "copy", "indoctrinate", "detox", "dispel", "shield", "guard", "massconvert", "disguise", "redirect", "dummy", "dummy2", "dummy3", "dummy4", "dummy5", "dummy6", "dummy7", "dummy8", "dummy9", "dummy10"],
-        badCommands = ["me", "commands", "start", "votetheme", "starttheme", "help", "roles", "sides", "myrole", "mafiarules", "themes", "themeinfo", "changelog", "details", "priority", "flashme", "playedgames", "update", "join", "unjoin", "mafiaadmins", "mafiaban", "mafiaunban", "passma", "mafiaadmin", "mafiaadminoff", "mafiasadmin", "mafiasuperadmin", "mafiasadminoff", "mafiasuperadminoff", "push", "slay", "shove", "end", "readlog", "add", "remove", "disable", "enable", "updateafter", "importold", "mafiaban", "mafiaunban", "mafiabans", "detained", "detainlist", "ban", "mute", "kick", "k", "mas", "ck", "cmute", "admin", "op", "owner", "invite", "member", "deadmin", "deregister", "deop", "demember", "deadmin", "lt", "featured", "featuretheme", "featurelink", "featuretext", "forcefeature", "ctogglecaps", "ctoggleflood", "topic", "cauth", "register", "deinvite", "cmeon", "cmeoff", "csilence", "csilenceoff", "cunmute", "cmutes", "cbans", "inviteonly", "ctoggleswear", "enabletours", "disabletours", "tempban", "say", "pokemon", "nature", "natures", "item", "ability", "notice", "featuredtheme", "warn", "rescind", "warnlog", "votecount"]
+        badCommands = ["me", "commands", "start", "votetheme", "starttheme", "help", "roles", "sides", "myrole", "mafiarules", "themes", "themeinfo", "changelog", "details", "priority", "flashme", "playedgames", "update", "join", "unjoin", "mafiaadmins", "mafiaban", "mafiaunban", "passma", "mafiaadmin", "mafiaadminoff", "mafiasadmin", "mafiasuperadmin", "mafiasadminoff", "mafiasuperadminoff", "push", "slay", "shove", "end", "readlog", "add", "remove", "disable", "enable", "updateafter", "importold", "mafiaban", "mafiaunban", "mafiabans", "ban", "mute", "kick", "k", "mas", "ck", "cmute", "admin", "op", "owner", "invite", "member", "deadmin", "deregister", "deop", "demember", "deadmin", "lt", "featured", "featuretheme", "featurelink", "featuretext", "forcefeature", "ctogglecaps", "ctoggleflood", "topic", "cauth", "register", "deinvite", "cmeon", "cmeoff", "csilence", "csilenceoff", "cunmute", "cmutes", "cbans", "inviteonly", "ctoggleswear", "tempban", "say", "pokemon", "nature", "natures", "item", "ability", "notice", "featuredtheme", "warn", "rescind", "warnlog", "votecount", "vc", "whisper", "w", "tutorial", "teamtalk", "tt", "spawn", "tips", "pg", "topthemes", "windata", "update", "supdate", "nextevent", "eventthemes", "madmins", "disabledc", "enabledc", "seedisabled", "nonpeaks", "mywarns", "queue", "enqueue", "enq", "dequeue", "deq", "warnhelp", "unwarn", "checkwarns", "mafiawarns", "allwarns", "whodungoofd", "targetlog", "passmas", "enablenonpeak", "disablenonpeak", "unshove", "unslay", "enablequeue", "disablequeue", "topplayers", "resetjoindata", "mafiaversion", "smafiaadmin", "smafiasadmin", "smafiasuperadmin", "aliases", "smafiaadminoff", "smafiasadminoff", "smafiasuperadminoff", "sremove", "event", "delayevent", "updatestats", "featureint", "enableall"],
         dummy = /^dummy(?:\d+)?$/;
     
     this.checkTheme = function(raw) {
@@ -361,7 +361,7 @@ function mafiaChecker() {
                         if (checkType(action, ["object"], comm)) {
                             command = e;
                             commonMandatory = ["target", "common", "priority"];
-                            commonOptional = ["broadcast", "command", "limit", "msg", "failChance", "charges", "recharge", "initialrecharge", "rechargeMsg", "broadcastmsg", "inputmsg", "chargesmsg", "clearCharges", "addCharges", "suicideChance", "suicidemsg", "restrict", "cancel", "ignoreDistract", "compulsory", "noRepeat", "pierce", "pierceChance", "noFollow", "haxMultiplier", "maxHax", "userMustBeVisited", "targetMustBeVisited", "userMustVisit", "targetMustVisit", "bypass", "hide", "macro", "pinpoint", "pinpointFailMsg", "pinpointBroadcastFailMsg", "addVote", "addVoteshield", "alternateTargets"];
+                            commonOptional = ["broadcast", "command", "limit", "msg", "failChance", "charges", "recharge", "initialrecharge", "rechargeMsg", "broadcastmsg", "inputmsg", "chargesmsg", "clearCharges", "addCharges", "suicideChance", "suicidemsg", "restrict", "cancel", "ignoreDistract", "compulsory", "noRepeat", "pierce", "pierceChance", "noFollow", "haxMultiplier", "maxHax", "userMustBeVisited", "targetMustBeVisited", "userMustVisit", "targetMustVisit", "bypass", "hide", "macro", "pinpoint", "pinpointFailMsg", "pinpointBroadcastFailMsg", "addVote", "addVoteDuration", "addVoteshield", "addVoteshieldDuration", "alternateTargets"];
                             commandList = [];
                             if ("command" in action) {
                                 if (Array.isArray(action.command)) {
@@ -1366,7 +1366,7 @@ function mafiaChecker() {
     Theme.prototype.checkOnDeath = function(action, comm, extra, isLynch) {
         var e;
         
-        checkAttributes(action, [], ["killRoles", "poisonRoles", "convertRoles", "curseRoles", "exposeRoles", "killmsg", "convertmsg", "curseCount", "cursemsg", "curseConvertMessage", "poisonmsg", "poisonDeadMessage", "exposemsg", "singlekillmsg", "singlepoisonmsg", "singleconvertmsg", "singlecursemsg", "silentConvert", "silentCurse", "convert"].concat(extra), comm);
+        checkAttributes(action, [], ["killRoles", "poisonRoles", "convertRoles", "curseRoles", "exposeRoles", "killmsg", "convertmsg", "curseCount", "cursemsg", "curseConvertMessage", "poisonmsg", "poisonDeadMessage", "exposemsg", "singlekillmsg", "singlepoisonmsg", "singleconvertmsg", "singlecursemsg", "silentConvert", "silentCurse", "convert", "detoxRoles", "detoxmsg"].concat(extra), comm);
                     
         checkType(action.onslay, ["boolean"], comm + ".onslay");
         
@@ -1384,7 +1384,7 @@ function mafiaChecker() {
         }
         if (checkType(action.singlekillmsg, ["string"], comm + ".singlekillmsg")) {
             if (!("killRoles" in action)) {
-                addMinorError("'singlekillmsg' found at " + comm + ", but there's no 'singlekillmsg'");
+                addMinorError("'singlekillmsg' found at " + comm + ", but there's no 'killRoles'");
             }
             if ("killmsg" in action) {
                 addMinorError(comm + " has both 'killmsg' and 'singlekillmsg', so 'killmsg' won't be used");
@@ -1410,7 +1410,7 @@ function mafiaChecker() {
         }
         if (checkType(action.singlepoisonmsg, ["string"], comm + ".singlepoisonmsg")) {
             if (!("poisonRoles" in action)) {
-                addMinorError("'singlepoisonmsg' found at " + comm + ", but there's no 'singlepoisonmsg'");
+                addMinorError("'singlepoisonmsg' found at " + comm + ", but there's no 'poisonRoles'");
             }
             if ("poisonmsg" in action) {
                 addMinorError(comm + " has both 'poisonmsg' and 'singlepoisonmsg', so 'poisonmsg' won't be used");
@@ -1423,9 +1423,9 @@ function mafiaChecker() {
                 checkValidRole(action.detoxRoles[i], comm + ".detoxRoles");
             }
         }
-        if (checkType(action.detoxMsg, ["string"], comm + ".detoxMsg")) {
+        if (checkType(action.detoxmsg, ["string"], comm + ".detoxmsg")) {
             if (!("detoxRoles" in action)) {
-                addMinorError("'detoxMsg' found at " + comm + ", but there's no 'detoxRoles'");
+                addMinorError("'detoxmsg' found at " + comm + ", but there's no 'detoxRoles'");
             }
         }
         
@@ -1443,7 +1443,7 @@ function mafiaChecker() {
         }
         if (checkType(action.singleconvertmsg, ["string"], comm + ".singleconvertmsg")) {
             if (!("convertRoles" in action)) {
-                addMinorError("'singleconvertmsg' found at " + comm + ", but there's no 'singleconvertmsg'");
+                addMinorError("'singleconvertmsg' found at " + comm + ", but there's no 'convertRoles'");
             }
             if ("convertmsg" in action) {
                 addMinorError(comm + " has both 'convertmsg' and 'singleconvertmsg', so 'convertmsg' won't be used");
@@ -1475,7 +1475,7 @@ function mafiaChecker() {
         }
         if (checkType(action.singlecursemsg, ["string"], comm + ".singlecursemsg")) {
             if (!("curseRoles" in action)) {
-                addMinorError("'singlecursemsg' found at " + comm + ", but there's no 'singlecursemsg'");
+                addMinorError("'singlecursemsg' found at " + comm + ", but there's no 'curseRoles'");
             }
             if ("cursemsg" in action) {
                 addMinorError(comm + " has both 'cursemsg' and 'singlecursemsg', so 'cursemsg' won't be used");
@@ -1729,6 +1729,7 @@ function mafiaChecker() {
         checkType(action.redirectActions, ["array"], act + ".redirectActions");
         checkType(action.restrict, ["array"], act + ".restrict");
         checkType(action.cancel, ["array"], act + ".cancel");
+        checkType(action.pinpoint, ["boolean"], act + ".pinpoint");
         checkType(action.pinpointFailMsg, ["string"], act + ".pinpointFailMsg");
         checkType(action.pinpointBroadcastFailMsg, ["string"], act + ".pinpointBroadcastFailMsg");
         checkType(action.ignoreDistract, ["boolean"], act + ".ignoreDistract");
@@ -1745,6 +1746,13 @@ function mafiaChecker() {
         checkType(action.targetMustBeVisited, ["boolean"], act + ".targetMustBeVisited");
         checkType(action.targetMustVisit, ["boolean"], act + ".targetMustVisit");
         checkType(action.userMustVisit, ["boolean"], act + ".userMustVisit");
+        checkType(action.hide, ["boolean"], act + ".hide");
+        checkType(action.macro, ["boolean"], act + ".macro");
+        checkType(action.addVote, ["number"], act + ".addVote");
+        checkType(action.addVoteDuration, ["number"], act + ".addVoteDuration");
+        checkType(action.addVoteshield, ["number"], act + ".addVoteshield");
+        checkType(action.addVoteshieldDuration, ["number"], act + ".addVoteshieldDuration");
+        checkType(action.alternateTargets, ["boolean"], act + ".alternateTargets");
         if (checkType(action.bypass, ["array"], act + ".bypass")) {
             for (c in action.bypass) {
                 checkValidValue(action.bypass[c], ["ignore", "ChangeTarget", "killattacker", "poisonattacker", "identify", "die", "evadeChance", "evadeCharges", "killif", "resistance"], act + ".bypass");
