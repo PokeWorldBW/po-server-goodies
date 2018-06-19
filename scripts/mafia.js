@@ -5360,7 +5360,7 @@ function Mafia(mafiachan) {
                             }
 
                             //Post-Action effects here
-                            var revengePlayer = mafia.isInGame(userInputAction) ? mafia.players[userInputAction] : player;
+                            var revengePlayer = mafia.isInGame(userInputAction) && mafia.hasCommand(userInputAction, o.action, "night") && mafia.players[userInputAction].role.role === o.role ? mafia.players[userInputAction] : player;
                             if (revenge) {
                                 gamemsg(revengePlayer.name, revengetext);
                                 mafia.kill(revengePlayer);
