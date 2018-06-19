@@ -162,15 +162,17 @@ function mafiaStats() {
                 var player = players[x];
                 var id = sys.id(player);
                 var ip = id !== -1 && id !== undefined ? sys.ip(id) : sys.dbIp(player);
-                if (!joinData.hasOwnProperty(ip)) {
-                    joinData[ip] = {};
-                    joinData[ip].names = [player];
-                    joinData[ip].totalJoins = 0;
-                }
-                var playerData = joinData[ip];
-                playerData.totalJoins += 1;
-                if (playerData.names.indexOf(player) === -1) {
-                    playerData.names.push(player);
+                if (ip !== undefined) {
+                    if (!joinData.hasOwnProperty(ip)) {
+                        joinData[ip] = {};
+                        joinData[ip].names = [player];
+                        joinData[ip].totalJoins = 0;
+                    }
+                    var playerData = joinData[ip];
+                    playerData.totalJoins += 1;
+                    if (playerData.names.indexOf(player) === -1) {
+                        playerData.names.push(player);
+                    }
                 }
             }
         }
@@ -402,7 +404,7 @@ function mafiaStats() {
         if (min === undefined || isNaN(min) || min <= 0) {
             min = 5;
         }
-        var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; }).filter(function(p) { return data[p].totalJoins > min; });         
+        var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; }).filter(function(p) { return data[p].totalJoins >= min; });         
         sys.sendMessage(src, "", channel);
         sys.sendMessage(src, "*** Players Who Have Played At Least " + min + " Games ***", channel);
         //sys.sendMessage(src, "Total Unique Players: " + keys.length, channel);
