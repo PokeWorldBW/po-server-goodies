@@ -342,16 +342,16 @@ function mafiaChecker() {
                     for (e in role.actions) {
                         if (attributes.indexOf(e) === -1 && !dummy.test(e)) {
                             if (lower.indexOf(e.toLowerCase()) !== -1) {
-                                addMinorError('Attribute "' + e + '" for "' + what + '" should be written as "' + attributes[lower.indexOf(e.toLowerCase())] + '".');
+                                addMinorError('Attribute "' + e + '" for "' + act + '" should be written as "' + attributes[lower.indexOf(e.toLowerCase())] + '".');
                             } else if (dummy.test(e.toLowerCase())) {
-                                addMinorError('Attribute "' + e + '" for "' + what + '" should be written as "' + e.toLowerCase() + '".');
+                                addMinorError('Attribute "' + e + '" for "' + act + '" should be written as "' + e.toLowerCase() + '".');
                             } else {
-                                addMinorError(what + ' has an extra attribute "' + e + '".');
+                                addMinorError(act + ' has an extra attribute "' + e + '".');
                             }
                         }
                     }
                 } else {
-                    addFatalError(what + ' is not a valid object.');
+                    addFatalError(act + ' is not a valid object.');
                 }                
                 
                 if (checkType(role.actions.night, ["object"], act + ".night")) {
