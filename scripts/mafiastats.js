@@ -383,7 +383,7 @@ function mafiaStats() {
         if (min === undefined || isNaN(min) || min <= 0) {
             min = 10;
         }     
-        var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; }).filter(function(p) { return data[p].totalsJoin > min; });         
+        var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; }).filter(function(p) { return data[p].totalJoins > min; });         
         sys.sendMessage(src, "", channel);
         sys.sendMessage(src, "*** Players Who Have Played At Least " + min + " Games ***", channel);
         //sys.sendMessage(src, "Total Unique Player Names: " + keys.length, channel);

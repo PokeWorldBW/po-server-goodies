@@ -7816,7 +7816,7 @@ function Mafia(mafiachan) {
             var themes = this.eventThemePool.map(function(theme) { return casedtheme(theme); }).filter(function(theme, position, array) {
                 return array.indexOf(theme) === position;
             }).sort();
-            mafiabot.sendMessage(src, "The themes that can be started as events are: " + readable(themes, "and") + "." , mafiachan);
+            sys.sendMessage(src, "The themes that can be started as events are: " + readable(themes, "and") + "." , mafiachan);
             return;
         }
         if (command === "featured") {
@@ -8284,7 +8284,11 @@ function Mafia(mafiachan) {
             mafia.mafiaStats.resetJoinData();
             // send a message too, one to VR and one to self if not in VR
             return;
-        } 
+        }
+        if (command === "mafiaversion") {
+            mafiabot.sendMessage(src, "Current Mafia version is: " + this.version, channel);
+            return;
+        }
 
         if (!this.isMafiaSuperAdmin(src))
             throw ("no valid command");
