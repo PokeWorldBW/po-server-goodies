@@ -161,15 +161,12 @@ function Mafia(mafiachan) {
     /*Sends a Game bot message, if no bot name is defined, it adds "±Game"
     * Note: use "srcname" instead of "src" as src holds the player's ID*/
     function gamemsg(src, mess, botName, channel, html) {
-        if (mess === undefined || mess === "") {
+        if (mess === undefined || mess === "" || mess === null) {
             return false;
         }
         var id = sys.id(src);
         if (id === undefined) {
             return false;
-        }
-        if (mess === null) {
-            mess = "";
         }
         if (channel === undefined || channel == null) {
             channel = mafiachan;
@@ -195,11 +192,8 @@ function Mafia(mafiachan) {
         return true;
     }
     function gamemsgAll(mess, botName, channel, html) {
-        if (mess === undefined || mess === "") {
+        if (mess === undefined || mess === "" || mess === null) {
             return false;
-        }
-        if (mess === null) {
-            mess = "";
         }
         if (channel === undefined || channel === null) {
             channel = mafiachan;
@@ -5020,7 +5014,7 @@ function Mafia(mafiachan) {
                                 nightkill = true;
                                  if (!(revenge)) {
                                      if (target.name in mafia.nightBomb) {
-                                         revengetext = ("msg" in mafia.nightBomb[target.name] && mafia.nightBomb[target.name] !== null ? mafia.nightBomb[target.name] : "Your ~Action~ was bombed by someone! You died as well!");
+                                         revengetext = ("msg" in mafia.nightBomb[target.name] && mafia.nightBomb[target.name].msg !== null ? mafia.nightBomb[target.name] : "Your ~Action~ was bombed by someone! You died as well!");
                                      }
                                      revenge = true;
                                  }
