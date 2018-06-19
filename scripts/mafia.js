@@ -5020,7 +5020,7 @@ function Mafia(mafiachan) {
                                 nightkill = true;
                                  if (!(revenge)) {
                                      if (target.name in mafia.nightBomb) {
-                                         revengetext = ("msg" in mafia.nightBomb[target.name] && mafia.nightBomb[target.name].msg !== null ? mafia.nightBomb[target.name].msg : "Your ~Action~ was bombed by someone! You died as well!");
+                                         revengetext = formatArgs(("msg" in mafia.nightBomb[target.name] && mafia.nightBomb[target.name].msg !== null ? mafia.nightBomb[target.name].msg : "Your ~Action~ was bombed by someone! You died as well!"), nightargs);
                                      }
                                      revenge = true;
                                  }
