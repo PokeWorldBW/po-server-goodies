@@ -157,7 +157,7 @@ function mafiaStats() {
             for (var x = 0; x < players.length; x++) {
                 var player = players[x];
                 var id = sys.id(player);
-                var ip = id !== -1 && id !== undefined ? sys.ip(id) ? sys.dbIp(player);
+                var ip = id !== -1 && id !== undefined ? sys.ip(id) : sys.dbIp(player);
                 if (!joinData.hasOwnProperty(ip)) {
                     joinData[ip] = {};
                     joinData[ip].names = [player];
