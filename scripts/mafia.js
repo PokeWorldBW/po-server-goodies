@@ -164,12 +164,12 @@ function Mafia(mafiachan) {
         if (mess === undefined || mess === "") {
             return false;
         }
-        if (mess === null) { // botName can be a valid value
-            mess = "";
-        }
         var id = sys.id(src);
         if (id === undefined) {
             return false;
+        }
+        if (mess === null) { // botName can be valid
+            mess = "";
         }
         if (channel === undefined || channel == null) {
             channel = mafiachan;
@@ -198,7 +198,7 @@ function Mafia(mafiachan) {
         if (mess === undefined || mess === "" || mess === null) {
             return false;
         }
-        if (mess === null) { // botName can be a valid value
+        if (mess === null) { // botName can be valid
             mess = "";
         }
         if (channel === undefined || channel === null) {
