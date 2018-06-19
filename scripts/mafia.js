@@ -4486,7 +4486,6 @@ function Mafia(mafiachan) {
                             failedmsg = (Action.failmsg || "You couldn't ~Action~ this night!").replace(/~Action~/g, o.action);
                             gamemsg(names[f], failedmsg);
                         }
-
                         if (Action.alternateTargets) {
                             mafia.players[names[f]].lastTargets = targets.map(function(str) { return str.substring(0, str.indexOf(":")); });
                         }
@@ -5360,7 +5359,7 @@ function Mafia(mafiachan) {
                             }
 
                             //Post-Action effects here
-                            var revengePlayer = mafia.isInGame(userInputAction) && mafia.hasCommand(userInputAction, o.action, "night") && mafia.players[userInputAction].role.role === o.role ? mafia.players[userInputAction] : player;
+                            var revengePlayer = mafia.isInGame(userInputAction) && mafia.hasCommand(userInputAction, o.action, "night") && mafia.players[userInputAction].role.team === player.role.team ? mafia.players[userInputAction] : player;
                             if (revenge) {
                                 gamemsg(revengePlayer.name, revengetext);
                                 mafia.kill(revengePlayer);
