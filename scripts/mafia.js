@@ -5360,7 +5360,7 @@ function Mafia(mafiachan) {
                             }
 
                             //Post-Action effects here
-                            var revengePlayer = mafia.players[userInputAction];
+                            var revengePlayer = mafia.isInGame(userInputAction) ? mafia.players[userInputAction] : player;
                             if (revenge) {
                                 gamemsg(revengePlayer.name, revengetext);
                                 mafia.kill(revengePlayer);
