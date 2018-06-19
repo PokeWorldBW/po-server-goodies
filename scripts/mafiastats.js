@@ -407,10 +407,14 @@ function mafiaStats() {
         sys.sendMessage(src, "*** Players Who Have Played At Least " + min + " Games ***", channel);
         //sys.sendMessage(src, "Total Unique Players: " + keys.length, channel);
         sys.sendMessage(src, "", channel);
-        var format = "{0}: {1} joined {2} game{3} [IP: {4}{5}]";
-        for (var x = 0; x < keys.length; x++) {
-            var player = data[keys[x]];
-            sys.sendMessage(src, format.format(x + 1, player.names[0], player.totalJoins, player.totalJoins === 1 ? "" : "s", keys[x], player.names.length > 1 ? "; Other Names: " + player.names.slice(1).join(", ") : ""), channel);
+        if (keys.length === 0) {
+            sys.sendMessage(src, "No players meet this criterion.", channel);
+        } else {
+            var format = "{0}: {1} joined {2} game{3} [IP: {4}{5}]";
+            for (var x = 0; x < keys.length; x++) {
+                var player = data[keys[x]];
+                sys.sendMessage(src, format.format(x + 1, player.names[0], player.totalJoins, player.totalJoins === 1 ? "" : "s", keys[x], player.names.length > 1 ? "; Other Names: " + player.names.slice(1).join(", ") : ""), channel);
+            }
         }
     };
     this.createTable = function (theme) {
