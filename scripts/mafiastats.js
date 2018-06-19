@@ -406,7 +406,7 @@ function mafiaStats() {
         }
         var keys = Object.keys(data).sort(function(a, b) { return data[b].totalJoins - data[a].totalJoins; }).filter(function(p) { return data[p].totalJoins >= min; });         
         sys.sendMessage(src, "", channel);
-        sys.sendMessage(src, "*** Players Who Have Played At Least " + min + " Games ***", channel);
+        sys.sendMessage(src, "*** Players Who Have Played At Least " + min + " Game" + (min === 1 ? "" : "s") + " ***", channel);
         //sys.sendMessage(src, "Total Unique Players: " + keys.length, channel);
         sys.sendMessage(src, "", channel);
         if (keys.length === 0) {
