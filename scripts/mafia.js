@@ -3763,6 +3763,7 @@ function Mafia(mafiachan) {
         };
         var copyAs = function(player, target, Action) {
             if (typeof Action.copyAs == "string" && "canCopy" in Action && Action.canCopy != "*" && Action.canCopy.indexOf(target.role.role) == -1) {
+                gamemsg(player.name, formatArgs("copyfailmsg" in Action ? Action.copyfailmsg : "Your target (~Target~) can't be copied!", { "~Target~": typeof target == "string" ? target : target.name }));
                 return;
             } else {
                 var oldRole = player.role, newRole = null;
