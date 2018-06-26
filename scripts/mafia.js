@@ -823,7 +823,7 @@ function Mafia(mafiachan) {
     ThemeManager.prototype.remove = function (src, name, silent) {
         name = name.toLowerCase();
         var broadcastname = casedtheme(name);
-        if (name in this.themes) {
+        if (this.themes.hasOwnProperty(name)) {
             delete this.themes[name];
             for (var i = 0; i < this.themeInfo.length; ++i) {
                 if (script.cmp(name, this.themeInfo[i][0])) {
@@ -842,7 +842,7 @@ function Mafia(mafiachan) {
     };
     ThemeManager.prototype.enable = function (src, name, silent) {
         name = name.toLowerCase();
-        if (name in this.themes) {
+        if (this.themes.hasOwnProperty(name)) {
             this.themes[name].enabled = true;
             for (var i = 0; i < this.themeInfo.length; ++i) {
                 if (script.cmp(name, this.themeInfo[i][0])) {
@@ -859,7 +859,7 @@ function Mafia(mafiachan) {
     };
     ThemeManager.prototype.disable = function (src, name, silent) {
         name = name.toLowerCase();
-        if (name in this.themes) {
+        if (this.themes.hasOwnProperty(name)) {
             this.themes[name].enabled = false;
             for (var i = 0; i < this.themeInfo.length; ++i) {
                 if (script.cmp(name, this.themeInfo[i][0])) {
@@ -1350,7 +1350,7 @@ function Mafia(mafiachan) {
                         packName = id.substr(5);
 
                         pInfo = obj.spawnPacks[packName];
-                        if (!(packName in packs)) {
+                        if (!packs.hasOwnProperty(packName)) {
                             packs[packName] = 0;
                         }
 
@@ -1393,13 +1393,13 @@ function Mafia(mafiachan) {
         return this.roles[role].translation;
     };
     Theme.prototype.getHaxRolesFor = function (command) {
-        if (command in this.haxRoles) {
+        if (this.haxRoles.hasOwnProperty(command)) {
             return this.haxRoles[command];
         }
         return [];
     };
     Theme.prototype.getStandbyHaxRolesFor = function (command) {
-        if (command in this.standbyHaxRoles) {
+        if (this.standbyHaxRoles.hasOwnProperty(command)) {
             return this.standbyHaxRoles[command];
         }
         return [];
@@ -1840,7 +1840,7 @@ function Mafia(mafiachan) {
                         .reverse()
                         .map(function (g) { return g.what; });
 
-            if (themeName in this.themeManager.themes) {
+            if (this.themeManager.themes.hasOwnProperty(themeName)) {
                 if (this.themeManager.themes[themeName].enabled) {
                     if (Check.indexOf(themeName) == -1) {
                         if (!(themeName in this.possibleThemes)) {
@@ -2003,7 +2003,7 @@ function Mafia(mafiachan) {
                 }
             }
 
-            if (themeName in this.themeManager.themes) {
+            if (this.themeManager.themes.hasOwnProperty(themeName)) {
                 if (!this.themeManager.themes[themeName].enabled) {
                     gamemsg(srcname, "This theme is disabled!");
                     return;
@@ -2015,7 +2015,7 @@ function Mafia(mafiachan) {
                 return;
             }
         } else {
-            if (themeName in this.themeManager.themes) {
+            if (this.themeManager.themes.hasOwnProperty(themeName)) {
                 this.theme = this.themeManager.themes[themeName];
                 this.bot = this.theme.bot;
             } else {
@@ -2121,7 +2121,7 @@ function Mafia(mafiachan) {
             } else {
                 gamemsgAll(name + " joined the game!");
             }
-            if (name in this.usersToShove) {
+            if (this.usersToShove.hasOwnProperty(name)) {
                 var name = name;
                 var shover = this.usersToShove[name];
                 this.shoveUser(shover, name, false);
@@ -3320,7 +3320,7 @@ function Mafia(mafiachan) {
             gamemsg(name, "That person is not playing!");
             return;
         }
-        if (name in this.votes) {
+        if (this.votes.hasOwnProperty(name)) {
             gamemsg(name, "You already voted!");
             return;
         }
@@ -3331,7 +3331,7 @@ function Mafia(mafiachan) {
             this.voteCount += 1;
             return;
         }
-        if (name in mafia.voteBlock) {
+        if (mafia.voteBlock.hasOwnProperty(name)) {
             gamemsg(name, (mafia.voteBlock[name].msg ? mafia.voteBlock[name].msg.replace(/~Self~/g, name).replace(/~Target~/g, commandData) : "You cannot vote!"));
             this.votes[name] = null;
             this.voteCount += 1;
@@ -3408,7 +3408,7 @@ function Mafia(mafiachan) {
             var npvoted = {}, npvoters = {};
             for (var pname in mafia.votes) {
                 var target = mafia.votes[pname];
-                if (!(target in npvoted)) {
+                if (!npvoted.hasOwnProperty(target)) {
                     npvoted[target] = 0;
                     npvoters[target] = [];
                 }
@@ -3489,7 +3489,7 @@ function Mafia(mafiachan) {
             }
             return;
         }
-        if (!(checkPlayer in voteData)) {
+        if (!voteData.hasOwnProperty(checkPlayer)) {
             gamemsg(sentName,checkPlayer + (pastDay ? " was not " : " has not been ") + "voted for!","Vote");
             return;
         }
@@ -3531,7 +3531,7 @@ function Mafia(mafiachan) {
                 sendBorder();
             }
             mafia.compilePhaseStalk("GAME END");
-            if (winSide in mafia.theme.sideWinMsg) {
+            if (mafia.theme.sideWinMsg.hasOwnProperty(winSide)) {
                 gamemsgAll(mafia.theme.sideWinMsg[winSide].replace(/~Players~/g, readable(players, "and")));
             } else {
                 gamemsgAll("The " + mafia.theme.trside(winSide) + " (" + readable(players, "and") + ") wins!");
@@ -4044,7 +4044,7 @@ function Mafia(mafiachan) {
             tRole = target.role.translation;
             tSide = mafia.theme.trside(target.role.side);
             var revenge = false;
-            if (player.name in mafia.dayDistract) {
+            if (mafia.dayDistract.hasOwnProperty(player.name)) {
                     if (mafia.dayDistract[player.name].type === "revenge") {
                         revenge = true;
                         rmsg = mafia.dayDistract[player.name].msg ? mafia.dayDistract[player.name].msg : "~Self~ tried to attack ~Target~, but they were ~Target~ was just bait for someone to kill ~Self~!";
@@ -4324,7 +4324,7 @@ function Mafia(mafiachan) {
                     if (sp.indexOf("pack:") === 0) {
                         packName = sp.substr(5);
 
-                        if (!(packName in packs)) {
+                        if (!packs.hasOwnProperty(packName)) {
                             if ("chance" in spawnPacks[packName]) {
                                 pIndex = randomSample(spawnPacks[packName].chance);
                             } else {
@@ -4585,12 +4585,12 @@ function Mafia(mafiachan) {
             var stalkTargets = {};
             var watchTargets = {};
             var addStalkMove = function(user, target) {
-                if (!(user in stalkTargets)) {
+                if (!stalkTargets.hasOwnProperty(user)) {
                     stalkTargets[user] = {};
                 }
                 stalkTargets[user][target] = 1;
 
-                if (!(target in watchTargets)) {
+                if (!watchTargets.hasOwnProperty(target)) {
                     watchTargets[target] = {};
                 }
                 watchTargets[target][user] = 1;
@@ -4815,7 +4815,7 @@ function Mafia(mafiachan) {
                                 if (!piercing && ((target.guarded && command == "kill") || (target.safeguarded && (["distract", "inspect", "stalk", "watch", "poison", "convert", "copy", "curse", "detox", "dispel", "massconvert", "disguise"].indexOf(command) !== -1 || commandIsDummy)))) {
                                     gamemsg(player.name, (command == "kill" ? target.protectmsg : target.safeguardmsg));
                                     // Action can be countered even if target is protected/guarded
-                                    if (command in target.role.actions) {
+                                    if (target.role.actions.hasOwnProperty(command)) {
                                         targetMode = target.role.actions[command];
                                         if (targetMode.mode == "killattackerevenifprotected") {
                                             if (targetMode.msg)
@@ -4848,7 +4848,7 @@ function Mafia(mafiachan) {
                                     '~GuessedRole~': targetData
                                 };
                                 // Defensive Modes
-                                if (command in target.role.actions) {
+                                if (target.role.actions.hasOwnProperty(command)) {
                                     targetMode = target.role.actions[command];
                                     var bp = Action.bypass || [];
                                     if (targetMode.mode == "ignore" && bp.indexOf("ignore") === -1) {
@@ -5268,7 +5268,7 @@ function Mafia(mafiachan) {
                                 mafia.kill(target, deathmsg);
                                 nightkill = true;
                                  if (!(revenge)) {
-                                     if (target.name in mafia.nightBomb) {
+                                     if (mafia.nightBomb.hasOwnProperty(target.name)) {
                                          revengetext = formatArgs(("msg" in mafia.nightBomb[target.name] && mafia.nightBomb[target.name].msg !== null ? mafia.nightBomb[target.name].msg : "Your ~Action~ was bombed by someone! You died as well!"), nightargs);
                                          revenge = true;
                                      }
@@ -5294,7 +5294,7 @@ function Mafia(mafiachan) {
                             else if (command == "stalk") {
                                 target = typeof target == "object" ? target.name : target;
                                 targetMode = targetMode || {};
-                                if (target in stalkTargets) {
+                                if (stalkTargets.hasOwnProperty(target)) {
                                     var visited = Object.keys(stalkTargets[target]).sort();
                                     if (visited.length > 0 && targetMode.mode !== "noVisit") {
                                         tarmsg = ("stalkmsg" in Action ? Action.stalkmsg : "Your target (~Target~) visited ~Visit~ this night!").replace(/~Target~/gi, target).replace(/~Visit~/gi, readable(visited, "and"));
@@ -5311,7 +5311,7 @@ function Mafia(mafiachan) {
                             else if (command == "watch") {
                                 target = typeof target == "object" ? target.name : target;
                                 targetMode = targetMode || {};
-                                if (target in watchTargets) {
+                                if (watchTargets.hasOwnProperty(target)) {
                                     var visited = Object.keys(watchTargets[target]);
                                     if (visited.indexOf(player.name) !== -1) {
                                         visited.splice(visited.indexOf(player.name), 1);
@@ -5848,7 +5848,7 @@ function Mafia(mafiachan) {
                     gamemsg(player.name, mafia.getRolesForTeamS(side), "±Current Team");
                 }
 
-                if (p in mafia.dayRecharges) {
+                if (mafia.dayRecharges.hasOwnProperty(p)) {
                     for (r in mafia.dayRecharges[p]) {
                         mafia.setRechargeFor(player, "standby", r, mafia.dayRecharges[p][r]);
                     }
@@ -5916,7 +5916,7 @@ function Mafia(mafiachan) {
                 var target = mafia.votes[pname];
                 // target play have been killed meanwhile by slay
                 if (!mafia.isInGame(target)) continue;
-                if (!(target in voted)) {
+                if (!voted.hasOwnProperty(target)) {
                     voted[target] = 0;
                     voters[target] = [];
                     multipliers[target] = [];
@@ -6381,7 +6381,7 @@ function Mafia(mafiachan) {
             return;
         }
         if (this.isInGame(name)) {
-            if (name in mafia.usersToSlay) {
+            if (mafia.usersToSlay.hasOwnProperty(name)) {
                 sys.sendMessage(sys.id(slayer), "±Slay: " + player.name + " is already going to be sla" + "\u200b" + "in after the phase ends!", mafiachan);
                 return;
             }
@@ -6430,7 +6430,7 @@ function Mafia(mafiachan) {
                     return;
                 }
             }
-            if (name in this.usersToShove) {
+            if (this.usersToShove.hasOwnProperty(name)) {
                 if (src) {
                     msg(src, name + " is already going to be shoved if they attempt to join!");
                 }
@@ -6848,7 +6848,7 @@ function Mafia(mafiachan) {
             msg(src, "Your name is too similar to a common bot used by the script and can be confusing to other players.");
             msg(src, "You must change it if you want to play!");
             return true;
-        }
+        }        
         /*
         if (name.length > Config.Mafia.max_name_length) {
             msg(src, "You're not allowed to have more than " + Config.Mafia.max_name_length + " letters in your name!");
@@ -6920,7 +6920,7 @@ function Mafia(mafiachan) {
         } else {
             redir = "";
         }
-        if (!(user in phaseStalk)) phaseStalk[user] = [];
+        if (!phaseStalk.hasOwnProperty(user)) phaseStalk[user] = [];
         phaseStalk[user].push("/" + action + " " + target + after + redir);
     };
     this.addPhaseStalkHax = function (user, action, target, haxer) {
@@ -7324,7 +7324,7 @@ function Mafia(mafiachan) {
                 } else {
                     gamemsgAll(name + " joined the game!");
                 }
-                if (name in this.usersToShove) {
+                if (this.usersToShove.hasOwnProperty(name)) {
                     var name = name;
                     var shover = this.usersToShove[name];
                     this.shoveUser(shover, name, false);
@@ -8481,7 +8481,7 @@ function Mafia(mafiachan) {
         }
         if (command === "unshove") {
             var name = commandData.toCorrectCase();
-            if (name in mafia.usersToShove) {
+            if (mafia.usersToShove.hasOwnProperty(name)) {
                 msgAll(nonFlashing(sys.name(src)) + " cancelled the shove on " + name + ".", sachannel);
                 msg(src, "You cancelled the shove on " + name + ".", channel);
                 delete mafia.usersToShove[name];
@@ -8499,7 +8499,7 @@ function Mafia(mafiachan) {
         }
         if (command === "unslay") {
             var name = commandData.toCorrectCase();
-            if (name in mafia.usersToSlay) {
+            if (mafia.usersToSlay.hasOwnProperty(name)) {
                 dualBroadcast("±Slay: " + nonFlashing(sys.name(src)) + " cancelled the sl" + "\u200b" + "ay on " + name + ".");
                 delete mafia.usersToSlay[name];
                 return;
@@ -8567,7 +8567,7 @@ function Mafia(mafiachan) {
             return;
         }
         if (command === "gamenightrewards") {
-            var ip, ips = {}, alts = {}, user, id, playerData, aliases, reward1, alts1, reward2, alts2, reward3, alts3, reward4, alts4;
+            var ip, ips = {}, alts = {}, user, id, playerData, aliases, reward1 = [], alts1 = [], reward2 = [], alts2 = [], reward3 = [], alts3 = [], reward4 = [], alts4 = [];
             for (var i = 0; i < gameNight.reward1.length; i++) {
                 user = gameNight.reward1[i];
                 id = sys.id(user);
@@ -8615,7 +8615,7 @@ function Mafia(mafiachan) {
                 reward3.push(x);
                 aliases = playerData[x];
                 if (aliases.length > 0) {
-                    alts3 = x + "=" + aliases.join(",");
+                    alts3.push(x + "=" + aliases.join(","));
                 }
             }
             
@@ -8624,7 +8624,7 @@ function Mafia(mafiachan) {
                 reward4.push(x);
                 aliases = playerData[x];
                 if (aliases.length > 0) {
-                    alts4 = x + "=" + aliases.join(",");
+                    alts4.push(x + "=" + aliases.join(","));
                 }
             }
             
@@ -8767,7 +8767,7 @@ function Mafia(mafiachan) {
 
             gamemsgAll(name + " joined the game! (pushed by " + nonFlashing(sys.name(src)) + ")");
             sys.sendAll("±Game: " + name + " joined the game! (pushed by " + nonFlashing(sys.name(src)) + ")", sachannel);
-            if (name in this.usersToShove) {
+            if (this.usersToShove.hasOwnProperty(name)) {
                 delete this.usersToShove[name];
             }
             return;
@@ -9098,7 +9098,7 @@ function Mafia(mafiachan) {
                     mafia.ips.push(sys.ip(id));
                     gamemsg(name + " joined the game! (pushed by " + nonFlashing(sys.name(src)) + ")");
                     sys.sendAll("±Game: " + name + " joined the game! (pushed by " + nonFlashing(sys.name(src)) + ")", sachannel);
-                    if (name in this.usersToShove) {
+                    if (this.usersToShove.hasOwnProperty(name)) {
                         delete this.usersToShove[name];
                     }
                 }
@@ -9278,7 +9278,7 @@ this.beforeChatMessage = function (src, message, channel) {
     this.beforeChannelLeave = function(src, channel) {
         if (channel == mafiachan) {
             var name = sys.name(src);
-            if (name in this.usersToShove) {
+            if (this.usersToShove.hasOwnProperty(name)) {
                 msgAll(name + " left the channel and was removed from the shove list!", sachannel);
                 delete this.usersToShove[name];
             }
