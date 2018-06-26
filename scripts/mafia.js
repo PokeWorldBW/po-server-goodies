@@ -4765,7 +4765,7 @@ function Mafia(mafiachan) {
                             var finalCurseCount = Action.curseCount || 2;
                             var commandIsDummy = isDummyCommand.test(command);
 
-                            if (["kill", "protect", "bomb", "dayprotect", "inspect", "distract", "daydistract", "poison", "safeguard", "stalk", "watch", "convert", "indoctrinate", "copy", "curse", "detox", "dispel", "shield", "guard", "massconvert", "disguise", "redirect", "voteBlock", "memory"].indexOf(command) === -1 && !commandIsDummy) {
+                            if (["kill", "protect", "bomb", "dayprotect", "inspect", "distract", "daydistract", "poison", "safeguard", "stalk", "watch", "convert", "indoctrinate", "copy", "curse", "detox", "dispel", "shield", "guard", "massconvert", "disguise", "redirect", "voteblock", "memory"].indexOf(command) === -1 && !commandIsDummy) {
                                 continue;
                             }
                             if ((!mafia.isInGame(target)) && command != "stalk" && command != "watch") {
@@ -5177,7 +5177,7 @@ function Mafia(mafiachan) {
                                     "msg": Action.dayDistractMsg ? Action.dayDistractMsg : null
                                 };
                             }
-                            else if (command == "voteBlock") {
+                            else if (command == "voteblock") {
                                 mafia.voteBlock[target.name] = {
                                     "duration": Action.voteBlockDuration ? Action.voteBlockDuration : 1,
                                     "msg": Action.voteBlockMsg ? Action.voteBlockMsg : null
