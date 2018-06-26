@@ -8590,7 +8590,7 @@ function Mafia(mafiachan) {
                 }
             }
             reward1 = Object.keys(ips).map(function(key) { return ips[key]; });
-            alts1 = Object.keys(alts).map(function(key) { return ips[key] + "=" + alts[key].join(",") + "]"; });
+            alts1 = Object.keys(alts).map(function(key) { return ips[key] + "=[" + alts[key].join(",") + "]"; });
             
             ips = {};
             alts = {};
