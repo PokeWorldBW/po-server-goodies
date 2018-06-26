@@ -8642,6 +8642,7 @@ function Mafia(mafiachan) {
             } else {
                 mess.push("No players meet the criteria to receive this reward.");
             }
+            mess.push("");
             mess.push("Reward #2: 2 Big Mushrooms, 1 Helix Fossil, 10 Golden Baits (for players who joined a game with at least 25 players)");
             if (reward2.length > 0) {
                 mess.push(reward2.join(", "));
@@ -8652,6 +8653,7 @@ function Mafia(mafiachan) {
             } else {
                 mess.push("No players meet the criteria to receive this reward.");
             }
+            mess.push("");
             mess.push("Reward #3: 1 Prize Pack, 10 Shady Coins (for players who joined at least 3 games)");
             if (reward3.length > 0) {
                 mess.push(reward3.join(", "));
@@ -8662,6 +8664,7 @@ function Mafia(mafiachan) {
             } else {
                 mess.push("No players meet the criteria to receive this reward.");
             }
+            mess.push("");
             mess.push("Reward #4: 3 Prize Packs, 25 Shady Coins (for players who joined all but 2 games)");
             if (reward4.length > 0) {
                 mess.push(reward4.join(", "));
