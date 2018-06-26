@@ -58,18 +58,6 @@ function Mafia(mafiachan) {
             mafiabot.sendAll("Error loading mafia warns: " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), sachannel);
         }
     }
-    msgAll("clearing dead mafia warns");
-    for (var ip in this.mafiaWarns) { // removes warns if the user's name and ip no longer exist
-        if (sys.aliases(ip).length === 0) {
-            var activeNames = this.mafiaWarns[ip].names.map(function(name) { return sys.dbLastOn(name) !== undefined });
-            if (activeNames.length === 0) {
-                delete this.mafiaWarns[ip];
-            } else {
-                this.mafiaWarns[ip] = activeNames;
-            }
-        }
-    }
-    this.saveWarns();
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -87,6 +75,7 @@ function Mafia(mafiachan) {
     this.distributeEvent = false;
     this.queue = []; // theme queueing for game nights and stuff
     this.queueingEnabled = false;
+    this.lastWarnsClear = 0;
 
     var DEFAULT_BORDER = "***************************************************************************************",
         GREEN_BORDER = " " + DEFAULT_BORDER + ":",
@@ -6711,6 +6700,21 @@ function Mafia(mafiachan) {
         }
     };
     this.showAllWarns = function (src, commandData, channel) {
+        if (new Date().getTime() - this.lastWarnsClear > 2592000000) { // 30 days
+            msgAll("clearing dead mafia warns");
+            for (var ip in this.mafiaWarns) { // removes warns if the user's name and ip no longer exist
+                if (sys.aliases(ip).length === 0) {
+                    var activeNames = this.mafiaWarns[ip].names.filter(function(name) { return sys.dbLastOn(name) !== undefined });
+                    if (activeNames.length === 0) {
+                        delete this.mafiaWarns[ip];
+                    } else {
+                        this.mafiaWarns[ip] = activeNames;
+                    }
+                }
+            }
+            this.saveWarns();
+            this.lastWarnsClear = new Date().getTime();
+        }
         var namesPerRow = 10;
         var table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='" + namesPerRow + "'>Mafia Warns</th></tr>"];
         if (Object.keys(this.mafiaWarns).length === 0) {
