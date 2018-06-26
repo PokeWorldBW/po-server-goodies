@@ -8585,8 +8585,8 @@ function Mafia(mafiachan) {
                     alts[ip].push(user);
                 }
             }
-            reward1 = Object.keys(ip).map(function(key) { return ip[key]; });
-            alts1 = Object.keys(alts).map(function(key) { return ip[key] + "=" + alts[key].join(","); });
+            reward1 = Object.keys(ips).map(function(key) { return ips[key]; });
+            alts1 = Object.keys(alts).map(function(key) { return ips[key] + "=" + alts[key].join(","); });
             
             ips = {};
             alts = {};
@@ -8607,8 +8607,8 @@ function Mafia(mafiachan) {
                     alts[ip].push(user);
                 }
             }
-            reward2 = Object.keys(ip).map(function(key) { return ip[key]; });
-            alts2 = Object.keys(alts).map(function(key) { return ip[key] + "=" + alts[key].join(","); });
+            reward2 = Object.keys(ips).map(function(key) { return ips[key]; });
+            alts2 = Object.keys(alts).map(function(key) { return ips[key] + "=" + alts[key].join(","); });
 
             playerData = mafia.mafiaStats.getTopPlayers(null, null, 3, true);
             for (var x in playerData) {
