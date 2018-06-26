@@ -1750,12 +1750,12 @@ function mafiaChecker() {
                     checkValidValue(action.command, possibleNightActions, act + ".command");
                 }
             }
+            if (command in Object.prototype) {
+                addFatalError("The value '" + command + "' cannot be used for a command.");
+            }
         } else {
             if (!dummy.test(command)) {
                 checkValidValue(command, possibleNightActions, yourRole + ".night");
-            }
-            if (command in Object.prototype) {
-                addFatalError("The value '" + command + "' cannot be used for a command.");
             }
         }
         checkType(action.limit, ["number"], act + ".limit");
