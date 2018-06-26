@@ -8634,7 +8634,7 @@ function Mafia(mafiachan) {
             
             var mess = ["", "*** GAME NIGHT REWARDS ***", "Reward #1: 1 Big Mushroom, 5 Golden Baits (for players who joined a game with at least 17 players)"];
             if (reward1.length > 0) {
-                mess.push(reward1.join(", ");
+                mess.push(reward1.join(", "));
                 if (alts1.length > 0) {
                     mess.push("Alternate Names Found:");
                     mess.push(alts1.join("; "));
@@ -8644,7 +8644,7 @@ function Mafia(mafiachan) {
             }
             mess.push("Reward #2: 2 Big Mushrooms, 1 Helix Fossil, 10 Golden Baits (for players who joined a game with at least 25 players)");
             if (reward2.length > 0) {
-                mess.push(reward2.join(", ");
+                mess.push(reward2.join(", "));
                 if (alts2.length > 0) {
                     mess.push("Alternate Names Found:");
                     mess.push(alts2.join("; "));
@@ -8654,7 +8654,7 @@ function Mafia(mafiachan) {
             }
             mess.push("Reward #3: 1 Prize Pack, 10 Shady Coins (for players who joined at least 3 games)");
             if (reward3.length > 0) {
-                mess.push(reward3.join(", ");
+                mess.push(reward3.join(", "));
                 if (alts3.length > 0) {
                     mess.push("Alternate Names Found:");
                     mess.push(alts3.join("; "));
@@ -8664,7 +8664,7 @@ function Mafia(mafiachan) {
             }
             mess.push("Reward #4: 3 Prize Packs, 25 Shady Coins (for players who joined all but 2 games)");
             if (reward4.length > 0) {
-                mess.push(reward4.join(", ");
+                mess.push(reward4.join(", "));
                 if (alts4.length > 0) {
                     mess.push("Alternate Names Found:");
                     mess.push(alts4.join("; "));
