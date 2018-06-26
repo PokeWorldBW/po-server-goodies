@@ -3762,9 +3762,11 @@ function Mafia(mafiachan) {
             }
         };
         var copyAs = function(player, target, Action) {
+            var targetName = typeof target == "string" ? target : target.name;
+            var failmsg = ("copyfailmsg" in Action ? Action.copyfailmsg : "Your target (~Target~) can't be copied!").replace(/~Target~/g, targetName);
             if (typeof Action.copyAs == "string" && "canCopy" in Action && Action.canCopy != "*" && Action.canCopy.indexOf(target.role.role) == -1) {
                 var targetName = typeof target == "string" ? target : target.name;
-                gamemsg(player.name, ("copyfailmsg" in Action ? Action.copyfailmsg : "Your target (~Target~) can't be copied!").replace(/~Target~/g, targetName));
+                gamemsg(player.name, failmsg, undefined, undefined, true);
                 return;
             } else {
                 var oldRole = player.role, newRole = null;
@@ -3785,6 +3787,7 @@ function Mafia(mafiachan) {
                     }
                 }
                 if (newRole === null) {
+                    gamemsg(player.name, failmsg, undefined, undefined, true);
                     return;
                 } else {
                     mafia.setPlayerRole(player, newRole);
@@ -5359,7 +5362,7 @@ function Mafia(mafiachan) {
                             else if (command == "copy") {
                                 failedmsg = "copyfailmsg" in Action ? Action.copyfailmsg : "Your target (~Target~) can't be copied!";
                                 if (typeof Action.copyAs == "string" && "canCopy" in Action && Action.canCopy != "*" && Action.canCopy.indexOf(target.role.role) == -1) {
-                                    gamemsg(player.name, formatArgs(failedmsg, nightargs));
+                                    gamemsg(player.name, formatArgs(failedmsg, nightargs), undefined, undefined, true);
                                 } else {
                                     var oldRole = player.role, newRole = null;
                                     if (typeof Action.copyAs == "object") {
