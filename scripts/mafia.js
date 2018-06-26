@@ -58,6 +58,18 @@ function Mafia(mafiachan) {
             mafiabot.sendAll("Error loading mafia warns: " + e + (e.lineNumber ? " on line: " + e.lineNumber : ""), sachannel);
         }
     }
+    msgAll("clearing dead mafia warns");
+    for (var ip in this.mafiaWarns) { // removes warns if the user's name and ip no longer exist
+        if (sys.aliases(ip).length === 0) {
+            var activeNames = this.mafiaWarns[ip].names.map(function(name) { return sys.dbLastOn(name) !== undefined });
+            if (activeNames.length === 0) {
+                delete this.mafiaWarns[ip];
+            } else {
+                this.mafiaWarns[ip] = activeNames;
+            }
+        }
+    }
+    this.saveWarns();
     this.eventsEnabled = true;
     this.defaultWarningPoints = {
         "afk": 1,
@@ -6643,7 +6655,7 @@ function Mafia(mafiachan) {
                         var warning = info[ip][i],
                             issued = (typeof warning.issueTime === "string" ? "&gt;" : "") + getTimeString(Math.floor((now - (+warning.issueTime)) / 1000)),
                             relevance = now > warning.expirationTime ? "Expired" : "Active",
-                            row = [count++, ip ? ip.substring(0, 7) === "::ffff:" ? ip.slice(7) : ip, warning.name, warning.warner, html_escape(warning.rule), warning.points, relevance, issued, html_escape(warning.comments)].map(function(e) {
+                            row = [count++, ip.substring(0, 7) === "::ffff:" ? ip.slice(7) : ip, warning.name, warning.warner, html_escape(warning.rule), warning.points, relevance, issued, html_escape(warning.comments)].map(function(e) {
                                 return "<td><center>" + e + "</center></td>";
                             });
                         table.push("<tr>" + row.join("") + "</tr>");
@@ -6724,19 +6736,6 @@ function Mafia(mafiachan) {
             table.push("</table>");
             sys.sendHtmlMessage(src, table.join(""), channel);
         }
-    };
-    this.clearDeadUserWarns = function() { // removes warns if the user's name and ip no longer exist
-        for (var ip in this.mafiaWarns) {
-            if (sys.aliases(ip).length === 0) {
-                var activeNames = this.mafiaWarns[ip].names.map(function(name) { return sys.dbLastOn(name) !== undefined });
-                if (activeNames.length === 0) {
-                    delete this.mafiaWarns[ip];
-                } else {
-                    this.mafiaWarns[ip] = activeNames;
-                }
-            }
-        }
-        this.saveWarns();
     };
     this.possibleBotquote = function (mess) {
         var taboo = ["±Kill:", "±Game:", "±Info:", "±Murkrow:", "±Hint:"];
@@ -9207,11 +9206,6 @@ this.beforeChatMessage = function (src, message, channel) {
             this.tickDown();
         } catch (err) {
             dualBroadcast("Error occurred in Mafia step" + (err.lineNumber ? " on line " + err.lineNumber : "") + ": " + err);
-        }
-        var date = new Date();
-        if (/*date.getUTCMinutes() === 0 */&& date.getUTCSeconds() === 0) {
-            msgAll("clearing dead mafia warns");
-            this.clearDeadUserWarns();
         }
     };
     this.init = function () {
