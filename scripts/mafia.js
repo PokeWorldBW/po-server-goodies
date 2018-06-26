@@ -855,6 +855,8 @@ function Mafia(mafiachan) {
             if (!silent) {
                 dualBroadcast("±" + mafiabot.name + ": " + nonFlashing(sys.name(src)) + " enabled theme " + broadcastname + ".");
             }
+        } else {
+            msg(src, "The theme '" + name + "' does not exist!");
         }
     };
     ThemeManager.prototype.disable = function (src, name, silent) {
@@ -880,6 +882,8 @@ function Mafia(mafiachan) {
                 msgAll(broadcastname + " was the Featured Theme. Please select a new one to feature!", sachannel);
                 featuredTheme = undefined;
             }
+        } else {
+            msg(src, "The theme '" + name + "' does not exist!");
         }
     };
 
