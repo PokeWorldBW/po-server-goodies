@@ -6707,8 +6707,8 @@ function Mafia(mafiachan) {
                     var activeNames = this.mafiaWarns[ip].names.filter(function(name) { return sys.dbLastOn(name) !== undefined });
                     if (activeNames.length === 0) {
                         delete this.mafiaWarns[ip];
-                    } else {
-                        this.mafiaWarns[ip] = activeNames;
+                    } else if (this.mafiaWarns[ip].names.length !== activeNames.length) {
+                        this.mafiaWarns[ip].names = activeNames;
                     }
                 }
             }
