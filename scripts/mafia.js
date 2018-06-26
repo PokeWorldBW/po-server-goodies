@@ -8590,7 +8590,7 @@ function Mafia(mafiachan) {
                 }
             }
             reward1 = Object.keys(ips).map(function(key) { return ips[key]; });
-            alts1 = Object.keys(alts).map(function(key) { return ips[key] + "=" + alts[key].join(","); });
+            alts1 = Object.keys(alts).map(function(key) { return ips[key] + "=" + alts[key].join(",") + "]"; });
             
             ips = {};
             alts = {};
@@ -8612,14 +8612,14 @@ function Mafia(mafiachan) {
                 }
             }
             reward2 = Object.keys(ips).map(function(key) { return ips[key]; });
-            alts2 = Object.keys(alts).map(function(key) { return ips[key] + "=" + alts[key].join(","); });
+            alts2 = Object.keys(alts).map(function(key) { return ips[key] + "=[" + alts[key].join(",") + "]"; });
 
             playerData = mafia.mafiaStats.getTopPlayers(null, null, 3, true);
             for (var x in playerData) {
                 reward3.push(x);
                 aliases = playerData[x];
                 if (aliases.length > 0) {
-                    alts3.push(x + "=" + aliases.join(","));
+                    alts3.push(x + "=[" + aliases.join(",") + "]");
                 }
             }
             
@@ -8628,33 +8628,51 @@ function Mafia(mafiachan) {
                 reward4.push(x);
                 aliases = playerData[x];
                 if (aliases.length > 0) {
-                    alts4.push(x + "=" + aliases.join(","));
+                    alts4.push(x + "=[" + aliases.join(",") + "]");
                 }
             }
             
-            var mess = [
-                "*** GAME NIGHT REWARDS ***",
-                "Reward #1: 1 Big Mushroom, 5 Golden Baits (for players who joined a game with at least 17 players)",
-                reward1.join(", "),
-                "Alternate Names Found:",
-                alts1.join("; "),
-                "",
-                "Reward #2: 2 Big Mushrooms, 1 Helix Fossil, 10 Golden Baits (for players who joined a game with at least 25 players)",
-                reward2.join(", "),
-                "Alternate Names Found:",
-                alts2.join("; "),
-                "",
-                "Reward #3: 1 Prize Pack, 10 Shady Coins (for players who joined at least 3 games)",
-                reward3.join(", "),
-                "Alternate Names Found:",
-                alts3.join("; "),
-                "",
-                "Reward #4: 3 Prize Packs, 25 Shady Coins (for players who joined all but 2 games)",
-                reward4.join(", "),
-                "Alternate Names Found:",
-                alts4.join("; "),
-                ""
-            ];
+            var mess = ["", "*** GAME NIGHT REWARDS ***", "Reward #1: 1 Big Mushroom, 5 Golden Baits (for players who joined a game with at least 17 players)"];
+            if (reward1.length > 0) {
+                mess.push(reward1.join(", ");
+                if (alts1.length > 0) {
+                    mess.push("Alternate Names Found:");
+                    mess.push(alts1.join("; "));
+                }
+            } else {
+                mess.push("No players meet the criteria to receive this reward.");
+            }
+            mess.push("Reward #2: 2 Big Mushrooms, 1 Helix Fossil, 10 Golden Baits (for players who joined a game with at least 25 players)");
+            if (reward2.length > 0) {
+                mess.push(reward2.join(", ");
+                if (alts2.length > 0) {
+                    mess.push("Alternate Names Found:");
+                    mess.push(alts2.join("; "));
+                }
+            } else {
+                mess.push("No players meet the criteria to receive this reward.");
+            }
+            mess.push("Reward #3: 1 Prize Pack, 10 Shady Coins (for players who joined at least 3 games)");
+            if (reward3.length > 0) {
+                mess.push(reward3.join(", ");
+                if (alts3.length > 0) {
+                    mess.push("Alternate Names Found:");
+                    mess.push(alts3.join("; "));
+                }
+            } else {
+                mess.push("No players meet the criteria to receive this reward.");
+            }
+            mess.push("Reward #4: 3 Prize Packs, 25 Shady Coins (for players who joined all but 2 games)");
+            if (reward4.length > 0) {
+                mess.push(reward4.join(", ");
+                if (alts4.length > 0) {
+                    mess.push("Alternate Names Found:");
+                    mess.push(alts4.join("; "));
+                }
+            } else {
+                mess.push("No players meet the criteria to receive this reward.");
+            }
+            mess.push("");
             dump(src, mess, channel);
             return;
         }
