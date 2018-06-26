@@ -1751,7 +1751,7 @@ function mafiaChecker() {
                 }
             }
             if (command in Object.prototype) {
-                addFatalError("The value '" + command + "' cannot be used for a command.");
+                addFatalError("The value '" + command + "' at Role " + act + " cannot be used for a command.");
             }
         } else {
             if (!dummy.test(command)) {
