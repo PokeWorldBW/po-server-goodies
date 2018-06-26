@@ -75,7 +75,6 @@ function Mafia(mafiachan) {
     this.distributeEvent = false;
     this.queue = []; // theme queueing for game nights and stuff
     this.queueingEnabled = false;
-    this.lastWarnsClear = 0;
 
     var DEFAULT_BORDER = "***************************************************************************************",
         GREEN_BORDER = " " + DEFAULT_BORDER + ":",
@@ -104,7 +103,13 @@ function Mafia(mafiachan) {
             name: "Game",
             color: "#3DAA68"
         },
-        safchan = sys.channelId("Safari");
+        safchan = sys.channelId("Safari"),
+        lastWarnsClear = 0,
+        gameNight = {
+            gamesPlayed: 0,
+            reward1: [],
+            reward2: []
+        };
 
     var savePlayedGames = function (entry) {
         sys.writeToFile(MAFIA_SAVE_FILE, JSON.stringify(PreviousGames));
@@ -4476,6 +4481,23 @@ function Mafia(mafiachan) {
 
             currentStalk.push("Players: " + Object.keys(mafia.players).map(name_trrole, mafia.theme).join(", "));
             mafia.mafiaStats.updateJoinData(mafia.signups);
+            gameNight.gamesPlayed++;
+            if (mafia.signups.length >= 17) {
+                for (var i = 0; i < mafia.signups.length; i++) {
+                    var user = mafia.signups[i];
+                    if (gameNight.reward1.indexOf(user) === -1) {
+                        gameNight.reward1.push(user);
+                    }
+                }
+            }
+            if (mafia.signups.length >= 25) {
+                for (var i = 0; i < mafia.signups.length; i++) {
+                    var user = mafia.signups[i];
+                    if (gameNight.reward2.indexOf(user) === -1) {
+                        gameNight.reward2.push(user);
+                    }
+                }
+            }
 
             gamemsgAll(null, "The Roles have been Decided! ");
             mafia.usersToShove = {};
@@ -6700,8 +6722,7 @@ function Mafia(mafiachan) {
         }
     };
     this.showAllWarns = function (src, commandData, channel) {
-        if (new Date().getTime() - this.lastWarnsClear > 2592000000) { // 30 days
-            msgAll("clearing dead mafia warns");
+        if (new Date().getTime() - lastWarnsClear > 2592000000) { // 30 days
             for (var ip in this.mafiaWarns) { // removes warns if the user's name and ip no longer exist
                 if (sys.aliases(ip).length === 0) {
                     var activeNames = this.mafiaWarns[ip].names.filter(function(name) { return sys.dbLastOn(name) !== undefined });
@@ -6713,7 +6734,7 @@ function Mafia(mafiachan) {
                 }
             }
             this.saveWarns();
-            this.lastWarnsClear = new Date().getTime();
+            lastWarnsClear = new Date().getTime();
         }
         var namesPerRow = 10;
         var table = ["<table border='1' cellpadding='6' cellspacing='0'><tr><th colspan='" + namesPerRow + "'>Mafia Warns</th></tr>"];
@@ -7179,7 +7200,7 @@ function Mafia(mafiachan) {
             "/queue: To show the Mafia Theme Queue."],
         queue: [
             "/enqueue: To add a theme to the theme queue. Mainly useful when hosting Game Nights. Can also use /enq",
-            "/dequeue: T remove a theme from the theme queue. Can either use theme name or index number in /queue to identify which theme to remove. Can also use /deq"],
+            "/dequeue: To remove a theme from the theme queue. Can either use theme name or index number in /queue to identify which theme to remove. Can also use /deq"],
         ma: ["/slay: To slay users in a Mafia game. Use /unslay to cancel.",
             "/shove: To remove users before a game starts. Use /unshove to cancel.",
             "/warn: To warn a user for violation of a rule. Syntax is /warn <user>:<rule>:<duration>:<comments>:<shove>.",
@@ -7200,7 +7221,10 @@ function Mafia(mafiachan) {
             "/enable: To enable a previously disabled Mafia Theme.",
             "/enablenonpeak: To enable all non-peak Mafia Themes. Disable with /disablenonpeak.",
             "/enablequeue: To enable the Mafia Theme Queue system. Mainly useful for hosting Game Nights",
-            "/disablequeue: To disable the Mafia Theme Queue system."],
+            "/disablequeue: To disable the Mafia Theme Queue system.",
+            "/topplayers X: To view how many games each mafia player has joined. Filtered by players who have played at least X games.",
+            "/gamenightrewards: To view players eligible for Game Night rewards",
+            "/resetjoindata: To reset the data shown by /topplayers and /gamenightrewards"],
 ///            "/disableunder X: Disables all themes that support less than X players. (X must be over 30). You will need to manually re-enable."],
         sma: ["/push: To force a user into the current theme during sign ups.",
             "/supdate: To silently add or update a theme.",
@@ -7217,9 +7241,7 @@ function Mafia(mafiachan) {
             "/featureint: To change how often the \"Featured Theme\" message displays. Time is in minutes between 30 and 240. Leave blank to reset to 60 minutes.",
             "/forcefeature: To force the \"Featured Theme\" message to display.",
             "/enableall: To enable all disabled themes, excluding non-peak.",
-            "/aliases: To view the aliases of a user.",
-            "/topplayers X: To view how many games each mafia player has joined. Filtered by players who have played at least X games.",
-            "/resetjoindata: Resets the data shown by /topplayers"],
+            "/aliases: To view the aliases of a user."],
         owner: ["/mafiasuperadmin: To promote a user to Super Mafia Admin. Use /smafiasuperadmin for a silent promotion.",
             "/mafiasuperadminoff: To demote a user from Super Mafia Admin. Use /smafiasuperadminoff for a silent demotion."]
     };
@@ -7234,9 +7256,9 @@ function Mafia(mafiachan) {
             command = message.substr(0).toLowerCase();
         }
         if (channel != mafiachan) {
-            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "passmas", "windata", "topthemes", "playedgames", "pg", "mywarns", "mafiawarns", "allwarns", "whodungoofd", "warnlog", "checkwarns", "warnhelp"].indexOf(command) === -1) {
+            if (["mafiabans", "mafiaadmins", "madmins", "mas", "roles", "priority", "spawn", "sides", "themeinfo", "readlog", "targetlog", "mafiarules", "passma", "passmas", "windata", "topthemes", "playedgames", "pg", "mywarns", "mafiawarns", "allwarns", "whodungoofd", "warnlog", "checkwarns", "warnhelp", "topplayers", "gamenightrewards"].indexOf(command) === -1) {
                 if (channel == staffchannel || channel == sachannel) {
-                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "rescind"].indexOf(command) === -1) {
+                    if (["mafiaban", "mafiaunban", "disable", "enable", "enablenonpeak", "disablenonpeak", "mafiaadminoff", "mafiaadmin", "mafiasadmin", "mafiasuperadmin", "mafiasuperadminoff", "smafiaadmin", "smafiasuperadmin", "smafiaadminoff", "smafiasuperadminoff", "updatestats", "themes", "aliases", "warn", "unwarn", "rescind", "resetjoindata"].indexOf(command) === -1) {
                         return;
                     }
                 } else {
@@ -8523,6 +8545,115 @@ function Mafia(mafiachan) {
             mafiabot.sendMessage(src, "Current Mafia version is: " + this.version, channel);
             return;
         }
+        if (command === "topplayers") {
+            mafia.mafiaStats.getTopPlayers(src, channel, commandData);
+            return;
+        }
+        if (command === "resetjoindata") {
+            if (commandData.toLowerCase() === "confirm") {
+                mafia.mafiaStats.resetJoinData();
+                gameNight = {
+                    gamesPlayed: 0,
+                    reward1: [],
+                    reward2: []
+                };
+                mafiabot.sendAll(nonFlashing(sys.name(src)) + " reset the mafia player join data!" , sachannel);
+                if (channel !== sachannel) {
+                    mafiabot.sendMessage(src, "You reset the mafia player join data!", channel);
+                }
+            } else {
+                mafiabot.sendMessage(src, "Are you sure you want to reset the data on how many games each mafia player has joined? Type '/resetjoindata confirm' to confirm.", channel);
+            } 
+            return;
+        }
+        if (command === "gamenightrewards") {
+            var ip, ips = {}, alts = {}, user, id, playerData, aliases, reward1, alts1, reward2, alts2, reward3, alts3, reward4, alts4;
+            for (var i = 0; i < gameNight.reward1.length; i++) {
+                user = gameNight.reward1[i];
+                id = sys.id(user);
+                if (id !== undefined && id !== -1) {
+                    ip = sys.ip(id);
+                } else {
+                    ip = sys.dbIp(user);
+                }
+                if (!ips.hasOwnProperty(ip)) {
+                    ips[ip] = user;
+                } else {
+                    if (!alts.hasOwnProperty(ip)) {
+                        alts[ip] = [];
+                    }
+                    alts[ip].push(user);
+                }
+            }
+            reward1 = Object.keys(ip).map(function(key) { return ip[key]; });
+            alts1 = Object.keys(alts).map(function(key) { return ip[key] + "=" + alts[key].join(","); });
+            
+            ips = {};
+            alts = {};
+            for (var i = 0; i < gameNight.reward2.length; i++) {
+                user = gameNight.reward2[i];
+                id = sys.id(user);
+                if (id !== undefined && id !== -1) {
+                    ip = sys.ip(id);
+                } else {
+                    ip = sys.dbIp(user);
+                }
+                if (!ips.hasOwnProperty(ip)) {
+                    ips[ip] = user;
+                } else {
+                    if (!alts.hasOwnProperty(ip)) {
+                        alts[ip] = [];
+                    }
+                    alts[ip].push(user);
+                }
+            }
+            reward2 = Object.keys(ip).map(function(key) { return ip[key]; });
+            alts2 = Object.keys(alts).map(function(key) { return ip[key] + "=" + alts[key].join(","); });
+
+            playerData = mafia.mafiaStats.getTopPlayers(null, null, 3, true);
+            for (var x in playerData) {
+                reward3.push(x);
+                aliases = playerData[x];
+                if (aliases.length > 0) {
+                    alts3 = x + "=" + aliases.join(",");
+                }
+            }
+            
+            playerData = mafia.mafiaStats.getTopPlayers(null, null, gameNight.gamesPlayed - 2, true);
+            for (var x in playerData) {
+                reward4.push(x);
+                aliases = playerData[x];
+                if (aliases.length > 0) {
+                    alts4 = x + "=" + aliases.join(",");
+                }
+            }
+            
+            var mess = [
+                "*** GAME NIGHT REWARDS ***",
+                "Reward #1: 1 Big Mushroom, 5 Golden Baits (for players who joined a game with at least 17 players)",
+                reward1.join(", "),
+                "Alternate Names Found:",
+                alts1.join("; "),
+                "",
+                "Reward #2: 2 Big Mushrooms, 1 Helix Fossil, 10 Golden Baits (for players who joined a game with at least 25 players)",
+                reward2.join(", "),
+                "Alternate Names Found:",
+                alts2.join("; "),
+                "",
+                "Reward #3: 1 Prize Pack, 10 Shady Coins (for players who joined at least 3 games)",
+                reward3.join(", "),
+                "Alternate Names Found:",
+                alts3.join("; "),
+                "",
+                "Reward #4: 3 Prize Packs, 25 Shady Coins (for players who joined all but 2 games)",
+                reward4.join(", "),
+                "Alternate Names Found:",
+                alts4.join("; "),
+                ""
+            ];
+            dump(src, mess, channel);
+            return;
+        }
 
         if (!this.isMafiaSuperAdmin(src))
             throw ("no valid command");
@@ -8797,22 +8928,6 @@ function Mafia(mafiachan) {
             } else {
                 msg(src, "No peak themes are disabled.");
             }
-            return;
-        }
-        if (command === "topplayers") {
-            mafia.mafiaStats.getTopPlayers(src, channel, commandData);
-            return;
-        }
-        if (command === "resetjoindata") {
-            if (commandData.toLowerCase() === "confirm") {
-                mafia.mafiaStats.resetJoinData();
-                mafiabot.sendAll(nonFlashing(sys.name(src)) + " reset the mafia player join data!" , sachannel);
-                if (channel !== sachannel) {
-                    mafiabot.sendMessage(src, "You reset the mafia player join data!", channel);
-                }
-            } else {
-                mafiabot.sendMessage(src, "Are you sure you want to reset the data on how many games each mafia player has joined? Type '/resetjoindata confirm' to confirm.", channel);
-            } 
             return;
         }
         /*REMOVE: The following commands*/
