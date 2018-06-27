@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2018-06-26a";
+    this.version = "2018-06-26";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     
@@ -3349,7 +3349,7 @@ function Mafia(mafiachan) {
                 teamvote = true;
             }
 
-            if (name in mafia.teamVoters && mafia.teamVoters[name] == commandData) {
+            if (mafia.teamVoters.hasOwnProperty(name) && mafia.teamVoters[name] == commandData) {
                 teamvote = false;
             }
 
@@ -3854,7 +3854,7 @@ function Mafia(mafiachan) {
             tRole = target.role.translation;
             tSide = mafia.theme.trside(target.role.side);
             var revenge = false, rmsg = null;
-            if (name in mafia.dayDistract && bp.indexOf("distract") === -1) {
+            if (mafia.dayDistract.hasOwnProperty(name) && bp.indexOf("distract") === -1) {
                     if (mafia.dayDistract[name].type === "revenge") {
                         revenge = true;
                         rmsg = mafia.dayDistract[name].msg ? mafia.dayDistract[name].msg : "~Self~ tried to attack ~Target~, but they were ~Target~ was just bait for someone to kill ~Self~!";
@@ -3864,7 +3864,7 @@ function Mafia(mafiachan) {
                         return true;
                     }
                 }
-            if (target.name in mafia.dayProtect && bp.indexOf("protect") === -1) {
+            if (mafia.dayProtect.hasOwnProperty(target.name) && bp.indexOf("protect") === -1) {
                     if (mafia.dayProtect[target.name].type === "revenge") {
                         revenge = true;
                         rmsg = mafia.dayProtect[target.name].msg ? mafia.dayProtect[target.name].msg : "~Self~ tried to attack ~Target~, but they were ~Target~ was just bait for someone to kill ~Self~!";
@@ -4688,11 +4688,11 @@ function Mafia(mafiachan) {
                         gamemsg(player.name, chargetxt);
                     }
 
-                    if (player.name in noRepeat && noRepeat[player.name].indexOf(o.action) !== -1) {
+                    if (noRepeat.hasOwnProperty(player.name) && noRepeat[player.name].indexOf(o.action) !== -1) {
                         continue;
                     }
                     if (Action.noRepeat) {
-                        if (!(player.name in noRepeat)) {
+                        if (!noRepeat.hasOwnProperty(player.name)) {
                             noRepeat[player.name] = [];
                         }
                         noRepeat[player.name].push(o.action);
