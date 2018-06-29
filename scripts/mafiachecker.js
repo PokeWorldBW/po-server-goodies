@@ -1758,9 +1758,6 @@ function mafiaChecker() {
                     checkValidValue(action.command, possibleNightActions, act + ".command");
                 }
             }
-            /*if (command in Object.prototype) {
-                addFatalError("The value '" + command + "' at " + act + " cannot be used for a command.");
-            }*/
         } else {
             if (!dummy.test(command)) {
                 checkValidValue(command, possibleNightActions, yourRole + ".night");
