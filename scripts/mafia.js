@@ -17,7 +17,7 @@ var nonFlashing = require("utilities.js").non_flashing;
 var html_escape = require("utilities.js").html_escape;
 
 function Mafia(mafiachan) {
-    this.version = "2018-06-26";
+    this.version = "2018-06-29";
     var mafia = this;
     var defaultThemeName = "default"; //lowercased so it doesn't use the theme in the code (why is it there to begin with?)
     
@@ -2441,11 +2441,17 @@ function Mafia(mafiachan) {
                         }
                     }
                     if (affected.length > 0) {
-                        if ("detoxmsg" in onDeath) {
+                        if ("singledetoxmsg" in onDeath) {
+                            singleAffected = singleAffected.concat(affected);
+                        } else {
                             actionMessage = (onDeath.detoxmsg || "Because ~Self~ "+verb+", ~Target~ was detoxed!").replace(/~Self~/g, player.name).replace(/~Target~/g, readable(affected, "and"));
                             mafia.onDeathMsg.push(actionMessage);
                         }
+                        needSeparator = true;
                     }
+                }
+                if (singleAffected.length > 0) {
+                    mafia.onDeathMsg.push(onDeath.singledetoxmsg.replace(/~Self~/g, player.name).replace(/~Target~/g, readable(singleAffected, "and")));
                 }
             }
             if ("convertRoles" in onDeath) {

@@ -1392,7 +1392,7 @@ function mafiaChecker() {
     Theme.prototype.checkOnDeath = function(action, comm, extra, isLynch) {
         var e;
         
-        checkAttributes(action, [], ["killRoles", "poisonRoles", "convertRoles", "curseRoles", "exposeRoles", "killmsg", "exposeMemory", "killMemory", "convertmsg", "curseCount", "cursemsg", "curseConvertMessage", "poisonmsg", "poisonDeadMessage", "exposemsg", "singlekillmsg", "singlepoisonmsg", "singleconvertmsg", "singlecursemsg", "silentConvert", "silentCurse", "convert", "detoxRoles", "detoxmsg"].concat(extra), comm);
+        checkAttributes(action, [], ["killRoles", "poisonRoles", "convertRoles", "curseRoles", "exposeRoles", "killmsg", "exposeMemory", "killMemory", "convertmsg", "curseCount", "cursemsg", "curseConvertMessage", "poisonmsg", "poisonDeadMessage", "exposemsg", "singlekillmsg", "singlepoisonmsg", "singleconvertmsg", "singlecursemsg", "silentConvert", "silentCurse", "convert", "detoxRoles", "detoxmsg", "singledetoxmsg"].concat(extra), comm);
                     
         checkType(action.onslay, ["boolean"], comm + ".onslay");
         
@@ -1468,6 +1468,14 @@ function mafiaChecker() {
         if (checkType(action.detoxmsg, ["string"], comm + ".detoxmsg")) {
             if (!("detoxRoles" in action)) {
                 addMinorError("'detoxmsg' found at " + comm + ", but there's no 'detoxRoles'");
+            }
+        }
+        if (checkType(action.singledetoxmsg, ["string"], comm + ".singledetoxmsg")) {
+            if (!("detoxRoles" in action)) {
+                addMinorError("'singledetoxmsg' found at " + comm + ", but there's no 'detoxRoles'");
+            }
+            if ("detoxmsg" in action) {
+                addMinorError(comm + " has both 'detoxmsg' and 'singledetoxmsg', so 'detoxmsg' won't be used");
             }
         }
         
@@ -1750,9 +1758,9 @@ function mafiaChecker() {
                     checkValidValue(action.command, possibleNightActions, act + ".command");
                 }
             }
-            if (command in Object.prototype) {
+            /*if (command in Object.prototype) {
                 addFatalError("The value '" + command + "' at " + act + " cannot be used for a command.");
-            }
+            }*/
         } else {
             if (!dummy.test(command)) {
                 checkValidValue(command, possibleNightActions, yourRole + ".night");
