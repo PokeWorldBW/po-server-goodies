@@ -9213,6 +9213,14 @@ this.beforeChatMessage = function (src, message, channel) {
         if (channel == mafiachan) {
             var srcname = sys.name(src);
             delete mafia.AWOLusers[srcname];
+            if (["blank", "voting", "entry"].indexOf(mafia.state) !== -1 || !mafia.isInGame(srcname)) {
+                sys.sendMessage(src, GREEN_BORDER, mafiachan);
+                if (featuredTheme) {
+                    mafiabot.sendHtmlMessage(src, "Looking for a theme to play? Try out the Featured Theme: <b>" + casedtheme(featuredTheme) + "</b>!", mafiachan);
+                }
+                mafiabot.sendHtmlMessage(src, (featuredLink ? '<a href="' + html_escape(featuredLink) + '">' + featuredText + '</a>' : featuredText), mafiachan);
+                sys.sendMessage(src, GREEN_BORDER, mafiachan);
+            }
             switch (mafia.state) {
                 case "blank":
                     gamemsg(srcname, "No game is running! You can start a game by typing /start [theme name].", "±Info");
@@ -9302,14 +9310,6 @@ this.beforeChatMessage = function (src, message, channel) {
                     } else {
                         gamemsg(srcname, "A " + (mafia.theme.name == defaultThemeName ? "" : mafia.theme.name + "-themed ") + "mafia game is in progress! You can join the next game by typing /join during signups after the game finishes!", "±Info");
                     }
-            }
-            if (["blank", "voting", "entry"].indexOf(mafia.state) !== -1 || !mafia.isInGame(srcname)) {
-                sys.sendMessage(src, GREEN_BORDER, mafiachan);
-                if (featuredTheme) {
-                    mafiabot.sendHtmlMessage(src, "Looking for a theme to play? Try out the Featured Theme: <b>" + casedtheme(featuredTheme) + "</b>!", mafiachan);
-                }
-                mafiabot.sendHtmlMessage(src, (featuredLink ? '<a href="' + html_escape(featuredLink) + '">' + featuredText + '</a>' : featuredText), mafiachan);
-                sys.sendMessage(src, GREEN_BORDER, mafiachan);
             }
         }
         return false;
