@@ -3366,7 +3366,7 @@ function Mafia(mafiachan) {
                     mafia.teamVoters[name] = commandData;
                     return;
                 } else if (Array.isArray(teamvote) && teamvote.indexOf(target.role.role) !== -1) {
-                    gamemsg(name, "This person is your teammate! To vote them, use " + htmlLink("/Teamvote" + commandData.toCorrectCase()) + " or simply " + htmlLink("/Vote " + commandData.toCorrectCase())  + "  again.", undefined, undefined, true);
+                    gamemsg(name, "This person is your teammate! To vote them, use " + htmlLink("/Teamvote " + commandData.toCorrectCase()) + " or simply " + htmlLink("/Vote " + commandData.toCorrectCase())  + "  again.", undefined, undefined, true);
                     mafia.teamVoters[name] = commandData;
                     return;
                 }
