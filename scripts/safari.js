@@ -47096,7 +47096,7 @@ function Safari() {
         }
         monthlyLeaderboards = {};
         for (var e in monthlyLeaderboardTypes) {
-            sys.sendAll(monthlyLeaderboardTypes[e].file, sys.channelId("Safari"));
+            sys.sendAll("test" + monthlyLeaderboardTypes[e].file, sys.channelId("Safari"));
             monthlyLeaderboards[e] = new MemoryHash(monthlyLeaderboardTypes[e].file);
         }
         lastIdAssigned = loadLastId();
