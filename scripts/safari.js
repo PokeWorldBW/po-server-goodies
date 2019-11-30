@@ -5199,7 +5199,7 @@ function Safari() {
         var ret = 1;
         if (isAlolanForm(pokeNum)) {
             ret = 7;
-        } else if (isGalarianForm(pokeNum) {
+        } else if (isGalarianForm(pokeNum)) {
             ret = 8;
         } else if (inclusive(num, 152, 251)) {
             ret = 2;
