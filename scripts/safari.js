@@ -13354,7 +13354,6 @@ function Safari() {
         var fullCommand = "/" + command + " " + (seller ? seller + ":" : "");
         var silverName = finishName("silver"), discount = (seller ? 1 : 1 - this.getFortune(player, "discount", 0, null, true));
         for (i in shop) {
-            sys.sendAll(i + ": " + (typeof shop[i] === "object" ? Object.keys(shop[i]) : shop[i]), safchan);
             info = shop[i];
             disc = ((shop[i].discount ? shop[i].discount : false) || (shop[i].discount2 && this.hasCostumeSkill(player, "haggler")));
             discmsg = disc ? "<font color=#e5981d><b> [Discount]</b></font>" : "";
@@ -16435,42 +16434,42 @@ function Safari() {
         var mark = marketData, out, md, val, dval, delim, amt;
         if (!mark || unset) {
             out = {
-                safari: {
+                "@safari": {
                     price: 30,
                     amt: 50,
                     isSilver: false,
                     discount: false,
                     discount2: false
                 },
-                great: {
+                "@great": {
                     price: 70,
                     amt: 30,
                     isSilver: false,
                     discount: false,
                     discount2: false
                 },
-                ultra: {
+                "@ultra": {
                     price: 170,
                     amt: 10,
                     isSilver: false,
                     discount: false,
                     discount2: false
                 },
-                bait: {
+                "@bait": {
                     price: 129,
                     amt: 50,
                     isSilver: false,
                     discount: false,
                     discount2: false
                 },
-                stick: {
+                "@stick": {
                     price: 99999,
                     amt: 1,
                     isSilver: false,
                     discount: false,
                     discount2: false
                 },
-                box: {
+                "@box": {
                     price: 20000,
                     amt: 1,
                     isSilver: false,
