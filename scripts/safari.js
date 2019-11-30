@@ -47221,7 +47221,7 @@ function Safari() {
                     var result = eval(commandData);
                     normalbot.sendMessage(src, "Got from eval: '" + result + "'", safchan);
                 } catch (error) {
-                    normalbot.sendMessage(src, "Error in eval: " + error, sfchan);
+                    normalbot.sendMessage(src, "Error in eval: " + error, safchan);
                 }
                 return true;
             }
