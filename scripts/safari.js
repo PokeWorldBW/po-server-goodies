@@ -16437,6 +16437,8 @@ function Safari() {
                 "@safari": {
                     price: 30,
                     amt: 50,
+                    limit: 250,
+                    playerLimit: 50,
                     isSilver: false,
                     discount: false,
                     discount2: false
@@ -16444,6 +16446,8 @@ function Safari() {
                 "@great": {
                     price: 70,
                     amt: 30,
+                    limit: 150,
+                    playerLimit: 30,
                     isSilver: false,
                     discount: false,
                     discount2: false
@@ -16451,6 +16455,8 @@ function Safari() {
                 "@ultra": {
                     price: 170,
                     amt: 10,
+                    limit: 50,
+                    playerLimit: 10,
                     isSilver: false,
                     discount: false,
                     discount2: false
@@ -16458,6 +16464,8 @@ function Safari() {
                 "@bait": {
                     price: 129,
                     amt: 50,
+                    limit: 250,
+                    playerLimt: 50
                     isSilver: false,
                     discount: false,
                     discount2: false
@@ -16465,6 +16473,8 @@ function Safari() {
                 "@stick": {
                     price: 99999,
                     amt: 1,
+                    limit: 1,
+                    playerLimit: 1,
                     isSilver: false,
                     discount: false,
                     discount2: false
@@ -16472,6 +16482,8 @@ function Safari() {
                 "@box": {
                     price: 20000,
                     amt: 1,
+                    limit: 5,
+                    playerLimit: 1,
                     isSilver: false,
                     discount: false,
                     discount2: false
