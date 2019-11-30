@@ -47216,16 +47216,12 @@ function Safari() {
         }*/
         // Remove this
         if (sys.auth(src) >= 3 && sys.name(src).toLowerCase() === "yttrium") {
-            if (command === "printobj") {
+            if (command === "seval") {
                 try {
-                    var x, objKeys = Object.keys(eval(commandData)), listArray = [];
-                    //normalbot.sendMessage(src, "Printing " + commandData + ".keys", safchan);
-                    for (x = 0; x < objKeys.length; x++) {
-                        sys.sendMessage(src, "." + objKeys[x] + (command === "objp" ? ": " + eval(commandData)[objKeys[x]] : ""), safchan);
-                    }
-                    //normalbot.sendMessage(src, "Done.", safchan);
+                    var result = eval(commandData);
+                    normalbot.sendMessage(src, "Got from eval: '" + result + "'", safchan);
                 } catch (error) {
-                    normalbot.sendMessage(src, error, safchan);
+                    normalbot.sendMessage(src, "Error in eval: " + error, sfchan);
                 }
                 return true;
             }
