@@ -36155,7 +36155,7 @@ function Safari() {
         var val = "";
         for (var i = 0; i < 12; i++) {
             var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"];
-            for (var j = letters.length; j < 12; j++) {
+            for (var j = 0; j < letters.length; j++) {
                 val = (letters[j] + i);
                 if (!this.daycareRegions.grotto.hasOwnProperty(val)) {
                     this.daycareRegions.grotto[val] = "";
@@ -36436,7 +36436,7 @@ function Safari() {
         var p, out = [];
         for (var s in this.daycarePokemon) {
             p = this.daycarePokemon[s];
-            out.push(p.owner + "'s " + poke(p.id) + " -- idnum: " + p.uid + ". Hearts: " + p.hearts + ". Play-hearts: " + p.playhearts + ". Hunger:" + p.hunger + ". Area: " + p.area + ". Pos: " + p.pos + ". CanItem" + p.canItem + ". FindItem" + p.findItem + ". Activity: " + p.activity + ". Owernum: " + p.ownernum + ".");
+            out.push(p.owner + "'s " + poke(p.id) + " -- idnum: " + p.uid + ". Hearts: " + p.hearts + ". Play-hearts: " + p.playhearts + ". Hunger:" + p.hunger + ". Area: " + p.area + ". Pos: " + p.pos + ". CanItem" + p.canItem + ". FindItem" + p.findItem + ". Activity: " + p.activity + ". Ownernum: " + p.ownernum + ".");
         }
         for (var t in out) {
             safaribot.sendMessage(src, out[t], safchan);
