@@ -16465,7 +16465,7 @@ function Safari() {
                     price: 129,
                     amt: 50,
                     limit: 250,
-                    playerLimt: 50
+                    playerLimit: 50,
                     isSilver: false,
                     discount: false,
                     discount2: false
