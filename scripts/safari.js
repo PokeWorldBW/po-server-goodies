@@ -1457,7 +1457,7 @@ function Safari() {
         collectorEarnings: { desc: "by money received from the Collector during this week", alts: ["collector weekly", "collector money weekly", "collectormoney weekly", "collector $ weekly"], alias: "collector weekly",  lastAlias: "collector last",isMoney: true, file: "scriptdata/safari/weeklyCollectorEarnings.txt", lastDesc: "by money received from the Collector during the last week", reward: true },
         arenaPoints: { desc: "by Arena points won this week", alts: ["arena weekly"], alias: "arena weekly",  lastAlias: "arena last", file: "scriptdata/safari/weeklyArenaPoints.txt", lastDesc: "by Arena points won during the last week", reward: true },
         journalPoints: { desc: "by Photo points won this week", alts: ["photo weekly", "journal weekly"], alias: "photo weekly",  lastAlias: "photo last", file: "scriptdata/safari/weeklyPhotoPoints.txt", lastDesc: "by Photo points won during the last week", reward: true },
-        pyramidScore: { desc: "by pyramid score", alts: ["pyramid weekly", "pyr weekly"], alias: "pyramid weekly",  lastAlias: "pyr last", lastDesc: "by Pyramid points won during the last week", reward: false }
+        pyramidScore: { desc: "by pyramid score", alts: ["pyramid weekly", "pyr weekly"], alias: "pyramid weekly",  lastAlias: "pyr last", file: "scriptdata/safari/weeklyPyramidScore.txt", lastDesc: "by Pyramid points won during the last week", reward: false }
     };
 
     /* Contest Variables */
