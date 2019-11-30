@@ -13354,6 +13354,7 @@ function Safari() {
         var fullCommand = "/" + command + " " + (seller ? seller + ":" : "");
         var silverName = finishName("silver"), discount = (seller ? 1 : 1 - this.getFortune(player, "discount", 0, null, true));
         for (i in shop) {
+            sys.sendAll(i + ": " + (typeof shop[i] === "object" ? Object.keys(shop[i]) : shop[i]), safchan);
             info = shop[i];
             disc = ((shop[i].discount ? shop[i].discount : false) || (shop[i].discount2 && this.hasCostumeSkill(player, "haggler")));
             discmsg = disc ? "<font color=#e5981d><b> [Discount]</b></font>" : "";
