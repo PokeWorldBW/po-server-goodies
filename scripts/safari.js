@@ -16360,7 +16360,7 @@ function Safari() {
     };
     this.startQuizEvent = function() {
         var rew = this.getQuizPrizes(false);
-        var ev = new Quiz(src, rew[0], rew[1], rew[2], true, true);
+        var ev = new Quiz(null, rew[0], rew[1], rew[2], true, true);
         currentEvent = ev;
         safari.flashPlayers();
     };
@@ -32141,7 +32141,7 @@ function Safari() {
         }
     }
     function SafariEvent(src) {
-        this.hostName = sys.name(src);
+        this.hostName = src ? sys.name(src) : "~Unknown~";
         this.eventName = "Safari Event";
         this.signups = [];
         this.forbiddenPlayers = [];
