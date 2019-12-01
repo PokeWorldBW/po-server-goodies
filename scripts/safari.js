@@ -47580,7 +47580,9 @@ function Safari() {
         for (var e in monthlyLeaderboardTypes) {
             if (monthlyLeaderboardTypes[e].hasOwnProperty("file")) {
                 var file = monthlyLeaderboardTypes[e].file;
-                cleanFile(file);
+                if (typeof cleanFile === "function") {
+                    cleanFile(file);
+                }
                 monthlyLeaderboards[e] = new MemoryHash(file);
             }
         }
