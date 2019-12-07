@@ -47884,11 +47884,16 @@ function Safari() {
                     safaribot.sendAll("Couldn't download '" + fname + "'. (Error: " + result + ")", staffchannel);
                 } else {
                     safaribot.sendAll("Successfully downloaded '" + fname + "'!", staffchannel);
+                    var res = loadResource(r);
+                    if (res !== null) {
+                        safaribot.sendAll("An error occurred while loading Safari resource '" + fname + "'. (Error: " + res + ")", staffchannel);
+                    }
                 }
-            }
-            var res = loadResource(r);
-            if (res !== null) {
-                safaribot.sendAll("An error occurred while loading Safari resource '" + fname + "'. (Error: " + res + ")", staffchannel);
+            } else {
+                var res = loadResource(r);
+                if (res !== null) {
+                    safaribot.sendAll("An error occurred while loading Safari resource '" + fname + "'. (Error: " + res + ")", staffchannel);
+                }
             }
         }
         
