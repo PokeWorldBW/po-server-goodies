@@ -43762,17 +43762,17 @@ function Safari() {
                         }
                     }
                     if (se.length > 0) {
-                        efmsg += " Weaknesses: " + se.join(" ");
+                        efmsg += " Weaknesses: " + se.join(", ");
                     }
                     if (nve.length > 0) {
-                        efmsg += ", Resistances: " + nve.join(" ");
+                        efmsg += "; Resistances: " + nve.join(", ");
                     }
                     if (im.length > 0) {
-                        efmsg += ", Immunities: " + im.join(" ");
+                        efmsg += "; Immunities: " + im.join(", ");
                     }
                 }
                 safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + info.name + "'s BST is " + getBST(info.num) + statsmsg, safchan);
-                safaribot.sendHtmlMessage(src, "Type: " + (typeIcon(type_1) + (type_2 === "???" ? "" : " " + typeIcon(type_2)))+ ", Region: " + generation(info.num, true) + ", Color: " + cap(getPokeColor(info.num)) + ", Egg Group(s): " + readable(getEggGroups(info.num)) +".", safchan);
+                safaribot.sendHtmlMessage(src, "Type: " + (typeIcon(type_1) + (type_2 === "???" ? "" : "/" + typeIcon(type_2)))+ ", Region: " + generation(info.num, true) + ", Color: " + cap(getPokeColor(info.num)) + ", Egg Group(s): " + readable(getEggGroups(info.num)) +".", safchan);
                 if (efmsg !== "") {
                     safaribot.sendHtmlMessage(src, efmsg, safchan);
                 }
@@ -43828,7 +43828,7 @@ function Safari() {
                             }
                         }
                         if (l.length > 0) {
-                            safaribot.sendHtmlMessage(src, "<b><i>Did you know?:</i></b> " + html_escape(l.random()), safchan);
+                            safaribot.sendHtmlMessage(src, "<b>Did you know?:</i></b> " + html_escape(l.random()), safchan);
                         }
                     }
                 }
