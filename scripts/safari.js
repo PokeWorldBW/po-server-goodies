@@ -2023,7 +2023,7 @@ function Safari() {
 
     /* Safari Functions */
     function loadResource(r) {
-        var resource = resource.$[r];
+        var resource = resources.$[r];
         var file = resource.file;
         if (resource.type === "MemoryHash") {
             resources[r] = new MemoryHash(file);
@@ -2040,7 +2040,7 @@ function Safari() {
         }
     }
     function downloadResource(r) {
-        var resource = resource.$[r];
+        var resource = resources.$[r];
         sys.sendAll("a", staffchannel);
         try {
             sys.webCall(resource.url, function (resp) {
