@@ -5224,7 +5224,7 @@ function Safari() {
             bg = colors[type].bg;
         }
         
-        return "<background color='"+bg+"'><font color='" + text + "' style='background-color:"+bg+";'> " + type + " </font></background>";
+        return "<background color='"+bg+"'><font color='" + text + "' style='background-color:"+bg+";'> " + type + "</font></background>";
     }
     function generation(pokeNum, wordy) {
         var num = pokeInfo.species(pokeNum);
@@ -36026,7 +36026,7 @@ function Safari() {
             hdewamount = 5;
         }
         if (hasType(id, "Grass")) {
-            apcamount = Math.floor((apcamount + (5 * Math.random())) / apcamount);
+            apcamount = Math.floor(apcamount * (1 + Math.random()));
         }
         if (hasType(id, "Normal")) {
             gachaamount++;
@@ -43765,10 +43765,10 @@ function Safari() {
                         efmsg += " Weaknesses: " + se.join(" ");
                     }
                     if (nve.length > 0) {
-                        efmsg += ", Resists: " + nve.join(" ");
+                        efmsg += ", Resistances: " + nve.join(" ");
                     }
                     if (im.length > 0) {
-                        efmsg += ", Immune: " + im.join(" ");
+                        efmsg += ", Immunities: " + im.join(" ");
                     }
                 }
                 safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + info.name + "'s BST is " + getBST(info.num) + statsmsg, safchan);
@@ -43828,7 +43828,7 @@ function Safari() {
                             }
                         }
                         if (l.length > 0) {
-                            safaribot.sendMessage(src, l.random(), safchan);
+                            safaribot.sendHtmlMessage(src, "<b><i>Did you know?:</i></b> " + html_escape(l.random()), safchan);
                         }
                     }
                 }
