@@ -1994,10 +1994,62 @@ function Safari() {
         "palevioletred": "#DB7093",
         "orangered": "#FF4500",
         "tomato": "#FF6347"
-    };  
+    };
+    
+    var resources = {
+        sprites: {},
+        shiny: {},
+        icons: {},
+        $: {
+            sprites: {
+                file: "scriptdata/safari/pokemon.txt",
+                url: Config.base_url + "/scriptdata/safari/pokemon.txt",
+                type: "MemoryHash"
+            },
+            shiny: {
+                file: "scriptdata/safari/shiny.txt",
+                url: Config.base_url + "/scriptdata/safari/shiny.txt",
+                type: "MemoryHash"
+            },
+            icons: {
+                file: "scriptdata/safari/icons.txt",
+                url: Config.base_url + "/scriptdata/safari/icons.txt",
+                type: "MemoryHash"
+            }
+        }
+    };    
+    
     }
 
     /* Safari Functions */
+    function loadResource(r) {
+        var resource = resource.$[r];
+        var file = resource.file;
+        if (resource.type === "MemoryHash") {
+            resources[r] = new MemoryHash(file);
+            return null;
+        } else if (resource.type === "JavaScript") {
+            resources[r] = require(file);
+            return null;
+        } else {
+            try {
+                resources[r] = JSON.parse(sys.getFileContent(file));
+            } catch(err) {
+                return err;
+            }
+        }
+    }
+    function downloadResource(r) {
+        var resource = resource.$[r];
+        try {
+            sys.webCall(resource.url, function (resp) {
+                sys.writeToFile(resource.file, resp);
+                return null;
+            });
+        } catch (err) {
+            return err;
+        }
+    }
     function getAvatar(src) {
         if (SESSION.users(src)) {
             return SESSION.users(src).safari;
@@ -43841,6 +43893,27 @@ function Safari() {
                 }
                 return true;
             }
+            if (command === "showpokemon") {
+                var info = getInputPokemon(commandData);
+                if (!info.num) {
+                    safaribot.sendMessage(src, "Invalid Pokémon.", safchan);
+                    return true;
+                }
+                var out = ["<timestamp/> <b>" + info.name + ":</b>"];
+                if (sys.pokemon(info.num)) {
+                    message.push(pokeInfo.icon(info.num));
+                    message.push(pokeInfo.sprite(info.num) + " " + pokeinfo.sprite(info.num+""));
+                } else {
+                    var species = pokeInfo.species(info.num), form = pokeInfo.forme(info.num);
+                    var key = species + (form > 0 ? "-" + form : "");
+                    message.push("<img src='" + resources.icons.get(key) + "'>");
+                    message.push("<img src='" + resources.sprites.get(key) + "'> <img src='" + resources.shiny.get(key) + "'>");
+                }
+                for (var i = 0; i < out.length; i++) {
+                    sys.sendHtmlMessage(src, out[i], safchan);
+                }
+                return true;
+            }
             if (command === "lastcontest" || command === "lastcontests" || command === "lc") {
                 sys.sendMessage(src, "", safchan);
                 sys.sendMessage(src, "*** LAST CONTESTS ***", safchan);
@@ -47799,6 +47872,24 @@ function Safari() {
                 spiritDuelsEnabled: false,
                 trialsEnabled: false
             };
+        }
+        
+        for (var r in resources.$) {
+            var resource = resources.$[r];
+            var fname = resource.file.split("/").pop();
+            if (!sys.fileExists(resource.file)) {
+                safaribot.sendAll("Couldn't find Safari resource file '" + fname + "'. Downloading from web repository. . .", staffchannel);
+                var result = downloadResource(r);
+                if (result !== null) {
+                    safaribot.sendAll("Couldn't download '" + fname + "'. (Error: " + result + ")", staffchannel);
+                } else {
+                    safaribot.sendAll("Successfully downloaded '" + fname + "'!", staffchannel);
+                }
+            }
+            var res = loadResource(r);
+            if (res !== null) {
+                safaribot.sendAll("An error occurred while loading Safari resource '" + fname + "'. (Error: " + res + ")", staffchannel);
+            }
         }
         
         try {
