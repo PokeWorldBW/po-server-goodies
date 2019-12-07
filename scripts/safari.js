@@ -5224,7 +5224,7 @@ function Safari() {
             bg = colors[type].bg;
         }
         
-        return "<background color='"+bg+"'><font color='" + text + "' style='background-color:"+bg+";'> " + type + "</font></background>";
+        return "<background color='"+bg+"'><font color='" + text + "' style='background-color:"+bg+";'>&nbsp;" + type + "&nbsp;</font></background>";
     }
     function generation(pokeNum, wordy) {
         var num = pokeInfo.species(pokeNum);
@@ -43772,7 +43772,7 @@ function Safari() {
                     }
                 }
                 safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + info.name + "'s BST is " + getBST(info.num) + statsmsg, safchan);
-                safaribot.sendHtmlMessage(src, "Type: " + (typeIcon(type_1) + (type_2 === "???" ? "" : "/" + typeIcon(type_2)))+ ", Region: " + generation(info.num, true) + ", Color: " + cap(getPokeColor(info.num)) + ", Egg Group(s): " + readable(getEggGroups(info.num)) +".", safchan);
+                safaribot.sendHtmlMessage(src, "Type: " + (typeIcon(type_1) + (type_2 === "???" ? "" : typeIcon(type_2)))+ ", Region: " + generation(info.num, true) + ", Color: " + cap(getPokeColor(info.num)) + ", Egg Group(s): " + readable(getEggGroups(info.num)) +".", safchan);
                 if (efmsg !== "") {
                     safaribot.sendHtmlMessage(src, efmsg, safchan);
                 }
