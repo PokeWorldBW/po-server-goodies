@@ -2041,13 +2041,11 @@ function Safari() {
     }
     function downloadResource(r) {
         var resource = resources.$[r];
-        sys.sendAll("a", staffchannel);
         try {
             sys.webCall(resource.url, function (resp) {
-                sys.sendAll("b", staffchannel);
                 sys.writeToFile(resource.file, resp);
-                return null;
             });
+            return null;
         } catch (err) {
             return err;
         }
@@ -43904,7 +43902,7 @@ function Safari() {
                 var out = ["<timestamp/> <b>" + info.name + ":</b>"];
                 if (sys.pokemon(info.num)) {
                     out.push(pokeInfo.icon(info.num));
-                    out.push(pokeInfo.sprite(info.num) + " " + pokeinfo.sprite(info.num+""));
+                    out.push(pokeInfo.sprite(info.num) + " " + pokeInfo.sprite(info.num+""));
                 } else {
                     var species = pokeInfo.species(info.num), form = pokeInfo.forme(info.num);
                     var key = species + (form > 0 ? "-" + form : "");
@@ -47881,7 +47879,6 @@ function Safari() {
             var fname = resource.file.split("/").pop();
             if (!sys.fileExists(resource.file)) {
                 safaribot.sendAll("Couldn't find Safari resource file '" + fname + "'. Downloading from web repository...", staffchannel);
-                sys.sendAll(r);
                 var result = downloadResource(r);
                 if (result !== null) {
                     safaribot.sendAll("Couldn't download '" + fname + "'. (Error: " + result + ")", staffchannel);
