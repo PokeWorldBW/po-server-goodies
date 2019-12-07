@@ -43900,7 +43900,7 @@ function Safari() {
                     return true;
                 }
                 var out = ["<timestamp/> <b>" + info.name + ":</b>"];
-                if (sys.pokemon(info.num)) {
+                if (sys.pokemon(info.num) !== "Missingno") {
                     out.push(pokeInfo.icon(info.num));
                     out.push(pokeInfo.sprite(info.num) + " " + pokeInfo.sprite(info.num+""));
                 } else {
