@@ -47881,6 +47881,7 @@ function Safari() {
             var fname = resource.file.split("/").pop();
             if (!sys.fileExists(resource.file)) {
                 safaribot.sendAll("Couldn't find Safari resource file '" + fname + "'. Downloading from web repository...", staffchannel);
+                sys.sendAll(r);
                 var result = downloadResource(r);
                 if (result !== null) {
                     safaribot.sendAll("Couldn't download '" + fname + "'. (Error: " + result + ")", staffchannel);
