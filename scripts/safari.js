@@ -2002,8 +2002,8 @@ function Safari() {
         icons: {},
         $: {
             sprites: {
-                file: "scriptdata/safari/pokemon.txt",
-                url: Config.base_url + "/scriptdata/safari/pokemon.txt",
+                file: "scriptdata/safari/sprites.txt",
+                url: Config.base_url + "/scriptdata/safari/sprites.txt",
                 type: "MemoryHash"
             },
             shiny: {
