@@ -2042,16 +2042,16 @@ function Safari() {
     }
     function downloadResource(r) {
         var resource = resources.$[r];
+        var ret;
         try {
-            var ret;
             sys.webCall(resource.url, function (resp) {
                 sys.writeToFile(resource.file, resp);
                 ret = loadResource(r);
             });
-            return ret;
         } catch (err) {
-            return "Couldn't download '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
+            ret = "Couldn't download '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
         }
+        return ret;
     }
     function getAvatar(src) {
         if (SESSION.users(src)) {
