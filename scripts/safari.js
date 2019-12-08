@@ -46415,7 +46415,7 @@ function Safari() {
             if (command === "updatefile") {
                 var r = commandData.toLowerCase();
                 if (!resources.$.hasOwnProperty(r)) {
-                    safaribot.sendMessage(src, "No resource called '" + commandData + "' was found!", safchan):
+                    safaribot.sendMessage(src, "No resource called '" + commandData + "' was found!", safchan);
                 } else {
                     var resource = resources.$[r];
                     var fname = resource.file.split("/").pop();
