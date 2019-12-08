@@ -2035,6 +2035,7 @@ function Safari() {
         } else {
             try {
                 resources[r] = JSON.parse(sys.getFileContent(file));
+                return null;
             } catch (err) {
                 return "An error occurred while loading Safari resource '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
             }
