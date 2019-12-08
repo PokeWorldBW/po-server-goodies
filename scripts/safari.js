@@ -46414,7 +46414,9 @@ function Safari() {
             }
             if (command === "updatefile") {
                 var r = commandData.toLowerCase();
-                if (!resources.$.hasOwnProperty(r)) {
+                if (commandData === "*") {
+                    safaribot.sendMessage(src, "Resource files that can be updated are: " + Object.keys(resources.$).join(", "), safchan);
+                } else if (!resources.$.hasOwnProperty(r)) {
                     safaribot.sendMessage(src, "No resource called '" + commandData + "' was found!", safchan);
                 } else {
                     var resource = resources.$[r];
