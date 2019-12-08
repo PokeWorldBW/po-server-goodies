@@ -46412,6 +46412,23 @@ function Safari() {
                 }
                 return true;
             }
+            if (command === "updatefile") {
+                var r = commandData.toLowerCase();
+                if (!resources.$.hasOwnProperty(r)) {
+                    safaribot.sendMessage(src, "No resource called '" + commandData + "' was found!", safchan):
+                } else {
+                    var resource = resources.$[r];
+                    var fname = resource.file.split("/").pop();
+                    safaribot.sendMessage(src, "Downloading '" + fname + "' from " + resource.url, safchan);
+                    var result = downloadResource(r);
+                    if (result !== null) {
+                        safaribot.sendMessage(src, result, safchan);
+                    } else {
+                        safaribot.sendMessage(src, "Successfully downloaded '" + fname + "'!", safchan);
+                    }                    
+                }
+                return true;
+            }
             if (command === "updatelb") {
                 safari.updateLeaderboards();
                 safaribot.sendMessage(src, "Leaderboards updated!", safchan);
