@@ -2003,17 +2003,17 @@ function Safari() {
         $: {
             sprites: {
                 file: "scriptdata/safari/sprites.txt",
-                url: Config.base_url + "/scriptdata/safari/sprites.txt",
+                url: Config.base_url + "scriptdata/safari/sprites.txt",
                 type: "MemoryHash"
             },
             shiny: {
                 file: "scriptdata/safari/shiny.txt",
-                url: Config.base_url + "/scriptdata/safari/shiny.txt",
+                url: Config.base_url + "scriptdata/safari/shiny.txt",
                 type: "MemoryHash"
             },
             icons: {
                 file: "scriptdata/safari/icons.txt",
-                url: Config.base_url + "/scriptdata/safari/icons.txt",
+                url: Config.base_url + "scriptdata/safari/icons.txt",
                 type: "MemoryHash"
             }
         }
