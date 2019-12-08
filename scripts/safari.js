@@ -2025,7 +2025,6 @@ function Safari() {
     function loadResource(r) {
         var resource = resources.$[r];
         var file = resource.file;
-        sys.sendAll("loadResources called for " + r, staffchannel);
         if (resource.type === "MemoryHash") {
             resources[r] = new MemoryHash(file);
             return null;
