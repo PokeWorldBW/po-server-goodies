@@ -2042,7 +2042,7 @@ function Safari() {
     }
     function downloadResource(r) {
         var resource = resources.$[r];
-        var ret;
+        var ret = "asodijasodiajsd";
         try {
             sys.webCall(resource.url, function (resp) {
                 sys.writeToFile(resource.file, resp);
