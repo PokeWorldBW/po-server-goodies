@@ -2042,16 +2042,18 @@ function Safari() {
     }
     function downloadResource(r) {
         var resource = resources.$[r];
-        var ret = "asodijasodiajsd";
         try {
             sys.webCall(resource.url, function (resp) {
                 sys.writeToFile(resource.file, resp);
                 ret = loadResource(r);
+                if (ret !== null) {
+                    safaribot.sendAll(ret, staffchannel);
+                }
             });
+            return null;
         } catch (err) {
-            ret = "Couldn't download '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
+            return "Couldn't download '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
         }
-        return ret;
     }
     function getAvatar(src) {
         if (SESSION.users(src)) {
@@ -43883,7 +43885,7 @@ function Safari() {
                             }
                         }
                         if (l.length > 0) {
-                            safaribot.sendHtmlMessage(src, "<b>Did you know?:</i></b> " + html_escape(l.random()), safchan);
+                            safaribot.sendHtmlMessage(src, "<b>Did you know?</b> " + html_escape(l.random()), safchan);
                         }
                     }
                 }
