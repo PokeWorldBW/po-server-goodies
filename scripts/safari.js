@@ -2035,20 +2035,22 @@ function Safari() {
         } else {
             try {
                 resources[r] = JSON.parse(sys.getFileContent(file));
-            } catch(err) {
-                return err;
+            } catch (err) {
+                return "An error occurred while loading Safari resource '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
             }
         }
     }
     function downloadResource(r) {
         var resource = resources.$[r];
         try {
+            var ret;
             sys.webCall(resource.url, function (resp) {
                 sys.writeToFile(resource.file, resp);
+                ret = loadResource(r);
             });
-            return null;
+            return ret;
         } catch (err) {
-            return err;
+            return "Couldn't download '" + resource.file.split("/").pop() + "'. (Error: " + err + ")";
         }
     }
     function getAvatar(src) {
@@ -47882,20 +47884,14 @@ function Safari() {
                 safaribot.sendAll("Couldn't find Safari resource file '" + fname + "'. Downloading from web repository...", staffchannel);
                 var result = downloadResource(r);
                 if (result !== null) {
-                    safaribot.sendAll("Couldn't download '" + fname + "'. (Error: " + result + ")", staffchannel);
+                    safaribot.sendAll(result, staffchannel);
                 } else {
                     safaribot.sendAll("Successfully downloaded '" + fname + "'!", staffchannel);
-                    sys.sendAll("resource is " + r, staffchannel);
-                    var res = loadResource(r);
-                    sys.sendAll("downloaded resource " + r, staffchannel);
-                    if (res !== null) {
-                        safaribot.sendAll("An error occurred while loading Safari resource '" + fname + "'. (Error: " + res + ")", staffchannel);
-                    }
                 }
             } else {
                 var res = loadResource(r);
                 if (res !== null) {
-                    safaribot.sendAll("An error occurred while loading Safari resource '" + fname + "'. (Error: " + res + ")", staffchannel);
+                    safaribot.sendAll(res, staffchannel);
                 }
             }
         }
