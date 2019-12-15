@@ -11534,8 +11534,9 @@ function Safari() {
             }
             break;
             case "gacha2": {
-                safaribot.sendMessage(src, "Beeeep. You're led to a nearby garbage can by your Itemfinder. You decide to dig around anyway and find an unused 5 " + finishName(reward) + "s!", safchan);
-                amount = 5;
+                safaribot.sendMessage(src, "Beeeep. You're led to a nearby garbage can by your Itemfinder. You decide to dig around anyway and find a pile of unused " + finishName(reward) + "s!", safchan);
+                amount = Math.round(4 + (4 * Math.random()));
+                reward  = "gacha";
             }
             break;
             case "rock": {
@@ -24471,7 +24472,10 @@ function Safari() {
 
                 while (request.length < amount) {
                     var randomNum = sys.rand(1, 890);
-                    if ([862, 863, 864, 865, 866, 867].contains(randomNum)) {
+                    if (level < 2) {
+                        randomNum = sys.rand(1, 800);
+                    }
+                    if ([862, 863, 864, 865, 866, 867, 772, 773].contains(randomNum)) {
                         continue;
                     }
                     var bst = getBST(randomNum);
@@ -24496,7 +24500,7 @@ function Safari() {
 
                 var reward = 0;
                 for (e = 0; e < request.length; e++) {
-                    reward += getPrice(request[e]) * (generation(request[e]) == 8 ? 1.3 : 1);
+                    reward += getPrice(request[e]) * (generation(request[e]) == 8 ? 2 : 1);
                 }
                 var perkBonus = getPerkBonus(player, "amulet");
                 quest.requests = request;
@@ -24806,7 +24810,7 @@ function Safari() {
                 if (this.photoMatchesRequest(player.photos[index], req)) {
                     safaribot.sendHtmlMessage(src, trainerSprite + "Scientist: Wow, that's a great photo of a " + poke(id) + "! I think I can use this!", safchan);
                     rew = 3;
-                    rew = Math.round(1.75 * (player.photos[index].quality) - 5);
+                    rew = Math.round(1.75 * (player.photos[index].score) - 5);
                     if (this.hasCostumeSkill(player, "extraScientistSilver")) {
                         rew = Math.round(rew * (1.66 + ((this.getCostumeLevel(player)-2)/15)));
                     }
@@ -24845,7 +24849,7 @@ function Safari() {
                 if (randomNum in wildForms) {
                     randomNum = pokeInfo.calcForme(randomNum, sys.rand(1, wildForms[randomNum] + 1));
                 }
-            } while (bst > 600 || isLegendary(randomNum));
+            } while (bst > 600 || isLegendary(randomNum) || [772, 773].contains(randomNum));
         }
 
         var bstRange = [ 175, 211, 251, 301, 351, 391, 431, 481, 511, 525, 536, 581 ], ind;
@@ -25579,6 +25583,10 @@ function Safari() {
                     }
                     taking.push(n1.toLowerCase());
                     takingPretty.push(toColored(n1.toCorrectCase(), n1));
+                }
+                if (taking.length > 4) {
+                    safaribot.sendHtmlMessage(src, "You can only invite up to 4 friends! Use " + link("/quest baking:start:Name1,Name2,Name3,Name4", null, true) + ".", safchan);
+                    return;
                 }
                 safaribot.sendHtmlMessage(src, "You invited " + takingPretty.join(", ") + " to join you in the Kitchen to bake some baits!", safchan);
                 safaribot.sendMessage(src, "The quest will start if they accept your invitation within 1 minute!", safchan);
@@ -28881,6 +28889,10 @@ function Safari() {
             this.msg(player, "Sorry, " + data + " is not a valid item!");
             return false;
         }
+        if (this.turn < 1) {
+            this.msg(player, "You can't add a " + get + " to the table yet!");
+            return false;
+        }
         var playerName = player.toLowerCase();
         player = getAvatarOff(player);
         var validItems = [];
@@ -28924,6 +28936,10 @@ function Safari() {
         }
         else {
             get = itemAlias(item.toLowerCase());
+        }
+        if (this.turn < 1) {
+            this.msg(player, "You can't use " + get + " yet!");
+            return false;
         }
         var validItems = [];
         if (this.phase == 1) {
