@@ -12511,7 +12511,7 @@ function Safari() {
                 break;
                 case "quiz":
                 case "hquiz":
-                    ev = new Quiz(null, reward[0], reward[1], reward[2], evType === "hquiz");
+                    ev = new Quiz(src, reward[0], reward[1], reward[2], evType === "hquiz");
                 break;
                 case "bingo":
                     var g = info.extra1 ? parseInt(info.extra1, 10) : 1;
@@ -40884,7 +40884,7 @@ function Safari() {
             } else if (sys.os(src) === "webclient") {
                 safaribot.sendMessage(src, "To register, go to the settings menu and choose 'Register'!", safchan);
             } else {
-                safaribot.sendMessage(src, "To register, click the 'Register'button  below the chat!", safchan);
+                safaribot.sendMessage(src, "To register, click the 'Register' button  below the chat!", safchan);
             }
             return true;
         }
@@ -43819,13 +43819,13 @@ function Safari() {
                         }
                     }
                     if (se.length > 0) {
-                        efmsg += " Weaknesses: " + se.join(", ");
+                        efmsg += " Weaknesses: " + se.join("");
                     }
                     if (nve.length > 0) {
-                        efmsg += "; Resistances: " + nve.join(", ");
+                        efmsg += ", Resistances: " + nve.join("");
                     }
                     if (im.length > 0) {
-                        efmsg += "; Immunities: " + im.join(", ");
+                        efmsg += ", Immunities: " + im.join("");
                     }
                 }
                 safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + info.name + "'s BST is " + getBST(info.num) + statsmsg, safchan);
