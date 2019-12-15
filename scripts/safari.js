@@ -25562,7 +25562,7 @@ function Safari() {
                     safaribot.sendHtmlMessage(src, "You can invite between one and four friends to join in baking fun! Use " + link("/quest baking:start:Name1,Name2,Name3,Name4", null, true) + ".", safchan);
                     return;
                 }
-                var players = data[1].toLowerCase().split(",");
+                var players = data[1].toLowerCase().replace(/\s?,\s?/g, ",").split(",");
 
                 var id1, p1, n1, taking = [], takingPretty = [];
                 for (var p in players) {
@@ -25648,6 +25648,7 @@ function Safari() {
                 }
                 req.accepted.push(player.id.toLowerCase());
                 if (now() > req.deadline) {
+                    safaribot.sendMessage(src, "Baking Quest cancelled because the crews took too long to organize themselves!", safchan);
                     var party = [leader];
                     for (e in req.invites) {
                         if (req.invites[e] === true) {
