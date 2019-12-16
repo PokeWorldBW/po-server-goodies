@@ -835,7 +835,7 @@ function Safari() {
             shady: {name: "shady", fullName: "Shady Coin", type: "items", icon: 300, price: 500, aliases: ["shady", "shady coin", "shadycoin"], tradable: false, cap: 9999},
 
             entry: {name: "entry", fullName: "Raffle Entry", type: "items", icon: 333, price: 300, aliases: ["entry", "raffle", "raffleentry", "raffle entry"], tradable: false, cap: 9999},
-            coupon: {name: "coupon", fullName: "Decor Coupon", type: "items", icon: 132, price: 15000, aliases: ["coupon", "decor coupon", "decorcoupon", "decoupon"], tradable: false},
+            coupon: {name: "coupon", fullName: "Decor Coupon", type: "items", icon: 58, price: 15000, aliases: ["coupon", "decor coupon", "decorcoupon", "decoupon"], tradable: false},
             fossil: {name: "fossil", fullName: "Helix Fossil", type: "items", icon: 207, price: 5000, bonusRate: 0.1, aliases: ["fossil", "helixfossil", "helix fossil"], tradable: true},
             
             mail: {name: "mail", fullName: "Mail", type: "items", icon: 214, price: 1000, aliases: ["mail"], tradable: false },
@@ -13014,7 +13014,7 @@ function Safari() {
         }
         var lev = this.getCostumeLevel(player);
         var nextexp = (lev < 20 ? " (" + (lev * 100 - player.costumeInfo[cos].exp) + " EXP until next level)" : "");
-        safaribot.sendHtmlMessage(src, "Your " + cos + " costume is Level: " + lev + nextexp + ".", safchan);
+        safaribot.sendHtmlMessage(src, "Your " + costumeAlias(cos, true, true) + " costume is Level: " + lev + nextexp + ".", safchan);
         for (var c in player.costumeInfo[cos].skills) {
             if (costumeSkillInfo[player.costumeInfo[cos].skills[c]]) {
                 safaribot.sendHtmlMessage(src, "Skill: " + costumeSkillInfo[player.costumeInfo[cos].skills[c]] + ".", safchan);
@@ -13128,14 +13128,14 @@ function Safari() {
             player.costumeInfo[cos].exp -= player.costumeInfo[cos].level * 100;
             player.costumeInfo[cos].level++;
             var lev = player.costumeInfo[cos].level;
-            safaribot.sendHtmlMessage(src, "Your " + cos + " costume leveled up! (Level: " + lev + ")", safchan);
+            safaribot.sendHtmlMessage(src, "Your " + costumeAlias(cos, true, true) + " costume leveled up! (Level: " + lev + ")", safchan);
             for (var c in cosData.skills) {
                 if ((lev >= cosData.skills[c][0] && (chance(1 / (cosData.skills[c][1] - (lev + 0.01))))) || lev >= cosData.skills[c][1] ) {
                     if (player.costumeInfo[cos].skills.contains(c)) {
                         continue;
                     }
                     player.costumeInfo[cos].skills.push(c);
-                    safaribot.sendHtmlMessage(src, "You unlocked a new " + cos + " skill: " + costumeSkillInfo[c] + "!", safchan);
+                    safaribot.sendHtmlMessage(src, "You unlocked a new " + costumeAlias(cos, true, true) + " skill: " + costumeSkillInfo[c] + "!", safchan);
                     if (c == "rocketPack") {
                         g = giveStuff(player, toStuffObj("@fossil,@bignugget,2@scarf,3@amulet,5@pack,10@gem,20@gacha"));
                         safaribot.sendHtmlMessage(src, "You " + g + "!", safchan);
