@@ -9481,7 +9481,6 @@ function Safari() {
             if (costumed) {
                 out += costumeSprite(player.costume, os);
             }
-            //out += "<br>";
             if (medals && medals !== null && medals.length > 0) {
                 out += "<p>";
                 for (var i = 0; i < 3; i++) {
@@ -9504,7 +9503,7 @@ function Safari() {
             out += "</td>";
         }
         for (var e in party) {
-            out += "<td align=center>" + party[e] + "</td>";
+            out += "<td align=center>" + party[e] + "&nbsp;</td>";
         }
         out += "</tr><tr>";
         if (costumed) {
@@ -9515,7 +9514,7 @@ function Safari() {
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             var showLinks = ownParty && sys.os(id) !== "android";
             out += "<td><table align=center><tr>";
-            out += "<td>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
+            out += "<td style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
             if (player.helds.length > e && player.helds[e] !== -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
@@ -9528,7 +9527,7 @@ function Safari() {
             }
             out += "</tr>";
             if (showLinks) {
-                out += "<tr><td>";
+                out += "<tr><td style='white-space: pre;'>";
                 out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
                 out += "</td></tr>"
             }
