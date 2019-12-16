@@ -9513,6 +9513,7 @@ function Safari() {
             if (ownParty && sys.os(id) !== "android") {
                 out += "<p>"; //puts a little too much space between lines
                 out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
+                out += "</p>"
             }
             if (player.helds.length > e) {
                 if (player.helds[e] !== -1) {
@@ -9523,8 +9524,7 @@ function Safari() {
                     } else {
                         see = "item:" + itemData[item].icon;
                     }
-                    item = "<img src= '" + see + "' title='" + itemAlias(item, false, true) + "' >";
-                    out += item;
+                    out += "<br><img src= '" + see + "' title='" + itemAlias(item, false, true) + "' >";
                 }
             }
             out += "</td>";
