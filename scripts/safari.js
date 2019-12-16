@@ -2836,7 +2836,12 @@ function Safari() {
         }
         num = parseInt(info, 10);
         if (isNaN(num)) {
-            num = getPokeNum(info);
+            var arr = info.split("-");
+            if (arr.length === 2 && !isNaN(arr[0]) && !isNaN(arr[1])) {
+                num = parseInt(arr[0], 10) + (parseInt(arr[1], 10) * 65536);
+            } else {
+                num = getPokeNum(info);
+            }
         }
         id = shiny ? num + "" : num;
 
@@ -43854,8 +43859,12 @@ function Safari() {
                 if (!(triviaData.hasOwnProperty(mon+""))) {
                     triviaData[mon+""] = {};
                 }
-                triviaData[mon+""][info[1]] = false;
-                safaribot.sendMessage(src, "Submitted Trivia for " + poke(mon) + ": " + info[1] + "!", safchan);
+                var fact = info[1].replace(/pokemon/gi, "Pokémon");
+                if (!/[.!?]$/.test(fact)) {
+                    fact += ".";
+                }
+                triviaData[mon+""][fact] = false;
+                safaribot.sendMessage(src, "Submitted Trivia for " + poke(mon) + ": " + fact + "!", safchan);
                 return true;
             }
             if (command === "enterdata") {
