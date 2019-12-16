@@ -9513,8 +9513,8 @@ function Safari() {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             var showLinks = ownParty && sys.os(id) !== "android";
-            out += "<td><table><tr>";
-            out += "<td align=center style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
+            out += "<td><table><tr align=center>";
+            out += "<td style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
             if (player.helds.length > e && player.helds[e] !== -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
@@ -9523,11 +9523,11 @@ function Safari() {
                 } else {
                     see = "item:" + itemData[item].icon;
                 }
-                out += "<td rowspan= " + (showLinks ? 2 : 1) + "><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td>";
+                out += "<td style='vertical-align: middle;' rowspan= " + (showLinks ? 2 : 1) + "><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td>";
             }
             out += "</tr>";
             if (showLinks) {
-                out += "<tr><td align=center style='white-space: pre;'>";
+                out += "<tr align=center><td style='white-space: pre;'>";
                 out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
                 out += "</td></tr>"
             }
@@ -36615,6 +36615,10 @@ function Safari() {
                 box["bignugget"] = 0;
             }
             box["bignugget"] += 3;
+            if (!box["silver"]) {
+                box["silver"] = 0;
+            }
+            box["silver"] += 15;
         }
         if (evolutions.hasOwnProperty(id+"")) {
             box["rare"] = 15;
