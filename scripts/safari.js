@@ -9509,13 +9509,13 @@ function Safari() {
         if (costumed) {
             out += "<td align='center'>" + costumeAlias(player.costume, false, true) + "<br>(Level: " + this.getCostumeLevel(player) + ")" + "</td>";
         }
+        var showLinks = ownParty && sys.os(id) !== "android";
         for (var e in player.party) {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
-            var showLinks = ownParty && sys.os(id) !== "android";
             out += "<td><table><tr>";
             out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "&nbsp;</td>";
-            if (player.helds.length > e && player.helds[e] !== -1) {
+            if (player.helds.length > e && player.helds[e] != -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
                 if (base64icons.hasOwnProperty(item)) {
