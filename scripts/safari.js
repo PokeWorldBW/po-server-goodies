@@ -9104,7 +9104,7 @@ function Safari() {
             safaribot.sendHtmlMessage(src, "Took back the " + itemAlias(getItem, false, true) + "!", safchan);
         } else {
             if (player.balls[getItem] <= 0) {
-                safaribot.sendHtmlMessage(src, "You don't have any " + getItem + " to give!", safchan);
+                safaribot.sendHtmlMessage(src, "You don't have any " + itemAlias(getItem, false, true) + " to give!", safchan);
                 return;
             }
             if (player.helds[0] !== -1) {
@@ -9509,20 +9509,20 @@ function Safari() {
         for (var e in player.party) {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
+            out += "<td align=center>#" + pokeInfo.readableNum(member[0]) + " " + name;
             if (player.helds.length > e) {
                 if (player.helds[e] !== -1) {
-                    var item = heldCodes[player.helds[e] + ""];
+                    var item = heldCodes[player.helds[e]];
                     var see = "";
-                    for (var f in base64icons) {
-                        if ((f + "").toLowerCase() === (item + "").toLowerCase()) {
-                            see = base64icons[item+""];
-                        }
+                    if (base64icons.hasOwnProperty(item)) {
+                        see = base64icons[item + ""];
+                    } else {
+                        see = "item:" + itemData[item].icon;
                     }
-                    item = "<img src= 'item:" + see + "' title='" + item + "' >";
+                    item = "<img src= '" + see + "' title='" + itemAlias(item, false, true) + "' >";
                     out += item;
                 }
             }
-            out += "<td align=center>#" + pokeInfo.readableNum(member[0]) + " " + name;
             if (ownParty && sys.os(id) !== "android") {
                 out += "<p>"; //puts a little too much space between lines
                 out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
