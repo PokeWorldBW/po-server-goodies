@@ -9107,7 +9107,7 @@ function Safari() {
                 safaribot.sendHtmlMessage(src, "You don't have any " + itemAlias(getItem, false, true) + " to give!", safchan);
                 return;
             }
-            if (player.helds[0] !== -1) {
+            if (player.helds[0] != -1) {
                 this.heldItem(player, player.helds[0], true);
             }
             player.helds[0] = item;
@@ -9513,8 +9513,12 @@ function Safari() {
         for (var e in player.party) {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
-            out += "<td><table><tr>";
-            out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "&nbsp;</td>";
+            out += "<td><table><tr><td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "&nbsp;</td></tr><tr>";
+            if (showLinks) {
+                out += "<td align='center' style='white-space: pre;'>";
+                out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
+                out += "</td>"
+            }
             if (player.helds.length > e && player.helds[e] != -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
@@ -9523,15 +9527,9 @@ function Safari() {
                 } else {
                     see = "item:" + itemData[item].icon;
                 }
-                out += "<td style='vertical-align: middle;' rowspan= " + (showLinks ? 2 : 1) + "><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td>";
+                out += "<td style='vertical-align: middle;' rowspan='" + (showLinks ? 2 : 1) + "'><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td>";
             }
-            out += "</tr>";
-            if (showLinks) {
-                out += "<tr><td align='center' style='white-space: pre;'>";
-                out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
-                out += "</td></tr>"
-            }
-            out += "</table></td>";
+            out += "</tr></table></td>";
         }
         out += "</tr></table>";
         if (isAndroid) {
@@ -25816,7 +25814,7 @@ function Safari() {
             if (i >= player.helds.length) {
                 continue;
             }
-            if (player.helds[i] !== 7) {
+            if (player.helds[i] != 7) {
                 continue;
             }
             for (var e = 0; e < player.party.length; e++) {
