@@ -9490,14 +9490,16 @@ function Safari() {
                     }
                     out += "<img src = 'item:" + medals[i].icon + "' title='" + medals[i].desc + "'>";
                 }
-                out += "</p><p>";
-                for (var i = 3; i < 6; i++) {
-                    if (i >= medals.length) {
-                        break;
+                if (medals.length > 3) {
+                    out += "</p><p>";
+                    for (var i = 3; i < 6; i++) {
+                        if (i >= medals.length) {
+                            break;
+                        }
+                        out += "<img src = 'item:" + medals[i].icon + "' title='" + medals[i].desc + "'>";
                     }
-                    out += "<img src = 'item:" + medals[i].icon + "' title='" + medals[i].desc + "'>";
+                    out += "</p>"
                 }
-                out += "</p>"
             }
             out += "</td>";
         }
@@ -9511,23 +9513,25 @@ function Safari() {
         for (var e in player.party) {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
-            out += "<td align=center>#" + pokeInfo.readableNum(member[0]) + " " + name;
+            out += "<td align=center>";
+            if (player.helds.length > e && player.helds[e] !== -1) {
+                out += "<table><td>"
+            }
+            out += "#" + pokeInfo.readableNum(member[0]) + " " + name;
             if (ownParty && sys.os(id) !== "android") {
                 out += "<p>"; //puts a little too much space between lines
                 out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
                 out += "</p>"
             }
-            if (player.helds.length > e) {
-                if (player.helds[e] !== -1) {
-                    var item = heldCodes[player.helds[e]];
-                    var see = "";
-                    if (base64icons.hasOwnProperty(item)) {
-                        see = base64icons[item + ""];
-                    } else {
-                        see = "item:" + itemData[item].icon;
-                    }
-                    out += "<p><img src= '" + see + "' title='" + itemAlias(item, false, true) + "' ></p>";
+            if (player.helds.length > e && player.helds[e] !== -1) {
+                var item = heldCodes[player.helds[e]];
+                var see = "";
+                if (base64icons.hasOwnProperty(item)) {
+                    see = base64icons[item + ""];
+                } else {
+                    see = "item:" + itemData[item].icon;
                 }
+                out += "</td><td><img src= '" + see + "' title='" + itemAlias(item, false, true) + "' ></td></table>";
             }
             out += "</td>";
         }
@@ -14905,7 +14909,7 @@ function Safari() {
             safaribot.sendMessage(src, "That's not a number!", safchan);
             return;
         }
-        if (index - 1 > player.medals.length || index < 1) {
+        if (index - 1 >= player.medals.length || index < 1) {
             safaribot.sendMessage(src, "Index out of range!", safchan);
             return;
         } 
