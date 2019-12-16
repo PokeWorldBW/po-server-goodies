@@ -9510,6 +9510,10 @@ function Safari() {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             out += "<td align=center>#" + pokeInfo.readableNum(member[0]) + " " + name;
+            if (ownParty && sys.os(id) !== "android") {
+                out += "<p>"; //puts a little too much space between lines
+                out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
+            }
             if (player.helds.length > e) {
                 if (player.helds[e] !== -1) {
                     var item = heldCodes[player.helds[e]];
@@ -9522,10 +9526,6 @@ function Safari() {
                     item = "<img src= '" + see + "' title='" + itemAlias(item, false, true) + "' >";
                     out += item;
                 }
-            }
-            if (ownParty && sys.os(id) !== "android") {
-                out += "<p>"; //puts a little too much space between lines
-                out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
             }
             out += "</td>";
         }
