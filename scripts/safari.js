@@ -3084,79 +3084,88 @@ function Safari() {
             "power": 140
         },
         "728": {
-        "name": "Dynamax Cannon",
-        "learned": [890, form(890, 1)],
-        "type": "Dragon",
-        "power": 100
+            "name": "Dynamax Cannon",
+            "learned": [890, form(890, 1)],
+            "type": "Dragon",
+            "power": 100
         },
         "729": {
-        "name": "Snipe Shot",
-        "learned": [818],
-        "type": "Water",
-        "power": 80
+            "name": "Snipe Shot",
+            "learned": [818],
+            "type": "Water",
+            "power": 80
         },
         "730": {
-        "name": "Jaw Lock",
-        "learned": [833, 834],
-        "type": "Dark",
-        "power": 80
+            "name": "Jaw Lock",
+            "learned": [833, 834],
+            "type": "Dark",
+            "power": 80
         },
         "731": {
-        "name": "No Retreat",
-        "learned": [870],
-        "type": "Fighting",
-        "power": "---"
+            "name": "No Retreat",
+            "learned": [870],
+            "type": "Fighting",
+            "power": "---"
         },
-        "732": {
-        "name": "Tar Shot",
-        "learned": [839],
-        "type": "Rock",
-        "power": "---"
+            "732": {
+            "name": "Tar Shot",
+            "learned": [839],
+            "type": "Rock",
+            "power": "---"
         },
-        "733": {
-        "name": "Magic Powder",
-        "learned": [858],
-        "type": "Psychic",
-        "power": "---"
+            "733": {
+            "name": "Magic Powder",
+            "learned": [858],
+            "type": "Psychic",
+            "power": "---"
         },
-        "734": {
-        "name": "Dragon Darts",
-        "learned": [887],
-        "type": "Dragon",
-        "power": 100
+            "734": {
+            "name": "Dragon Darts",
+            "learned": [887],
+            "type": "Dragon",
+            "power": 50
         },
-        "735": {
-        "name": "Teatime",
-        "learned": [855],
-        "type": "Normal",
-        "power": "---"
+            "735": {
+            "name": "Teatime",
+            "learned": [855],
+            "type": "Normal",
+            "power": "---"
         },
-        "736": {
-        "name": "Octolock",
-        "learned": [853],
-        "type": "Fighting",
-        "power": "---"
+            "736": {
+            "name": "Octolock",
+            "learned": [853],
+            "type": "Fighting",
+            "power": "---"
         },
-        "737": {
-        "name": "Bolt Beak",
-        "learned": [880, 881],
-        "type": "Electric",
-        "power": 85
+            "737": {
+            "name": "Bolt Beak",
+            "learned": [880, 881],
+            "type": "Electric",
+            "power": 85
         },
-        "738": {
-        "name": "Fishious Rend",
-        "learned": [882, 883],
-        "type": "Water",
-        "power": 85
+            "738": {
+            "name": "Fishious Rend",
+            "learned": [882, 883],
+            "type": "Water",
+            "power": 85
         },
         "739": {
-        "name": "Court Change",
-        "learned": [815],
-        "type": "Normal",
-        "power": "---"
+            "name": "Court Change",
+            "learned": [815],
+            "type": "Normal",
+            "power": "---"
+        },
+        "740": {
+            "name": "Stuff Cheeks",
+            "learned": [],
+            "type": "Normal",
+            "power": "---"
         }
     };
     function movenum(name) {
+        if (name === "Vise Grip") {
+            name = "Vice Grip";
+        }
         var out = sys.moveNum(name);
         if (out == "undefined" || (!out)) {
             var hit = false;
@@ -3174,7 +3183,9 @@ function Safari() {
     };
     function moveOff(id) {
         if (id < 702) {
-            return sys.move(id);
+            var move = sys.move(id);
+            // Vice Grip is renamed to Vise Grip in Gen 8
+            return move === "Vice Grip" ? "Vise Grip" : move;
         }
         if (ultraMoves.hasOwnProperty(id+"")) {
             return ultraMoves[id+""].name;
