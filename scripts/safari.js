@@ -1745,27 +1745,12 @@ function Safari() {
             if (pcheck === 710 || pcheck === 711) {
                 p2 = pcheck;
             }
-            /*Unown Icon hack. Remove after client update
-            var p2 = p;
-            if (pcheck == 201) {
-                var pshift = Math.floor((p-201)/65536);
-                if (pshift >= 5 && pshift < 17) {
-                    p2 += 65536;
-                } else if (pshift >= 17 && pshift <= 25) {
-                    p2 += (65536*2);
-                } else if (pshift === 26) {
-                    p2 = 327881;
-                } else if (pshift === 27) {
-                    p2 = 1179849;
-                }
-            }
-            //End of unown hack*/
             if (ultraPokes.hasOwnProperty(p2+"")) {
                 var species = pokeInfo.species(p2), form = pokeInfo.forme(p2);
                 var key = species + (form > 0 ? "-" + form : "");
-                return '<img src="' + resources.icons.get(key) + "' title='#" + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
+                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + '" ' + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
             }
-           return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
+           return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + '" ' + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
         },
         sprite: function(pk) {
             var shiny = pokeInfo.shiny(pk);
