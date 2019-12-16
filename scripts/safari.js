@@ -9503,7 +9503,7 @@ function Safari() {
             out += "</td>";
         }
         for (var e in party) {
-            out += "<td align='center' style='vertical-align: middle;'>" + party[e] + "&nbsp;</td>";
+            out += "<td align='center' style='vertical-align: middle;'>" + party[e] + "</td>";
         }
         out += "</tr><tr>";
         if (costumed) {
@@ -9514,7 +9514,7 @@ function Safari() {
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             var showLinks = ownParty && sys.os(id) !== "android";
             out += "<td><table><tr>";
-            out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
+            out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "&nbsp;</td>";
             if (player.helds.length > e && player.helds[e] !== -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
