@@ -9481,21 +9481,23 @@ function Safari() {
             if (costumed) {
                 out += costumeSprite(player.costume, os);
             }
-            out += "<br>";
+            //out += "<br>";
             if (medals && medals !== null && medals.length > 0) {
+                out += "<p>";
                 for (var i = 0; i < 3; i++) {
                     if (i >= medals.length) {
                         break;
                     }
                     out += "<img src = 'item:" + medals[i].icon + "' title='" + medals[i].desc + "'>";
                 }
-                out += "<br>";
+                out += "</p><p>";
                 for (var i = 3; i < 6; i++) {
                     if (i >= medals.length) {
                         break;
                     }
                     out += "<img src = 'item:" + medals[i].icon + "' title='" + medals[i].desc + "'>";
                 }
+                out += "</p>"
             }
             out += "</td>";
         }
@@ -9524,7 +9526,7 @@ function Safari() {
                     } else {
                         see = "item:" + itemData[item].icon;
                     }
-                    out += "<br><img src= '" + see + "' title='" + itemAlias(item, false, true) + "' >";
+                    out += "<p><img src= '" + see + "' title='" + itemAlias(item, false, true) + "' ></p>";
                 }
             }
             out += "</td>";
