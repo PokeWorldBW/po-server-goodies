@@ -9439,6 +9439,7 @@ function Safari() {
             }
         }
         player.helds = [];
+        var j = 0;
         while (player.party.length > player.helds.length) {
             player.helds.push(-1);
             j++;
