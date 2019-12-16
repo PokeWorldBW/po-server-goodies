@@ -2834,12 +2834,12 @@ function Safari() {
             info = info.replace("*", "");
             info = info.replace("shiny ", "");
         }
-        num = parseInt(info, 10);
-        if (isNaN(num)) {
-            var arr = info.split("-");
-            if (arr.length === 2 && !isNaN(arr[0]) && !isNaN(arr[1])) {
-                num = parseInt(arr[0], 10) + (parseInt(arr[1], 10) * 65536);
-            } else {
+        var arr = info.split("-");
+        if (arr.length === 2 && !isNaN(arr[0]) && !isNaN(arr[1])) {
+            num = parseInt(arr[0], 10) + (parseInt(arr[1], 10) * 65536);
+        } else {
+            num = parseInt(info, 10);
+            if (isNaN(num)) {
                 num = getPokeNum(info);
             }
         }
