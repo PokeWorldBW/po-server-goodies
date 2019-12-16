@@ -5426,7 +5426,7 @@ function Safari() {
             return "error";
         }
     }
-    function costumeSprite(id, android) {
+    function costumeSprite(id, os) {
         var n = costumeAlias(id);
         if (isNaN(id)) {
             if (costumeData.hasOwnProperty(n)) {
@@ -5440,8 +5440,10 @@ function Safari() {
                 return "<img src='" + base64costumes[e] + "'>";
             }
         }
-        if (android) {
+        if (os === "android") {
             return "<img src='trainer:" + id + "'>";
+        } else if (os === "webclient") {
+            return "<img src='https://raw.githubusercontent.com/po-devs/pokemon-online/master/bin/Themes/Classic/Trainer%20Sprites/" + id + ".png'>";
         } else {
             return "<img src='Themes/Classic/Trainer Sprites/" + id + ".png'>";
         }
@@ -8998,15 +9000,15 @@ function Safari() {
         if (!ownParty) {
             id = srcId || id;
         }
-        var isAndroid = (sys.os(id) === "android");
-        if (isAndroid) {
+        var os = sys.os(id);
+        if (os === "android") {
             out += "<br />";
         }
         var medals = player.medals;
         if (costumed || (medals && medals.length > 0)) {
             out += "<td align=center>";
             if (costumed) {
-                out += costumeSprite(player.costume, isAndroid);
+                out += costumeSprite(player.costume, os);
             }
             out += "<br>";
             if (medals && medals !== null && medals.length > 0) {
@@ -9922,7 +9924,7 @@ function Safari() {
             var given = rec.collectorGiven + rec.scientistGiven;
             sys.sendMessage(src, "±Quests: Turned in {0} Pokémon (Collector: {1}, Scientist: {2}). Arena Record: {3}-{4} ({5}, {6}). Performed {7} and {8}.".format(given, rec.collectorGiven, rec.scientistGiven, rec.arenaWon, rec.arenaLost, percentage(rec.arenaWon, rec.arenaWon + rec.arenaLost), plural(rec.arenaPoints, "point"), plural(rec.wonderTrades, "Wonder Trade"), plural(rec.transmutationsMade, "Transmutation")), safchan);
             sys.sendMessage(src, "±Quests: Lead a {0} point Pyramid Run. Participated in a {1} point Pyramid Run. Cleared the Pyramid {2} as Leader and {3} as Helper. Reached the {4} Floor of Battle Tower.".format(rec.pyramidLeaderScore, rec.pyramidHelperScore, plural(rec.pyramidLeaderClears, "time"), plural(rec.pyramidHelperClears, "time"), getOrdinal(rec.towerHighest)), safchan);
-            sys.sendMessage(src, "±Quests: Turned in {0} to Journal for a total of {1}. ".format(plural(rec.journalSubmitted, "photo"), plural(rec.journalPoints, "Photo Point")), safchan);
+            sys.sendMessage(src, "±Quests: Turned in {0} to Journal for a total of {1}. ".format(plural(rec.journalSubmitted, "Photo"), plural(rec.journalPoints, "Photo Point")), safchan);
             sys.sendMessage(src, "±Missions: Cleared {0} for a total of {1}.".format(plural(rec.missionCleared, "mission"), plural(rec.missionPoints, "mission point")), safchan);
             sys.sendMessage(src, "±Events: Won {0} with {1}. Won {2} ({3} as Favorite, {4} as Underdog). Won Battle Factory {5} and was Runner-up {6}. Scored a high of {7} and received a prize during a Quiz.".format(plural(rec.factionWins, "Faction War"), plural(rec.factionMVPs, "MVP"), plural(rec.pokeRaceWins, "Pokémon Race"), rec.favoriteRaceWins, rec.underdogRaceWins, plural(rec.factoryFirst, "time"), plural(rec.factorySecond, "time"), plural(rec.topQuizScore, "point")), safchan);
             sys.sendMessage(src, "", safchan);
@@ -25470,7 +25472,7 @@ function Safari() {
 
         var receivedId, receivedBST, pickedForm, isShiny = sys.rand(0, shinyChance) < (input.shiny ? 16 : 1);
         do {
-            receivedId = sys.rand(1, 722);
+            receivedId = sys.rand(1, 803);
             if (receivedId in wildForms && chance(0.5)) {
                 pickedForm = sys.rand(1, wildForms[receivedId] + 1);
                 receivedId = pokeInfo.calcForme(receivedId, pickedForm);
