@@ -9503,18 +9503,18 @@ function Safari() {
             out += "</td>";
         }
         for (var e in party) {
-            out += "<td align=center style='vertical-align: middle;'>" + party[e] + "&nbsp;</td>";
+            out += "<td align='center' style='vertical-align: middle;'>" + party[e] + "&nbsp;</td>";
         }
         out += "</tr><tr>";
         if (costumed) {
-            out += "<td align=center>" + costumeAlias(player.costume, false, true) + "<br>(Level: " + this.getCostumeLevel(player) + ")" + "</td>";
+            out += "<td align='center'>" + costumeAlias(player.costume, false, true) + "<br>(Level: " + this.getCostumeLevel(player) + ")" + "</td>";
         }
         for (var e in player.party) {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             var showLinks = ownParty && sys.os(id) !== "android";
-            out += "<td><table><tr align=center>";
-            out += "<td style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
+            out += "<td><table><tr>";
+            out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
             if (player.helds.length > e && player.helds[e] !== -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
@@ -9527,7 +9527,7 @@ function Safari() {
             }
             out += "</tr>";
             if (showLinks) {
-                out += "<tr align=center><td style='white-space: pre;'>";
+                out += "<tr><td align='center' style='white-space: pre;'>";
                 out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
                 out += "</td></tr>"
             }
