@@ -9513,16 +9513,9 @@ function Safari() {
         for (var e in player.party) {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
-            out += "<td align=center>";
-            if (player.helds.length > e && player.helds[e] !== -1) {
-                out += "<table><tr><td>"
-            }
-            out += "#" + pokeInfo.readableNum(member[0]) + " " + name;
-            if (ownParty && sys.os(id) !== "android") {
-                out += "<p>"; //puts a little too much space between lines
-                out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
-                out += "</p>"
-            }
+            var showLinks = ownParty && sys.os(id) !== "android";
+            out += "<td><table align=center><tr>";
+            out += "<td>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
             if (player.helds.length > e && player.helds[e] !== -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
@@ -9531,9 +9524,15 @@ function Safari() {
                 } else {
                     see = "item:" + itemData[item].icon;
                 }
-                out += "</td><td><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td></tr></table>";
+                out += "<td rowspan= " + (showLinks ? 2 : 1) + "><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td>";
             }
-            out += "</td>";
+            out += "</tr>";
+            if (showLinks) {
+                out += "<tr><td>";
+                out += "[" + link("/party active:" + name, "Active") + " / " + link("/party remove:" + name, "Remove") + "]";
+                out += "</td></tr>"
+            }
+            out += "</table></td>";
         }
         out += "</tr></table>";
         if (isAndroid) {
