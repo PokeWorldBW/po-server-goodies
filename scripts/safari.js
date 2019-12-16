@@ -9515,7 +9515,7 @@ function Safari() {
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             out += "<td align=center>";
             if (player.helds.length > e && player.helds[e] !== -1) {
-                out += "<table><td>"
+                out += "<table><tr><td>"
             }
             out += "#" + pokeInfo.readableNum(member[0]) + " " + name;
             if (ownParty && sys.os(id) !== "android") {
@@ -9531,7 +9531,7 @@ function Safari() {
                 } else {
                     see = "item:" + itemData[item].icon;
                 }
-                out += "</td><td><img src= '" + see + "' title='" + itemAlias(item, false, true) + "' ></td></table>";
+                out += "</td><td><img src= '" + see + "' title='" + itemAlias(item, false, true) + "'></td></tr></table>";
             }
             out += "</td>";
         }
