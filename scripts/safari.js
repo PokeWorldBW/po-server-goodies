@@ -9514,7 +9514,7 @@ function Safari() {
             var member = getPokemonInfo(player.party[e]);
             var name = pokePlain(member[0]) + (member[1] ? "*" : "");
             out += "<td><table width='100%'><tr>";
-            out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "&nbsp;</td>";
+            out += "<td align='center' style='white-space: pre;'>#" + pokeInfo.readableNum(member[0]) + " " + name + "</td>";
             if (player.helds.length > e && player.helds[e] != -1) {
                 var item = heldCodes[player.helds[e]];
                 var see = "";
