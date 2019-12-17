@@ -3164,6 +3164,7 @@ function Safari() {
         "450": { "learned": [ 742, 743, 753, 754, 794, 795 ] },
         "453": { "learned": [ 580, 581 ] },
         "457": { "learned": [ 95, 208 ] },
+        "467": { "learned": [393695] }, // Give Shadow Force to Rotom-Pokedex
         "468": { "learned": [ 65563, 65586 ] },
         "469": { "learned": [ 95, 208, 713 ] },
         "471": { "learned": [ 96, 97 ] },
@@ -3664,8 +3665,7 @@ function Safari() {
             "height": 0.3,
             "weight": 0.3,
             "abilities": ["Levitate"],
-            "tier": "SM Ubers",
-            "moves": [467]
+            "tier": "SM Ubers"
         },
         "66090": {
             "types": ["Ice", "???"],
@@ -5193,6 +5193,11 @@ function Safari() {
             "name": "Hunger Switch"
         }
     }
+    var updatedStats = {
+        "65708": [20, 40, 15, 35, 35, 60], // Pichu-Spiky Eared's stats are incorrect on PO
+        "681": [60, 50, 140, 50, 140, 60], // Aegislash was nerfed in Gen 8 (Sword & Shield)
+        "66217": [60, 140, 50, 140, 50, 60]
+    };
     function getPokeNum(name) {
         var out = sys.pokeNum(name);
         if (!(out)) {
@@ -5242,14 +5247,14 @@ function Safari() {
                 return fetchMoves(pokeInfo.species(num));
             }
         } else {
+            var id = parseInt(num, 10);
             moves = pokedex.getAllMoves(id);
             if (moves.length === 0) {
                 moves = pokedex.getAllMoves(pokeInfo.species(id));
             }
         }
-        var id = parseInt(num, 10);
+        
         var mn = 0;
-
         for (var i in ultraMoves) {
             mn = parseInt(i, 10);
             if (out.contains(mn)) {
