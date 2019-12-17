@@ -26108,25 +26108,38 @@ function Safari() {
                     sys.sendMessage(src, out, safchan);
                 }
             break;
-            default:
-                var flavor = (typeof action === "string" && action.length > 0 ? action[0].toUpperCase() + action.slice(1) : null);
-                if (flavor !== null) {
-                    var matches = [];
-                    for (var i = 0; i < Object.keys(bakingData.apricorns).length; i++) {
-                        if (bakingData.apricorns[i].flavor === flavor) {
-                            matches.push(finishName(bakingData.apricorns[i]));
-                        }
-                    }
-                    for (var i = 0; i < Object.keys(bakingData.berries).length; i++) {
-                        if (bakingData.berries[i].flavor === flavor) {
-                            matches.push(finishName(bakingData.berries[i]));
-                        }
-                    }
-                    if (matches.length > 0) {
-                        safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: Ingredients with a " + flavor + " flavor are: " + readable(matches, "and") + "!", safchan);
-                        return;
+            case "sour":
+            case "salt":
+            case "bitter":
+            case "savory":
+            case "tart":
+            case "umami":
+            case "kokumi":
+            case "spicy":
+            case "citrus":
+            case "none":
+            case "secret":
+                var flavor = action[0].toUpperCase() + action.slice(1) : null;
+                var matches = [];
+                var keys = Object.keys(bakingData.apricorns);
+                for (var i = 0; i < keys.length; i++) {
+                    if (bakingData[keys[i]].flavor === flavor) {
+                        matches.push(finishName(keys[i]));
                     }
                 }
+                keys = Object.keys(bakingData.berries);
+                for (var i = 0; i < keys.length; i++) {
+                    if (bakingData.berries[keys[i]].flavor === flavor) {
+                        matches.push(finishName(keys[i]));
+                    }
+                }
+                if (matches.length > 0) {
+                    safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: Ingredients with a " + flavor + " flavor are: " + readable(matches, "and") + "!", safchan);
+                } else {
+                    safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: No ingredients found with that flavor!", safchan);                    
+                }
+            break;
+            default:
                 safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: You can make customized baits using various ingredients! Get started with " + link("/quest baking:start") + "!", safchan);
                 safaribot.sendHtmlMessage(src, "For information on the ingredients available, type " + link("/quest baking:berries") + " and " + link("/quest baking:apricorns") + " or type /quest baking:[flavor] to see which ingredients have a certain flavor.", safchan);
                 sys.sendMessage(src, "", safchan);
