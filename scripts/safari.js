@@ -5761,6 +5761,8 @@ function Safari() {
                 return "Recharge";
             } else if (name === "valuables") {
                 return "Valuables";
+            } else if (name === "milk") {
+                return "Moomoo Milk";
             }
             return name;
         } else {
@@ -26107,8 +26109,26 @@ function Safari() {
                 }
             break;
             default:
+                var flavor = (typeof action === "string" && action.length > 0 ? action[0].toUpperCase() + action.slice(1) : null);
+                if (flavor !== null) {
+                    var matches = [];
+                    for (var i = 0; i < Object.keys(bakingData.apricorns).length; i++) {
+                        if (bakingData.apricorns[i].flavor === flavor) {
+                            matches.push(finishName(bakingData.apricorns[i]));
+                        }
+                    }
+                    for (var i = 0; i < Object.keys(bakingData.berries).length; i++) {
+                        if (bakingData.berries[i].flavor === flavor) {
+                            matches.push(finishName(bakingData.berries[i]));
+                        }
+                    }
+                    if (matches.length > 0) {
+                        safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: Ingredients with a " + flavor + " flavor are: " + readable(matches, "and") + "!", safchan);
+                        return;
+                    }
+                }
                 safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: You can make customized baits using various ingredients! Get started with " + link("/quest baking:start") + "!", safchan);
-                safaribot.sendHtmlMessage(src, "For information on the ingredients available, type " + link("/quest baking:berries") + " and " + link("/quest baking:apricorns") + ".", safchan);
+                safaribot.sendHtmlMessage(src, "For information on the ingredients available, type " + link("/quest baking:berries") + " and " + link("/quest baking:apricorns") + " or type /quest baking:[flavor] to see which ingredients have a certain flavor.", safchan);
                 sys.sendMessage(src, "", safchan);
             break;
         }
@@ -43199,7 +43219,7 @@ function Safari() {
                 dataArray = Object.keys(berryHelp);
                 for (var e in dataArray) {
                     e = dataArray[e];
-                    out.push(finishName(e) + ": " + itemHelp[e]);
+                    out.push(finishName(e) + ": " + berryHelp[e]);
                 }
                 out.push("");
             }
