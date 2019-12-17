@@ -859,7 +859,7 @@ function Safari() {
             //easteregg: {name: "easteregg", fullName: "Easter Egg", type: "consumable", icon: 88, price: 5000, aliases: ["egg", "easter egg", "easteregg", "easter", "rainbowegg"], tradable: false, cap: 9999},
             candybag: {name: "candybag", fullName: "Candy Bag", type: "consumable", icon: 88, price: 5000, aliases: ["bag", "candy bag", "candybag", "halloween", "treat", "treats"], tradable: false, cap: 9999},
             celebrityTicket: {name: "celebrityTicket", fullName: "Celebrity Ticket", type: "consumable", icon: 132, price: 5000, aliases: ["celebrityticket", "celebrity ticket", "celebrity"], tradable: false},
-            lucky: {name: "lucky", fullName: "Lucky Coin", type: "valuables", icon: 272, price: 0, aliases: ["luckycoin", "lucky coin", "luckycoins"], tradable: false},
+            lucky: {name: "lucky", fullName: "Lucky Coin", type: "valuables", icon: 272, price: 0, aliases: ["lucky", "luckycoin", "lucky coin", "luckycoins"], tradable: false},
 
             //Alchemy related items
             materia: {name: "materia", fullName: "Prima Materia", type: "alchemy", icon: 93, price: 2000, aliases: ["materia", "prima", "primamateria", "prima materia"], threshold: 400, tradable: true},
@@ -1284,7 +1284,7 @@ function Safari() {
         "Dark" : { name: "Darkinium Z", effect: "clone", chance: 0.09, description: "have a {0}% chance to clone a Pokémon caught" }
     };
 
-    var itemHelp, perkHelp, ballHelp;
+    var itemHelp, perkHelp, ballHelp, berryHelp;
     var allBalls;
     updateItemData();
     var updateItemHelp = function() {
@@ -1292,6 +1292,7 @@ function Safari() {
             silver: "Rare coins that can be used to purchase valuable items. Obtained from quests and contests.",
             bait: "A tasty treat used to attract wild Pokémon. Has " + an(itemData.bait.successRate*100) + "% success rate with an approximate " + itemData.bait.successCD + " second cooldown on success, and an approximate " + itemData.bait.failCD + " second cooldown on failure. Use with \"/bait\".",
             golden: "A premium bait used to attract wild Pokémon. Has " + an(itemData.golden.successRate*100) + "% success rate and can be used more often than normal Baits. Use with \"/gbait\".",
+            deluxe: "A customizable bait. Made from /quest baking.",
             gacha: "A ticket that allows you to try the Gachapon Machine to get a random reward! " + cdSeconds("gacha") + " Use with \"/gacha\".",
             rock: "A small rock that can be thrown to potentially stun another player for a short period of time. " + cdSeconds("rock", "throwCD") + " Use with \"/rock [Player]\".",
             rare: "Can be smashed and transformed into around " + (itemData.rare.charges + Math.floor(itemData.rare.maxVar/2)) + " Candy Dusts. Use with \"/use rare\". Found with Itemfinder and obtained in Pyramid.",
@@ -1317,7 +1318,7 @@ function Safari() {
             egg: "An egg that seems to have a non-legendary Pokémon inside. Use with \"/use egg\". Obtained from Pyramid quest.",
             bright: "A mysterious egg that gives birth to a Pokémon when hatched. Small chance that this Pokémon will be shiny or even legendary! Use with \"/use bright\". Obtained from Pyramid quest.",
             water: "Water with high mineral content that increases your stamina at Pyramid by " + (itemData.water.bonusRate * 100) + "%. Use with \"/use water\".",
-            soda: "Carbonated drink that reduces remaining cooldown for a quest, auction, burn heal or costume change to " + (itemData.soda.bonusRate * 100) + "%. Use with \"/use soda:[Quest]\".",
+            soda: "Carbonated drink that reduces remaining cooldown for a quest, auction, burn heal or costume change to " + (itemData.soda.bonusRate * 100) + "%. Use with \"/use soda:[Quest]\". Obtained from Trivia event games.",
             cookie: "A delicious cookie that brings good luck in the form of a random buff for a limited time when eaten. Use with \"/use cookie\" (using another one will replace the previous effect).",
             cherry: "A tasty treat that keeps you energized during a Tower Challenge allowing you to deal more damage. Use with \"/use cherry\". Obtained from Alchemy.",
             blkapricorn: "An acorn-shaped fruit that can be crafted into a Pokéball. Has a very strong flavor. Found with Itemfinder.",
@@ -1335,20 +1336,7 @@ function Safari() {
             //easteregg: "A colorful ovaloid with surprising goodies inside. Can be used with /use easteregg, /use easteregg:10, /use easteregg:100, and /use easteregg:1000. Don't open until Easter!",
             candybag: "A basket full of goodies. Can be used with /use candybag, /use candybag:10, /use candybag:100, and /use candybag:1000. Don't open until Halloween!",
             lucky: "Coins used to bet on which Celebrity you think will win the tournament.",
-            celebrityTicket: "A ticket to battle the Celebrities. It can be used with /use celebrityticket to make your next challenge a reward run.",
-            deluxe:"A customizable bait. Made from /quest baking.",
-            oran:"A berry that can be used as an ingredient in bait. Can also restore 50 HP to the holder during rotation batttles. Give berries with /giveitem [berry].",
-            pecha:"A berry that can be used as an ingredient in bait. Can also help a Pokémon overcome a nerf in contests. Give berries with /giveitem [berry].",
-            razz:"A berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
-            bluk:"A berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
-            leppa:"A berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
-            tamato:"An uncommon berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
-            pinap:"An uncommon berry that can be used as an ingredient in bait. Allows its holder to fight better in the Battle Tower if its BST is unique on its team. Give berries with /giveitem [berry].",
-            nanab:"An uncommon berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
-            watmel:"An uncommon berry that can be used as an ingredient in bait. When hatching a Pokémon that shares an egg group with its holder, it increases the chance of the hatched Pokémon to be shiny. Give berries with /giveitem [berry].",
-            petaya:"An uncommon berry that can be used as an ingredient in bait. Can help a Pokémon evolve when it assists in captures. Give berries with /giveitem [berry].",
-            miracle:"A rare berry that can be used as an ingredient in bait. Allows its holder to survive a KO-ing move in rotation battles. Give berries with /giveitem [berry].",
-            platinum:"A rare berry that can be used as an ingredient in bait. As an ingredient, it is unmatched, and it can cause the bait to attract rare Pokémon forms."
+            celebrityTicket: "A ticket to battle the Celebrities. It can be used with /use celebrityticket to make your next challenge a reward run."
         };
         perkHelp = {
             amulet: "When holding this charm, " + itemData.amulet.bonusRate * 100 + "% more money is obtained when selling a Pokémon to the store (Max Rate: " + itemData.amulet.maxRate * 100 + "%). Obtained from Gachapon.",
@@ -1366,22 +1354,36 @@ function Safari() {
             ultra: "A high functioning Pokéball that has a better catch rate than a Great Ball. " + cdSeconds("ultra"),
             master: "An extremely rare Pokéball that never fails to catch. " + cdSeconds("master") + " Obtained from Gachapon and Alchemist.",
             premier: "A plain Pokéball gifted to you for your patronage. It works better when a Normal-type or a single-type Pokémon is active. " + cdSeconds("premier") + " Obtained by purchasing a lot of Pokéballs from the shop and Pyramid.",
-            luxury: "A comfortable Pokéball with an increased catch rate that is said to make one wealthy. " + cdSeconds("luxury") + " Obtained from Gachapon and found with Itemfinder.",
-            myth: "An ancient Pokéball that ignores modern era catch modifiers. Said to be particularly effective against certain rare Pokémon. " + cdSeconds("myth") + " Obtained from Gachapon.",
-            quick: "A somewhat different Pokéball that tends to get better priority during throws. " + cdSeconds("quick") + " Obtained from Gachapon and Pyramid.",
-            level: "A slickly designed Pokéball that raises the stat levels of the lead Pokémon. " + cdSeconds("level") + " Obtained from Gachapon and Pyramid.",
-            clone: "A mysterious Pokéball with a very low catch rate that can duplicate a pokémon's D.N.A. " + cdSeconds("clone") + " Obtained from Gachapon and Pyramid.",
-            spy: "A stealthy Pokéball that cannot be tracked. A successful snag with this ball allows for quick follow-up action, but it has low priority. " + cdSeconds("spy") + " Found with Itemfinder and obtained from Pyramid.",
-            mono: "A monochromatic Pokéball that enables your active Pokémon to use only one of their types. " + cdSeconds("mono") + " Obtained from Alchemy.",
-            lightning: "A Pokéball with a lightning bolt design that comes out in a flash. " + cdSeconds("lightning") + " Obtained from Alchemy.",
-            heavy: "An industrial Pokéball that works better against heavier Pokémon and takes type less into consideration. " + cdSeconds("heavy") + " Obtained from Alchemy.",
-            photo: "A Pokéball riddled with memory chips capable of identifying Pokémon stored in the camera and catching them with higher likelihood. " + cdSeconds("photo") + " Obtained from Alchemy.",
-            mirror: "A Pokéball with a reflective surface that enables the lead Pokémon to catch based on its similarities to the wild. Doubly effective in Similarity Mode. " + cdSeconds("mirror") + " Obtained from Alchemy.",
-            love: "A Pokéball with a pink heart design that works better if the lead is in the same egg group as the target. It also increases the well-being of Pokémon in the daycare. " + cdSeconds("love") + " Obtained from Alchemy.",
-            uturn: "A Pokéball with a dynamic design that enables the lead Pokémon to switch out after a successful catch. " + cdSeconds("uturn") + " Obtained from Alchemy.",
-            inver: "A mysterious Pokéball that reverses the type advantage " + cdSeconds("inver") + " Obtained from Alchemy.",
-            spirit: "A magical Pokéball that can capture the Spirits of Pokémon. " + cdSeconds("spirit") + " Obtained during Spirit Duels events. (Max capaity: 10)",
-            cherish: "A homey Pokéball that forever marks the caught Pokémon as being cherished by its owner. " + cdSeconds("cherish") + " Obtained from Alchemy."
+            luxury: "A comfortable Pokéball with an increased catch rate that is said to make one wealthy. " + cdSeconds("luxury") + " Obtained from Arborist and found with Itemfinder.",
+            myth: "An ancient Pokéball that ignores modern era catch modifiers. Said to be particularly effective against certain rare Pokémon. " + cdSeconds("myth") + " Obtained from Arborist.",
+            quick: "A somewhat different Pokéball that tends to get better priority during throws. " + cdSeconds("quick") + " Obtained from Arborist and Pyramid.",
+            level: "A slickly designed Pokéball that raises the stat levels of the lead Pokémon. " + cdSeconds("level") + " Obtained from Arborist and Pyramid.",
+            clone: "A mysterious Pokéball with a very low catch rate that can duplicate a pokémon's D.N.A. " + cdSeconds("clone") + " Obtained from Arborist and Pyramid.",
+            spy: "A stealthy Pokéball that cannot be tracked. A successful snag with this ball allows for quick follow-up action, but it has low priority. " + cdSeconds("spy") + " Found with Itemfinder and obtained from Arborist and Pyramid.",
+            mono: "A monochromatic Pokéball that enables your active Pokémon to use only one of their types. " + cdSeconds("mono") + " Obtained from Arborist.",
+            lightning: "A Pokéball with a lightning bolt design that comes out in a flash. " + cdSeconds("lightning") + " Obtained from Arborist.",
+            heavy: "An industrial Pokéball that works better against heavier Pokémon and takes type less into consideration. " + cdSeconds("heavy") + " Obtained from Arborist.",
+            photo: "A Pokéball riddled with memory chips capable of identifying Pokémon stored in the camera and catching them with higher likelihood. " + cdSeconds("photo") + " Obtained from Arborist.",
+            mirror: "A Pokéball with a reflective surface that enables the lead Pokémon to catch based on its similarities to the wild. Doubly effective in Similarity Mode. " + cdSeconds("mirror") + " Obtained from Arborist.",
+            love: "A Pokéball with a pink heart design that works better if the lead is in the same egg group as the target. It also increases the well-being of Pokémon in the daycare. " + cdSeconds("love") + " Obtained from Arborist.",
+            uturn: "A Pokéball with a dynamic design that enables the lead Pokémon to switch out after a successful catch. " + cdSeconds("uturn") + " Obtained from Arborist.",
+            inver: "A mysterious Pokéball that reverses the type advantage " + cdSeconds("inver") + " Obtained from Arborist.",
+            spirit: "A magical Pokéball that can capture the Spirits of Pokémon. " + cdSeconds("spirit") + " Obtained during Spirit Duels events. (Max capacity: 10)",
+            cherish: "A homey Pokéball that forever marks the caught Pokémon as being cherished by its owner. " + cdSeconds("cherish") + " Obtained from Arborist."
+        };
+        berryHelp = {
+            oran:"A berry that can be used as an ingredient in bait. Can also restore 50 HP to the holder during rotation batttles. Give berries with /giveitem [berry].",
+            pecha:"A berry that can be used as an ingredient in bait. Can also help a Pokémon overcome a nerf in contests. Give berries with /giveitem [berry].",
+            razz:"A berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
+            bluk:"A berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
+            leppa:"A berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
+            tamato:"An uncommon berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
+            pinap:"An uncommon berry that can be used as an ingredient in bait. Allows its holder to fight better in the Battle Tower if its BST is unique on its team. Give berries with /giveitem [berry].",
+            nanab:"An uncommon berry that can be used as an ingredient in bait. No known use yet. Give berries with /giveitem [berry].",
+            watmel:"An uncommon berry that can be used as an ingredient in bait. When hatching a Pokémon that shares an egg group with its holder, it increases the chance of the hatched Pokémon to be shiny. Give berries with /giveitem [berry].",
+            petaya:"An uncommon berry that can be used as an ingredient in bait. Can help a Pokémon evolve when it assists in captures. Give berries with /giveitem [berry].",
+            miracle:"A rare berry that can be used as an ingredient in bait. Allows its holder to survive a KO-ing move in rotation battles. Give berries with /giveitem [berry].",
+            platinum:"A rare berry that can be used as an ingredient in bait. As an ingredient, it is unmatched, and it can cause the bait to attract rare Pokémon forms."
         };
         allBalls = ["safari", "great", "ultra", "myth", "luxury", "quick", "heavy", "spy", "clone", "premier", "mono", "spirit", "lightning", "level", "photo", "mirror", "uturn", "love", "inver", "cherish", "master"];
     };
@@ -5470,7 +5472,7 @@ function Safari() {
         return out;
     }
     function getPokeAbility(pokeNum, num) {
-        if (isMega(num) && num !== 0) {
+        if (isMega(pokeNum) && num !== 0) {
             return 0;
         }
         if (ultraPokes.hasOwnProperty(num+"")) {
@@ -43115,9 +43117,9 @@ function Safari() {
             safaribot.sendMessage(src, "You can use /itemhelp [item] to return information on a particular item, costume, or category. You can display the help for all items using \"/itemhelp all\" or from the following categories: \"balls\", \"items\", \"perks\".", safchan);
             return;
         }
-        var help, help2;
+        var help = [];
         data = data.toLowerCase();
-        var catStrings = ["all", "balls", "items", "perks", "costumes"];
+        var catStrings = ["all", "balls", "items", "perks", "costumes", "berries"];
         for (var e in costumeData) {
             if (costumeData.hasOwnProperty(e)) {
                 costumeHelp[e] = costumeData[e].effect + " " + (costumeData[e].effect2 ? " - " + costumeData[e].effect2 : "") + "";
@@ -43149,38 +43151,36 @@ function Safari() {
             if (allItems.indexOf(lookup) !== -1) {
                 //Now grab the help from whichever category it is
                 if (itemHelp.hasOwnProperty(lookup)) {
-                    help = finishName(lookup) + ": " + itemHelp[lookup];
+                    help.push(finishName(lookup) + ": " + itemHelp[lookup]);
                 } else if (itemData[lookup].type == "valuables") {
                     lookup = "valuables";
-                    help = finishName(lookup) + ": " + itemHelp[lookup];
+                    help.push(finishName(lookup) + ": " + itemHelp[lookup]);
                 } else if (perkHelp.hasOwnProperty(lookup)) {
-                    help = finishName(lookup) + ": " + perkHelp[lookup];
-                    help2 = "Note: This item is a Perk and the effects are passive.";
+                    help.push(finishName(lookup) + ": " + perkHelp[lookup]);
+                    help.push("Note: This item is a Perk and the effects are passive.");
                 } else if (ballHelp.hasOwnProperty(lookup)) {
-                    help = finishName(lookup) + ": " + ballHelp[lookup];
-                    help2 = "Note: Cooldown value doubles following a successful catch.";
+                    help.push(finishName(lookup) + ": " + ballHelp[lookup]);
+                    help.push("Note: Cooldown value doubles following a successful catch.");
                 }
-            } else {
-                //If it's not an item, it's either a costume or invalid.
-                lookup = costumeAlias(data, true);
-                if (allCostumes.indexOf(lookup) !== -1) {
-                    if (costumeHelp.hasOwnProperty(lookup)) {
-                        help = costumeAlias(lookup, false, true) + " Costume: " + costumeHelp[lookup];
-                    }
+            }
+            //If it's not an item, it's either a costume or invalid.
+            lookup = costumeAlias(data, true);
+            if (allCostumes.indexOf(lookup) !== -1) {
+                if (costumeHelp.hasOwnProperty(lookup)) {
+                    help.push(costumeAlias(lookup, false, true) + " Costume: " + costumeHelp[lookup]);
                 }
             }
 
             //Frame out result
-            if (!help) {
+            if (help.length === 0) {
                 safaribot.sendMessage(src, lookup + " is either an invalid item or no help string is defined!", safchan);
                 return;
             }
             sys.sendMessage(src, "", safchan);
             sys.sendMessage(src, "*** Item Help ***", safchan);
-            sys.sendMessage(src, help, safchan);
-            if (help2) {
-                sys.sendMessage(src, help2, safchan);
-            }
+            help.forEach(function(h) {
+                sys.sendMessage(src, h, safchan);
+            });
             sys.sendMessage(src, "", safchan);
         } else {
             var x, dataArray, out = [];
@@ -43188,6 +43188,15 @@ function Safari() {
             if (data === "all" || data === "items") {
                 out.push("*** Item Help ***");
                 dataArray = Object.keys(itemHelp);
+                for (var e in dataArray) {
+                    e = dataArray[e];
+                    out.push((e === "itemfinder" ? "" : finishName(e) + ": ") + itemHelp[e]);
+                }
+                out.push("");
+            }
+            if (data === "all" || data === "berries") {
+                out.push("*** Berry Help ***");
+                dataArray = Object.keys(berryHelp);
                 for (var e in dataArray) {
                     e = dataArray[e];
                     out.push(finishName(e) + ": " + itemHelp[e]);
