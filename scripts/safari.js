@@ -26119,7 +26119,7 @@ function Safari() {
             case "citrus":
             case "none":
             case "secret":
-                var flavor = action[0].toUpperCase() + action.slice(1) : null;
+                var flavor = action[0].toUpperCase() + action.slice(1);
                 var matches = [];
                 var keys = Object.keys(bakingData.apricorns);
                 for (var i = 0; i < keys.length; i++) {
