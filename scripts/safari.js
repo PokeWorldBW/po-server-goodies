@@ -16445,7 +16445,7 @@ function Safari() {
             case "party": this.showSpiritDuelsTeam(src,player); break;
             case "skill": case "skills": this.ownSpiritSkills(src,player); break;
             case "inactive": this.markInactivity(src,player,commandData); break;
-            case "active": this.markActivity(src,player); break;
+            case "reactive": this.markActivity(src,player); break;
             default: safaribot.sendMessage( src,"You are a " + player.spiritDuels.team + " " + player.spiritDuels.rankName + "! [Valid commands are box, boxt, active, join, history, party, skill, and watch!]",safchan );
         }
         return;
@@ -16508,7 +16508,7 @@ function Safari() {
         }
         safari.events.spiritDuelsTeams[a].activityWarned[targetNum+""] = now() + (24 * 1000 * 60 * 60);
         safaribot.sendMessage( src,target + " has been warned for their low activity, and will not be able to participate in 24 hours if they don't reactivate!",safchan );
-        safari.inboxMessage(targetPlayer, "You've been marked as inactive in spirit duels by your teammates. Type /spiritduels active to undo this!", false);
+        safari.inboxMessage(targetPlayer, "You've been marked as inactive in spirit duels by your teammates. Type /spiritduels reactive to undo this!", false);
         return;
     };
     this.ownSpiritSkills = function( src,player ) {
@@ -30539,6 +30539,9 @@ function Safari() {
         if (showChange) {
             var staminaStr = [];
             for (var n in stamina) {
+                if (stamina[n] == 0) {
+                    continue;
+                }
                 staminaStr.push(n.toCorrectCase() + " " + (stamina[n] >= 0 ? "+" + stamina[n] : stamina[n]));
             }
             if (points !== 0 || staminaStr.length > 0) {
@@ -30633,25 +30636,57 @@ function Safari() {
             reward.push("1@bright");
         } 
         if (p >= 8000) {
-            reward.push("1@mega");
+            reward.push("3@mega");
         } 
         if (p >= 7000) {
-            reward.push("1@rare");
+            reward.push("10@rare");
         } 
         if (p >= 6000) {
+            reward.push("5@pack");
+        } 
+        else if (p >= 5500) {
             reward.push("1@pack");
         } 
         if (p >= 5000) {
-            reward.push("1@egg");
+            if (p % 3 == 0) {
+                reward.push("2@golden");
+            } else {
+                reward.push("3@rare");
+            }
+        } 
+        if (p >= 4500) {
+            if (p % 3 == 0) {
+                reward.push("3@rare");
+            } else {
+                reward.push("2@golden");
+            }
+        } 
+        if (p >= 4000) {
+            if (p % 2 == 1) {
+                reward.push("1@mega");
+            } else {
+                reward.push("1@mushroom");
+            }
+        } 
+        if (p >= 3500) {
+            if (p % 2 == 0) {
+                reward.push("1@mega");
+            } else {
+                reward.push("1@mushroom");
+            }
         } 
         if (p >= 3000) {
             reward.push("1@nugget");
         } 
+        if (p >= 2500) {
+            reward.push((this.level * 5) + "@" + ["redapricorn", "ylwapricorn", "pnkapricorn"].random());
+        } 
         if (p >= 1500) {
             reward.push((this.level * 5) + "@" + ["blkapricorn", "whtapricorn", "grnapricorn", "bluapricorn"].random());
         } 
-        if (this.finishMode === "cleared"){
-            reward.push("5@gem");
+        if (this.finishMode === "cleared") {
+            reward.push("2@crystal");
+            reward.push("@mega");
         } else {
             reward.push((this.level * 2) + "@gacha");
         }
@@ -30909,7 +30944,7 @@ function Safari() {
             }
         }
 
-        var typeChances = { "Normal":7,"Fighting":9,"Flying":13,"Poison":9,"Ground":11,"Rock":9.5,"Bug":7,"Ghost":19,"Steel":25,"Fire":12,"Water":13,"Grass":7.5,"Electric":10,"Psychic":7.5,"Ice":4.5,"Dragon":16,"Dark":14,"Fairy":12 };
+        var typeChances = { "Normal":7,"Fighting":9,"Flying":13,"Poison":8,"Ground":11,"Rock":9.5,"Bug":7,"Ghost":19,"Steel":25,"Fire":13,"Water":13,"Grass":7.5,"Electric":9.5,"Psychic":6,"Ice":4.5,"Dragon":16,"Dark":12,"Fairy":16 };
         var fTypes = this.forbiddenTypes = [randomSample(typeChances)], t;
         while (fTypes.length < 2) {
             t = randomSample(typeChances);
@@ -30931,7 +30966,7 @@ function Safari() {
             }
         }
 
-        this.hordePower = [20 + level * 12, 100 + level * 25];
+        this.hordePower = [22 + level * 12, 100 + level * 24];
 
         this.treasures = {
             starpiece: { chance: 3 * level, item: "starpiece", amount: 1 },
@@ -37366,13 +37401,13 @@ function Safari() {
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<br>" + link("/daycare interact:" + rows[place].id, "Check");
+                    ret += "<p>" + link("/daycare interact:" + rows[place].id, "Check") + "</p>";
                 }
                 else if (features.hasOwnProperty(place)) {
-                    ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + "><br><table width='100%' height='100%' style='background-color:" + (bg ? " style='background:" + bg + "'" : "") + "'></table>";
+                    ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + "><br><p><table width='100%' height='100%' style='background-color:" + (bg ? " style='background:" + bg + "'" : "") + "'><tr><td></td></tr></table></p>";
                 }
                 else {
-                    ret += "<img src= '" + icon +  "' style='background:" + bg + "'><br><table width='100%' height='100%' style='background-color:" + bg + "'></table>";
+                    ret += "<img src= '" + icon +  "' style='background:" + bg + "'><p><table width='100%' height='100%' style='background-color:" + bg + "'><tr><td></td></tr></table></p>";
                 }
                 ret += "</td>";
             }
