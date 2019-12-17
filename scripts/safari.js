@@ -37369,7 +37369,6 @@ function Safari() {
             r = props[i];
             for (var j = 0; j < r.length; j++) {
                 var place = r[j];
-                ret += "<td align=center width=42 height=32>";
                 bg = null;
                 if (area == "grotto") {
                     bg = "#89E9AC";
@@ -37400,14 +37399,16 @@ function Safari() {
                 }
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
+                    ret += "<td align=center width=42 height=32>";
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
                     ret += "<p>" + link("/daycare interact:" + rows[place].id, "Check") + "</p>";
-                }
-                else if (features.hasOwnProperty(place)) {
-                    ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + "><br><p><table width='100%' height='100%' style='background-color:" + (bg ? " style='background:" + bg + "'" : "") + "'><tr><td></td></tr></table></p>";
-                }
-                else {
-                    ret += "<img src= '" + icon +  "' style='background:" + bg + "'><p><table width='100%' height='100%' style='background-color:" + bg + "'><tr><td></td></tr></table></p>";
+                } else {
+                    ret += "<td align=center width=42 height=32" + (bg ? " style='background-color:" + bg + ";'" : "") + ">";
+                    if (features.hasOwnProperty(place)) {
+                        ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
+                    } else {
+                        ret += "<img src= '" + icon +  "' style='background:" + bg + "'>";
+                    }
                 }
                 ret += "</td>";
             }
