@@ -5492,7 +5492,7 @@ function Safari() {
                 return 0;
             }
         }
-        return getPokeAbility(pokeNum, num);
+        return sys.pokeAbility(pokeNum, num);
     }
     function canHaveAbility(num, abilityNum) {
         return [0,1,2].map(function(x) { return getPokeAbility(num, x); }).contains(abilityNum);
