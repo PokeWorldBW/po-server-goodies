@@ -1825,7 +1825,8 @@ function Safari() {
         "741": 3,
         "745": 1,
         "849": 1,
-        "869": 62
+        "869": 62,
+        "876": 1
     };
     var noShinySprite = [ // These Pokemon have no shiny sprites at all, so they should not be allowed to be shiny. This list includes Pikachu forms (except Pikachu-Cosplay), Castform forms, Alcremie forms, and Eternamax Eternatus
         65561,131097,196633,262169,327705,458777,524313,589849,655385,720921,786457,851993,65887,131423,262495,66405,131941,197477,263013,328549,394085,459621,525157,590693,656229,721765,787301,852837,918373,983909,1049445,1114981,1180517,1246053,1311589,1377125,1442661,1508197,1573733,1639269,1704805,1770341,1835877,1901413,1966949,2032485,2098021,2163557,2229093,2294629,2360165,2425701,2491237,2556773,2622309,2687845,2753381,2818917,2884453,2949989,3015525,3081061,3146597,3212133,3277669,3343205,3408741,3474277,3539813,3605349,3670885,3736421,3801957,3867493,3933029,3998565,4064101,66426
@@ -3292,7 +3293,7 @@ function Safari() {
         },
         "704": {
             "name": "Photon Geyser",
-            "learned": [800, 66336, 131872, 197408, 393695],
+            "learned": [800, 66336, 131872, 197408],
             "type": "Psychic",
             "power": 100
         },
@@ -30607,17 +30608,17 @@ function Safari() {
             reward.push("1@pack");
         } 
         if (p >= 5000) {
-            if (p % 3 == 0) {
-                reward.push("2@golden");
+            if (p % 2 == 0) {
+                reward.push("1@mega");
             } else {
-                reward.push("3@rare");
+                reward.push("1@mushroom");
             }
         } 
         if (p >= 4500) {
             if (p % 3 == 0) {
-                reward.push("3@rare");
+                reward.push("@golden");
             } else {
-                reward.push("2@golden");
+                reward.push("2@rare");
             }
         } 
         if (p >= 4000) {
@@ -30628,10 +30629,10 @@ function Safari() {
             }
         } 
         if (p >= 3500) {
-            if (p % 2 == 0) {
-                reward.push("1@mega");
+            if (p % 3 == 0) {
+                reward.push("2@rare");
             } else {
-                reward.push("1@mushroom");
+                reward.push("@golden");
             }
         } 
         if (p >= 3000) {
@@ -30948,7 +30949,7 @@ function Safari() {
         }
 
         this.sendAll("");
-        this.sendAll("Room {0}-{1}: This room is infested with lots of wild Pokémon! Defeat them to pass, but <b>{2}</b>-type and <b>{3}</b>-type Pokémon are nerfed!".format(level, roomNum, typeIcon(this.forbiddenTypes[0]), typeIcon(this.forbiddenTypes[1])));
+        this.sendAll("Room {0}-{1}: This room is infested with lots of wild Pokémon! Defeat them to pass, but there is a nefarious trap to hurt <b>{2}</b>-type and <b>{3}</b>-type Pokémon!".format(level, roomNum, typeIcon(this.forbiddenTypes[0]), typeIcon(this.forbiddenTypes[1])));
         this.sendAll("Wild Pokémon: " + this.horde.map(pokeInfo.icon).join(""));
         this.sendIndividuals();
         this.sendAll("");
@@ -31153,7 +31154,8 @@ function Safari() {
 
         this.sendAll("");
         this.sendAll("Pokémon: " + pokeInfo.sprite(0));
-        this.sendAll("Room " + level + "-" + roomNum + ": A strong Pokémon (" + diffMsg + ") stands in your way, but it's too dark to identify them (" + readable(hints) + ")! Defeat them, unless the leader decided to flee!");        this.sendIndividuals();
+        this.sendAll("Room " + level + "-" + roomNum + ": A strong Pokémon (" + diffMsg + ") stands in your way, but it's too dark to identify them (" + readable(hints) + ")! Defeat them, unless the leader decided to flee!");
+        this.sendIndividuals();
         this.sendAll("");
     }
     StrongRoom.prototype = new PyramidRoom();
