@@ -1702,7 +1702,8 @@ function Safari() {
     var baitCooldown = (SESSION.global() && SESSION.global().safariBaitCooldown ? SESSION.global().safariBaitCooldown : baitCooldownLength);
     var releaseCooldownLength = 180; //1 release every 3 minutes
     var releaseCooldown = (SESSION.global() && SESSION.global().safariReleaseCooldown ? SESSION.global().safariReleaseCooldown : releaseCooldownLength);
-    var goldenBaitCooldown = (SESSION.global() && SESSION.global().safariGoldenBaitCooldown? SESSION.global().safariGoldenBaitCooldown: 0);
+    var goldenBaitCooldown = (SESSION.global() && SESSION.global().safariGoldenBaitCooldown ? SESSION.global().safariGoldenBaitCooldown: 0);
+    var deluxeBaitCooldown = (SESSION.global() && SESSION.global().safariDeluxeBaitCooldown? SESSION.global().safariDeluxeBaitCooldown: 0);
 
     /* Pokemon Variables */
     var effectiveness = {
@@ -1770,7 +1771,7 @@ function Safari() {
                     return "<img src='" + resources.sprites.get(key) + "'>";
                 }
             }
-            if (shiny && pk === 66337) {// PO doesn't have the correct shiny sprite for Magearna-Pokeball
+            if (shiny && pk === "66337") {// PO doesn't have the correct shiny sprite for Magearna-Pokeball
                 return "<img src='" + resources.shiny.get("801-1") + "'>";
             }
             var ret = [];
@@ -2356,6 +2357,7 @@ function Safari() {
         preparationFirst = null;
         baitCooldown = sys.rand(4,7);
         goldenBaitCooldown = sys.rand(8,10);
+        deluxeBaitCooldown = 1;
         currentPokemon = null;
         currentDisplay = null;
         wildEvent = false;
@@ -7991,6 +7993,15 @@ function Safari() {
                 safaribot.sendHtmlAll(name + " caught the " + revealName + " with " + an(ballName)+ " and the help of their " + ch + poke(player.party[0]) + "!" + (msg ? " Some shadows shaped like the letters <b>" + msg.toUpperCase() + "</b> could be seen around the " + ballName + "!" : "") + (amt > 0 ? remaining : ""), safchan);
             }    
             safaribot.sendMessage(src, "Gotcha! " + pokeName + " was caught with " + an(ballName) + "! " + itemsLeft(player, ball), safchan);
+            if (baitCooldown <= 5) {
+                baitCooldown = sys.rand(5, 8);
+            }
+            if (goldenBaitCooldown <= 3) {
+                goldenBaitCooldown = sys.rand(3, 5);
+            }
+            if (deluxeBaitCooldown < 3) {
+                deluxeBaitCooldown = sys.rand(3, 5);
+            }
             if (currentTheme && contestThemes[currentTheme] && contestThemes[currentTheme].eventFlags && contestThemes[currentTheme].eventFlags.contains(parseInt(currentPokemon, 10))) {
                 player.eventFlags[currentPokemon+""] = now() + (72 * 60 * 60 * 1000); //flag set for 72 hours
                 sendAll("The captured " + pokeName + " was a mirage! " + name + " is one step closer to unlocking the Legendary Pokémon!");
@@ -10862,9 +10873,14 @@ function Safari() {
                 safaribot.sendMessage(src, "The " + bName + " you were preparing to throw slipped from your hand! You went to catch it and now need to wait " + timeLeftString(player.cooldowns.bait) + " to throw again!", safchan);
                 return;
             }
-            if (golden || deluxe) {
+            if (golden) {
                 if (goldenBaitCooldown > 0) {
                     safaribot.sendMessage(src, "Please wait " + plural(goldenBaitCooldown, "second") + " before trying to attract another Pokémon with " + an(bName) + "!", safchan);
+                    return;
+                }
+            } else if (deluxe) {
+                if (deluxeBaitCooldown > 0) {
+                    safaribot.sendMessage(src, "Please wait " + plural(deluxeBaitCooldown, "second") + " before trying to attract another Pokémon with " + an(bName) + "!", safchan);
                     return;
                 }
             } else {
@@ -10896,6 +10912,8 @@ function Safari() {
             safaribot.sendAll((ballUsed == "spy" ? "Some stealthy person" : sys.name(src)) + " left some " + bName + " out. The " + bName + " attracted a wild Pokémon!", safchan);
             if (golden) {
                 goldenBaitCooldown = itemData[item].successCD + sys.rand(0,9);
+            } else if (deluxe) {
+                deluxeBaitCooldown = itemData[item].successCD + sys.rand(0,9);
             } else {
                 baitCooldown = successfulBaitCount = itemData[item].successCD + sys.rand(0,9);
                 player.cooldowns.bait = now() + (itemData[item].failCD + sys.rand(0,4)) * 1000;
@@ -11363,6 +11381,9 @@ function Safari() {
                         }
                         if (goldenBaitCooldown <= 6) {
                             goldenBaitCooldown = sys.rand(6, 11);
+                        }
+                        if (deluxeBaitCooldown < 6) {
+                            deluxeBaitCooldown = 6;
                         }
                     }
                 }
@@ -48625,6 +48646,7 @@ function Safari() {
         baitCooldown--;
         goldenBaitCooldown--;
         successfulBaitCount--;
+        deluxeBaitCooldown--;
 
         if (currentEvent && contestCooldown % currentEvent.turnLength === 0) {
             currentEvent.nextTurn();
