@@ -3276,7 +3276,7 @@ function Safari() {
         },
         "704": {
             "name": "Photon Geyser",
-            "learned": [800, 66336, 131872, 393695],
+            "learned": [800, 66336, 131872, 197408, 393695],
             "type": "Psychic",
             "power": 100
         },
@@ -3324,13 +3324,13 @@ function Safari() {
         },
         "712": {
             "name": "Behemoth Blade",
-            "learned": [888, form(888, 1)],
+            "learned": [form(888, 1)],
             "type": "Steel",
             "power": 100
         },
         "713": {
             "name": "Behemoth Bash",
-            "learned": [889, form(889, 1)],
+            "learned": [form(889, 1)],
             "type": "Steel",
             "power": 100
         },
@@ -4945,7 +4945,7 @@ function Safari() {
         },
         "66412": {
             "types": ["Psychic", "Normal"],
-            "name": "Indeedee-Female",
+            "name": "Indeedee-F",
             "stats": [70, 55, 65, 95, 105, 85],
             "tier": "SM OU",
             "height": 0.9,
@@ -5233,15 +5233,18 @@ function Safari() {
     }
     function fetchMoves(num) {
         var out = [];
+        var moves = [];
         if (ultraPokes.hasOwnProperty(num+"")) {
             if (ultraPokes[num+""].moves) {
                 out = ultraPokes[num+""].moves;
             } else {
-                out = [];
+                // Some in-battle and cosmetic forms do not have moves explicitly defined, so default to moves for base species
+                return fetchMoves(pokeInfo.species(num));
             }
+        } else {
+            moves = pokedex.getAllMoves(id);
         }
         var id = parseInt(num, 10);
-        var moves = pokedex.getAllMoves(id);
         var mn = 0;
 
         for (var i in ultraMoves) {
