@@ -37372,7 +37372,7 @@ function Safari() {
                     ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
                 }
                 else {
-                    ret += "<img src= '" + icon +  "' <style='background:" + bg + "'>";
+                    ret += "<img src= '" + icon +  "' style='background:" + bg + "'>";
                 }
                 ret += "</td>";
             }
