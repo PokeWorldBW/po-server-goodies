@@ -37446,13 +37446,12 @@ function Safari() {
                         }
                     }
                 }
+                ret += "<td align=center width=42 height=32" + (bg ? " style='background-color:" + bg + ";'" : "") + ">";
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
-                    ret += "<td align=center width=42 height=32>";
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<p" + (bg ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check") + "</p>";
+                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check") + "</p>";
                 } else {
-                    ret += "<td align=center width=42 height=32" + (bg ? " style='background-color:" + bg + ";'" : "") + ">";
                     if (features.hasOwnProperty(place)) {
                         ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
                     } else {
