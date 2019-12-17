@@ -5243,6 +5243,9 @@ function Safari() {
             }
         } else {
             moves = pokedex.getAllMoves(id);
+            if (moves.length === 0) {
+                moves = pokedex.getAllMoves(pokeInfo.species(id));
+            }
         }
         var id = parseInt(num, 10);
         var mn = 0;
@@ -5259,9 +5262,6 @@ function Safari() {
             }
         }
         
-        if ((!moves) || (moves && moves.length == 0)) {
-            moves = pokedex.getAllMoves(pokeInfo.species(id));
-        }
         if ((!moves) || (moves && moves.length == 0)) {
             return removeDuplicates(out);
         }
