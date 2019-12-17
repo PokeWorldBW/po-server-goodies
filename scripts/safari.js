@@ -3164,7 +3164,7 @@ function Safari() {
         "450": { "learned": [ 742, 743, 753, 754, 794, 795 ] },
         "453": { "learned": [ 580, 581 ] },
         "457": { "learned": [ 95, 208 ] },
-        "467": { "learned": [393695] }, // Give Shadow Force to Rotom-Pokedex
+        "467": { "learned": [ 393695 ] }, // Give Shadow Force to Rotom-Pokedex
         "468": { "learned": [ 65563, 65586 ] },
         "469": { "learned": [ 95, 208, 713 ] },
         "471": { "learned": [ 96, 97 ] },
@@ -5239,18 +5239,17 @@ function Safari() {
     function fetchMoves(num) {
         var out = [];
         var moves = [];
-        if (ultraPokes.hasOwnProperty(num+"")) {
-            if (ultraPokes[num+""].moves) {
-                out = ultraPokes[num+""].moves;
-            } else {
-                // Some in-battle and cosmetic forms do not have moves explicitly defined, so default to moves for base species
-                return fetchMoves(pokeInfo.species(num));
-            }
+        var id = parseInt(num, 10);
+        var species = pokeInfo.species(id);
+        if (ultraPokes.hasOwnProperty(num + "") && ultraPokes[num + ""].hasOwnProperty("moves")) {
+            out = ultraPokes[num+""].moves;
+        } else if (species >= 803) {
+            // Some in-battle and cosmetic forms do not have moves explicitly defined, so default to moves for base species of new Pokemon
+            return fetchMoves(species);
         } else {
-            var id = parseInt(num, 10);
             moves = pokedex.getAllMoves(id);
-            if (moves.length === 0) {
-                moves = pokedex.getAllMoves(pokeInfo.species(id));
+            if (typeof moves === "undefined" || moves.length === 0) {
+                moves = pokedex.getAllMoves(species);
             }
         }
         
