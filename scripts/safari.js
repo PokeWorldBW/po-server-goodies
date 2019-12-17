@@ -37369,10 +37369,10 @@ function Safari() {
                     ret += "<br>" + link("/daycare interact:" + rows[place].id, "Check");
                 }
                 else if (features.hasOwnProperty(place)) {
-                    ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + "><table width='100%' height='100%' style='background-color:" + (bg ? " style='background:" + bg + "'" : "") + "'></table>";
+                    ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + "><br><table width='100%' height='100%' style='background-color:" + (bg ? " style='background:" + bg + "'" : "") + "'></table>";
                 }
                 else {
-                    ret += "<img src= '" + icon +  "' style='background:" + bg + "'><table width='100%' height='100%' style='background-color:" + bg + "'></table>";
+                    ret += "<img src= '" + icon +  "' style='background:" + bg + "'><br><table width='100%' height='100%' style='background-color:" + bg + "'></table>";
                 }
                 ret += "</td>";
             }
