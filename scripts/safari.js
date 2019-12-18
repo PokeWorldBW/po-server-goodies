@@ -817,7 +817,7 @@ function Safari() {
             rock: {name: "rock", fullName: "Snowball", type: "items", icon: 206, price: 50, successRate: 0.65, bounceRate: 0.1, targetCD: 7000, bounceCD: 11000, throwCD: 15000,  aliases:["rock", "rocks", "snow", "snowball", "snowballs"], tradable: false, cap: 9999},
             bait: {name: "bait", fullName: "Bait", type: "items", icon: 8017, price: 129, successRate: 0.4, failCD: 13, successCD: 70, aliases:["bait"], tradable: false},
             golden: {name: "golden", fullName: "Golden Bait", type: "items", icon: 8016, price: 750, successRate: 0.75, failCD: 20, successCD: 30, minBstBonus: 10, bstBonus: 8, shinyBonus: 0, aliases:["goldenbait", "golden bait", "golden"], tradable: false},
-            deluxe: {name: "deluxe", fullName: "Deluxe Bait", type: "items", icon: 8016, price: 200, successRate: 1, failCD: 20, successCD: 30, minBstBonus: 10, bstBonus: 8, shinyBonus: 0, aliases:["deluxebait", "deluxe bait", "deluxe"], tradable: false},
+            deluxe: {name: "deluxe", fullName: "Deluxe Bait", type: "items", icon: 8016, price: 200, successRate: 1, failCD: 20, successCD: 6, minBstBonus: 10, bstBonus: 8, shinyBonus: 0, aliases:["deluxebait", "deluxe bait", "deluxe"], tradable: false},
             gacha: {name: "gacha", fullName: "Gachapon Ticket", type: "items", icon: 132, price: 218, cooldown: 9000, aliases:["gacha", "gachapon", "gachapon ticket", "gachaponticket"], tradable: false},
             spray: {name: "spray", fullName: "Devolution Spray", type: "items", icon: 137, price: 5000, aliases:["spray", "devolution", "devolution spray", "devolutionspray"], tradable: true},
             mega: {name: "mega", fullName: "Mega Stone", type: "items", icon: 2001, price: 10000, aliases:["mega", "mega stone", "megastone"], duration: 3, tradable: true},
@@ -10920,7 +10920,7 @@ function Safari() {
             if (golden) {
                 goldenBaitCooldown = itemData[item].successCD + sys.rand(0,9);
             } else if (deluxe) {
-                deluxeBaitCooldown = itemData[item].successCD + sys.rand(0,9);
+                deluxeBaitCooldown = itemData[item].successCD + sys.rand(0,3);
             } else {
                 baitCooldown = successfulBaitCount = itemData[item].successCD + sys.rand(0,9);
                 player.cooldowns.bait = now() + (itemData[item].failCD + sys.rand(0,4)) * 1000;
