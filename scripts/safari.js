@@ -29342,7 +29342,7 @@ function Safari() {
         for (var i = 0; i < tableKeys.length; i++) {
             var ingredient = tableKeys[i];
             if (ingredient == "milk") {
-                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk"), false, bakingData.berries.milk.color);
+                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk", false, bakingData.berries.milk.color));
             } else if (ingredient == "flour") {
                 tableReadable.push(link("/bak add:" + ingredient, "Flour", false, "#8B795E"));
             } else if (ingredient == "sugar") {
@@ -29370,10 +29370,12 @@ function Safari() {
                     } 
                 }
                 if (this.phase == 1) {
+                    this.msg(player, "");
                     this.msg(player, "(Base) Turn " + this.turn + ": ");
                     validItems = ["redapricorn", "grnapricorn", "bluapricorn", "ylwapricorn", "blkapricorn", "whtapricorn", "pnkapricorn", "dew", "hdew"];
                 }
                 if (this.phase == 2) {
+                    this.msg(player, "");
                     this.msg(player, "(Batter) Turn " + this.turn + ": ");
                     validItems = ["oran", "pecha", "leppa", "bluk", "razz", "tamato", "pinap", "nanab", "petaya", "watmel", "miracle", "platinum"];
                 }
@@ -29384,8 +29386,8 @@ function Safari() {
                 if (this.phase == 1 || this.phase == 2) {
                     this.msg(player, "Items on the table (you can add up to two to the bowl):");
                     this.msg(player, tableReadable.join(", "))
-                    this.msg(player, "")
                     if (this.turn < 6) {
+                        this.msg(player, "")
                         this.msg(player, "Or you can add the following to the table:");
                         this.msg(player, validItemsReadable.join(", "));
                         this.msg(player, "");
