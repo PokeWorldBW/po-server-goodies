@@ -2759,9 +2759,9 @@ function Safari() {
     function stripComma(string) {
         return string.replace(/(?!=\d),(?=\d)/g, "");
     }
-    function link(string, string2, setmsg) {
+    function link(string, string2, setmsg, color) {
         string2 = string2 || string;
-        return "<a href=\"po:" + (setmsg ? "setmsg" : "send") + "/" + html_escape(string) + "\">" + html_escape(string2) + "</a>";
+        return "<a href=\"po:" + (setmsg ? "setmsg" : "send") + "/" + html_escape(string) + "\"" + (color ? "style='color: " + color + ";'" : "") + ">" + html_escape(string2) + "</a>";
     }
     function toColor(str, color) {
         if (colorTranslations.hasOwnProperty(color.toLowerCase())) {
@@ -37401,7 +37401,7 @@ function Safari() {
                 rows[p.pos] = {mon: mon, owner: p.owner, id: p.uid};
             }
         }
-        ret += "<table>";
+        ret += "<table style='border-collapse: collapse;'>";
         for (var i = 0; i < props.length; i++) {
             bg = null;
             ret += "<tr>";
@@ -37440,7 +37440,7 @@ function Safari() {
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check") + "</p>";
+                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false "#FFFAFA") + "</p>";
                 } else {
                     if (features.hasOwnProperty(place)) {
                         ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
