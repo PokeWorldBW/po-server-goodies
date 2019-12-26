@@ -28996,7 +28996,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 1,
                 "flavor": "Salt",
-                "color": "#1E90FF",
+                "color": "#3A5FCD",
                 "description": "A silky ingredient that has a good taste. Its Salty taste attracts Water- and Poison-types."
             },
             "grnapricorn": {
@@ -29006,7 +29006,7 @@ function Safari() {
                 "acidity": 4,
                 "dryness": 0,
                 "flavor": "Bitter",
-                "color": "#00CD00",
+                "color": "#008000",
                 "description": "A firm ingredient that provides a nice texture at the cost of adding acidity. Its Bitter taste attracts Fighting- and Ghost-types."
             },
             "blkapricorn": {
@@ -29026,7 +29026,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 0,
                 "flavor": "Tart",
-                "color": "#C9C9C9",
+                "color": "#ADADAD",
                 "description": "A fairly average ingredient that has good bulk for its size. Its Tart taste attracts Psychic- and Fire-types."
             },
             "pnkapricorn": {
@@ -29080,7 +29080,7 @@ function Safari() {
                 "scent": 2,
                 "quality": 2,
                 "flavor": "Citrus",
-                "color": "#63B8FF",
+                "color": "#00688B",
                 "description": "A middling berry that has some of everything. Its Citrus taste attracts Bug- and Normal-types."
             },
             "pecha": {
@@ -29326,18 +29326,31 @@ function Safari() {
             this.finalScore();
             return;
         }
-        tableReadable = [];
+        var tableItems = {};
         for (var i = 0; i < this.table.length; i++) {
-            if (this.table[i] == "milk") {
-                tableReadable.push(link("/bak add:" + this.table[i], "Moomoo Milk"));
-            } else if (this.table[i] == "flour") {
-                tableReadable.push(link("/bak add:" + this.table[i], "Flour"));
-            } else if (this.table[i] == "sugar") {
-                tableReadable.push(link("/bak add:" + this.table[i], "Sugar"));
-            } else if (this.table[i] == "blend") {
-                tableReadable.push(link("/bak add:blend", "Blend"));
+            if (["milk", "flour", "sugar", "blend"].indexOf(this.table[i]) !== -1) {
+                tableItems[this.table[i]] = -2;
             } else {
-                tableReadable.push(link("/bak add:" + this.table[i], itemAlias(this.table[i], false, true)));
+                if (!tableItems.hasOwnProperty(this.table[i])) {
+                    tableItems[this.table[i]] = 0;
+                }
+                tableItems[this.table[i]]++;
+            }
+        }
+        tableReadable = [];
+        var tableKeys = Object.keys(tableItems);
+        for (var i = 0; i < tableKeys.length; i++) {
+            var ingredient = tableKeys[i];
+            if (ingredient == "milk") {
+                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk"), false, bakingData.berries.milk);
+            } else if (ingredient == "flour") {
+                tableReadable.push(link("/bak add:" + ingredient, "Flour", false, "#CDB38B"));
+            } else if (ingredient == "sugar") {
+                tableReadable.push(link("/bak add:" + ingredient, "Sugar", false, "#808080"));
+            } else if (ingredient == "blend") {
+                tableReadable.push(link("/bak add:blend", "Blend", false, "#000000"));
+            } else {
+                tableReadable.push(link("/bak add:" + ingredient, itemAlias(ingredient, false, true), false, this.phase == 1 ? bakingData.apricorns[this.table[i]].color : bakingData.berries[this.table[i]].color) + " <i>(" + tableItems[ingredient] + "</i>)");
             }
         }
         for (var p in this.players) {
@@ -29375,6 +29388,7 @@ function Safari() {
                     if (this.turn < 6) {
                         this.msg(player, "Or you can add the following to the table:");
                         this.msg(player, validItemsReadable.join(", "));
+                        this.msg(player, "");
                     }
                     if (this.turn == 6) {
                         this.msg(player, "<b>This is the last turn of the phase!</b>")
