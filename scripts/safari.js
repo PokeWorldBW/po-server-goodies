@@ -37488,7 +37488,7 @@ function Safari() {
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, bg === "#2366ed" ? "#FFFAFA" : null) + "</p>";
+                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, bg === "#2366ed" ? "#B0E2FF" : null) + "</p>";
                 } else {
                     if (features.hasOwnProperty(place)) {
                         ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
