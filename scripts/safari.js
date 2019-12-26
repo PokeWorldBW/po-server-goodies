@@ -6209,6 +6209,7 @@ function Safari() {
         }
 
         if (stuff === "@expup") {
+            out.gained.push(plural(350 + (safari.getCostumeLevel(player) * 50), "@expup"));
             safari.costumeEXP(player, "alchemy", 350 + (safari.getCostumeLevel(player) * 50));
             return out;
         }
@@ -10927,7 +10928,7 @@ function Safari() {
             }
             player.records.baitAttracted += 1;
 
-            if (!golden) {
+            if (!golden && !deluxe) {
                 if (lastBaiters.length >= lastBaitersAmount) {
                     lastBaiters.shift();
                 }
@@ -26613,11 +26614,11 @@ function Safari() {
         if (player.costume && costumeData[player.costume].expItem) {
             var ing = {"dust": 300};
             ing[costumeData[player.costume].expItem] = 1;
-            recipes["expup"] = {ingredients: ing, reward: "@expup", immediate: true, failChance: 0, cooldown: 6}
+            recipes["exp up"] = {ingredients: ing, reward: "@expup", immediate: true, failChance: 0, cooldown: 6}
         }
         else {
             if (recipes.expup) {
-                delete recipes["expup"];
+                delete recipes["exp up"];
             }
         }
         var validItems = Object.keys(recipes);
