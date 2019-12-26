@@ -9524,7 +9524,7 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border = 1 cellpadding = 3><tr><th>" + title + "</th></td></tr><tr><td><table align=center style='vertical-align: middle';>"];
+        out = ["<table border = 1 cellpadding = 3><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=3 align=center style='vertical-align: middle';>"];
         for (e in normal) {
             if (count == 0) {
                 out.push("<tr>");
