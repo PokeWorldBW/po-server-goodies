@@ -37400,7 +37400,7 @@ function Safari() {
                 rows[p.pos] = {mon: mon, owner: p.owner, id: p.uid};
             }
         }
-        ret += "<table border = 1 cellpadding = 1>";
+        ret += "<table cellpadding = 1>";
         for (var i = 0; i < props.length; i++) {
             bg = null;
             ret += "<tr>";
