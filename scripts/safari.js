@@ -29366,11 +29366,12 @@ function Safari() {
                 }
                 var validItemsReadable = [];
                 for (var i = 0; i < validItems.length; i++) {
-                    validItemsReadable.push(link("/bak fetch:" + validItems[i], itemAlias(validItems[i], false, true), false, false, this.phase == 1 ? bakingData.apricorns[validItems[i]].color : bakingData.berries[validItems[i]].color));
+                    validItemsReadable.push(link("/bak fetch:" + validItems[i], itemAlias(validItems[i], false, true), false, this.phase == 1 ? bakingData.apricorns[validItems[i]].color : bakingData.berries[validItems[i]].color));
                 }
                 if (this.phase == 1 || this.phase == 2) {
                     this.msg(player, "Items on the table (you can add up to two to the bowl):");
                     this.msg(player, tableReadable.join(", "))
+                    this.msg(player, "")
                     if (this.turn < 6) {
                         this.msg(player, "Or you can add the following to the table:");
                         this.msg(player, validItemsReadable.join(", "));
