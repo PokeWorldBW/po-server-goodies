@@ -6209,7 +6209,7 @@ function Safari() {
         }
 
         if (stuff === "@expup") {
-            out.gained.push((350 + (safari.getCostumeLevel(player) * 50) + "Costume Exp"));
+            out.gained.push((350 + (safari.getCostumeLevel(player) * 50) + " Costume Exp"));
             safari.costumeEXP(player, "alchemy", 350 + (safari.getCostumeLevel(player) * 50));
             return out;
         }
