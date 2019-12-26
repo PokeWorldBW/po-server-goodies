@@ -9524,7 +9524,7 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border=1><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=10>"];
+        out = ["<table border=1><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
                 out.push("<tr>");
