@@ -1151,6 +1151,7 @@ function Safari() {
     
         //triathlete: {icon: 361, name: "triathlete", fullName: "Triathlete", aliases: ["triathlete"], acqReq: 50, record: fullyPlayedContests, rate: 0.01, thresh1: 5, thresh2: 8, thresh3: 13, effect: "A master in endurance. Even after playing in the Safari Zone all day, extensive training allows a quick and alert response when a wild Pokémon appears.", noAcq: "{0}"},
         //guitarist: {icon: 428, name: "guitarist", fullName: "Guitarist", aliases: ["guitarist"], acqReq: 30, record: "gemsUsed", rate: 5, effect: "A master in melody. ", noAcq: "Use {0} more Ampere Gems"},
+        //sightseer: {icon: 816, name: "sightseer", fullName: "Sightseer", aliases: ["sightseer"], acqReq: 8, record: "rareHatched", acqReq2: 512, record2: "goldenBaitUsed", rate: 0.05, effect: "A world class traveler. Figured how to bait Shiny Pokemon more effectively after exploring the planet several times.", noAcq: "Match ${0} more rare Pokémon from eggs and use ${1} more Golden Bait" }
         
         };
 
@@ -9523,17 +9524,20 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out += "<table border = 1 cellpadding = 3><tr><th>" + title + "</th></td></tr><tr><td>";
+        out = ["<table border = 1 cellpadding = 3><tr><th>" + title + "</th></td></tr><tr><td><table align=center style='vertical-align: middle';>"];
         for (e in normal) {
+            if (count == 0) {
+                out.push("<tr>");
+            }
             count++;
-            out += normal[e] + " ";
+            out.push("<td>" + normal[e] + "</td>");
             if (count == rowSize) {
-                out += "<p>";
+                out.push("</tr>");
                 count = 0;
             }
         }
-        out += "</td></tr></table>";
-        return out;
+        out.push("</table></td></tr></table>");
+        return out.join("");
     };
     this.listPokemonText = function(list, title, shopLink) {
         var out = "", normal = [], e, p;
@@ -16392,7 +16396,7 @@ function Safari() {
             case "boxt": this.showSpiritBox(src,player,false,true); break;
             case "active": this.activeSpiritMon(src,player,commandData); break;
             case "join": this.joinSpiritDuels(src,player); break;
-            case "watch": this.watchSpiritDuels(src,player); break;
+            case "watch": this.watchSpiritDuels(src, player ? player : sys.name(src)); break;
             case "history": this.showSpiritDuelsLog(src,player,commandData); break;
             case "party": this.showSpiritDuelsTeam(src,player); break;
             case "skill": case "skills": this.ownSpiritSkills(src,player); break;
@@ -16659,7 +16663,7 @@ function Safari() {
         }
     };
     this.watchSpiritDuels = function(src,player) {
-        var name = player.id.toCorrectCase();
+        var name = typeof player === "string" ? player : player.id.toCorrectCase();
         if (!safari.events.currentSpiritDuel) {
             safaribot.sendMessage( src,"There is no Spirit Duel to watch!",safchan );
             return;
@@ -43268,6 +43272,8 @@ function Safari() {
                 } else if (ballHelp.hasOwnProperty(lookup)) {
                     help.push(finishName(lookup) + ": " + ballHelp[lookup]);
                     help.push("Note: Cooldown value doubles following a successful catch.");
+                } else if (berryHelp.hasOwnProperty(lookup)) {
+                    help.push(finishName(lookup) + ": " + berryHelp[lookup]);
                 }
             }
             //If it's not an item, it's either a costume or invalid.
@@ -48584,7 +48590,7 @@ function Safari() {
         permObj.save();
 
         this.updateLeaderboards();
-        sys.sendHtmlAll(openedMessage, safchan);
+        //sys.sendHtmlAll(openedMessage, safchan);
         if (baitCooldown < 7) {
             baitCooldown = sys.rand(5,7);
         }
