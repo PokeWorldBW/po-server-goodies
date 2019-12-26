@@ -36165,7 +36165,7 @@ function Safari() {
             return false;
         }
         var currentTime = now();
-        var isOwner = (pokemon.ownernum === player.idnum ? true : false);
+        var isOwner = pokemon.ownernum === player.idnum;
         var canPlay = (pokemon.canPlay && (pokemon.meter > 8 || (isOwner && pokemon.meter > 1)) && (player.cooldowns.daycare < currentTime));
 
         if (isOwner) {
@@ -36175,6 +36175,7 @@ function Safari() {
                 sys.appendToFile(questLog, now() + "|||" + player.id.toCorrectCase() + "|||Daycare|||Maxed Hearts for " + (pokemon.shiny ? "Shiny " : "") + poke(pokemon.id) + "\n");
                 //add reward
             }
+            pokemon.owner = player.casedName; // In case player changed alts
         }
 
         if (mode == "") {
@@ -36388,7 +36389,7 @@ function Safari() {
                 p = {
                     id: parseInt(pokemon.num, 10),
                     shiny: false,
-                    owner: player.id,
+                    owner: player.casedName,
                     ownernum: player.idnum,
                     area: "grotto",
                     pos: place,
@@ -37440,7 +37441,7 @@ function Safari() {
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false "#FFFAFA") + "</p>";
+                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, "#FFFAFA") + "</p>";
                 } else {
                     if (features.hasOwnProperty(place)) {
                         ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
