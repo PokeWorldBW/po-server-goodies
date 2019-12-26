@@ -28986,6 +28986,7 @@ function Safari() {
                 "acidity": 0,
                 "dryness": 4,
                 "flavor": "Sour",
+                "color": "#EE0000",
                 "description": "A firm ingredient that provides a nice texture at the cost of being dry. Its Sour taste attracts Grass- and Rock-types."
             },
             "bluapricorn": {
@@ -28995,6 +28996,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 1,
                 "flavor": "Salt",
+                "color": "#1E90FF",
                 "description": "A silky ingredient that has a good taste. Its Salty taste attracts Water- and Poison-types."
             },
             "grnapricorn": {
@@ -29004,6 +29006,7 @@ function Safari() {
                 "acidity": 4,
                 "dryness": 0,
                 "flavor": "Bitter",
+                "color": "#00CD00",
                 "description": "A firm ingredient that provides a nice texture at the cost of adding acidity. Its Bitter taste attracts Fighting- and Ghost-types."
             },
             "blkapricorn": {
@@ -29013,6 +29016,7 @@ function Safari() {
                 "acidity": 0,
                 "dryness": 2,
                 "flavor": "Savory",
+                "color": "#000000",
                 "description": "A hearty ingredient that has good bulk for its size. Its Savory taste attracts Dark- and Flying-types."
             },
             "whtapricorn": {
@@ -29022,6 +29026,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 0,
                 "flavor": "Tart",
+                "color": "#D6D6D6",
                 "description": "A fairly average ingredient that has good bulk for its size. Its Tart taste attracts Psychic- and Fire-types."
             },
             "pnkapricorn": {
@@ -29031,6 +29036,7 @@ function Safari() {
                 "acidity": 0,
                 "dryness": 3,
                 "flavor": "Umami",
+                "color": "#FF69B4",
                 "description": "A tasty ingredient that has poor bulk for its size. Its Umami taste attracts Ice- and Electric-types."
             },
             "ylwapricorn": {
@@ -29040,6 +29046,7 @@ function Safari() {
                 "acidity": 2,
                 "dryness": 2,
                 "flavor": "Kokumi",
+                "color": "#FFD700",
                 "description": "A volatile ingredient that has poor bulk for its size. Its Kokumi taste attracts Steel- and Fairy-types."
             },
             "dew": {
@@ -29049,6 +29056,7 @@ function Safari() {
                 "acidity": 4,
                 "dryness": 0,
                 "flavor": "Spicy",
+                "color": "#4B0082",
                 "description": "A sharp ingredient. Its Spicy taste attracts Dragon- and Ground-types."
             },
             "hdew": {
@@ -29058,6 +29066,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 0,
                 "flavor": "Citrus",
+                "color": "#CDB5CD",
                 "description": "A smooth ingredient. Its Citrus taste attracts Bug- and Normal-types."
             }
         },
@@ -29071,6 +29080,7 @@ function Safari() {
                 "scent": 2,
                 "quality": 2,
                 "flavor": "Citrus",
+                "color": "#63B8FF",
                 "description": "A middling berry that has some of everything. Its Citrus taste attracts Bug- and Normal-types."
             },
             "pecha": {
@@ -29082,6 +29092,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 2,
                 "flavor": "Umami",
+                "color": "#FFBBFF",
                 "description": "A tasty, juicy berry. Its Umami taste attracts Ice- and Electric-types."
             },
             "bluk": {
@@ -29093,6 +29104,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 2,
                 "flavor": "Tart",
+                "color": "#551A8B",
                 "description": "A thick, rich berry. Its Tart taste attracts Psychic- and Fire-types."
             },
             "razz": {
@@ -29104,6 +29116,7 @@ function Safari() {
                 "scent": 1,
                 "quality": 2,
                 "flavor": "Spicy",
+                "color": "#EE6A50",
                 "description": "A moist, rich berry. Its Spicy taste attracts Dragon- and Ground-types."
             },
             "leppa": {
@@ -29115,6 +29128,7 @@ function Safari() {
                 "scent": 5,
                 "quality": 2,
                 "flavor": "Sour",
+                "color": "#FF9912",
                 "description": "A berry that has an appealing scent. Its Sour taste attracts Grass- and Rock-types."
             },
             "tamato": {
@@ -29126,6 +29140,7 @@ function Safari() {
                 "scent": 2,
                 "quality": 3,
                 "flavor": "Savory",
+                "color": "#FF6347",
                 "description": "A good all-around berry. Its Savory taste attracts Dark- and Flying-types."
             },
             "pinap": {
@@ -29137,6 +29152,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 3,
                 "flavor": "Bitter",
+                "color": "#E3CF57",
                 "description": "An incredibly sweet berry. Its Bitter taste attracts Ghost- and Fighting-types."
             },
             "nanab": {
@@ -29148,6 +29164,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 3,
                 "flavor": "Kokumi",
+                "color": "#FFC1C1",
                 "description": "A thick berry. Its Kokumi taste attracts Steel- and Fairy-types."
             },
             "petaya": {
@@ -29159,6 +29176,7 @@ function Safari() {
                 "scent": 4,
                 "quality": 3,
                 "flavor": "Salt",
+                "color": "#E3A869",
                 "description": "An acidic berry that is very effective as an ingredient. Its Salty taste attracts Water and Poison-types."
             },
             "watmel": {
@@ -29170,6 +29188,7 @@ function Safari() {
                 "scent": 1,
                 "quality": 4,
                 "flavor": "None",
+                "color": "#6B8E23",
                 "description": "A chubby berry that adds a lot of moisture and sweetness. It lacks a strong flavor identity."
             },
             "miracle": {
@@ -29181,6 +29200,7 @@ function Safari() {
                 "scent": 7,
                 "quality": 10,
                 "flavor": "Spicy",
+                "color": "#8E388E",
                 "description": "A magical berry. Its Spicy taste attracts Dragon- and Ground-types."
             },
             "platinum": {
@@ -29192,6 +29212,7 @@ function Safari() {
                 "scent": 9,
                 "quality": 10,
                 "flavor": "Secret",
+                "color": "#CDCD00",
                 "description": "A magical berry. Its Secret taste is capable of baiting even rare Pokémon formes."
             },
             "milk": {
@@ -29203,6 +29224,7 @@ function Safari() {
                 "scent": 0,
                 "quality": -1,
                 "flavor": "None",
+                "color": "#EAEAEA",
                 "description": "Moomoo Milk helps keep thick recipes under control!"
             }
         }
@@ -29344,12 +29366,14 @@ function Safari() {
                 }
                 var validItemsReadable = [];
                 for (var i = 0; i < validItems.length; i++) {
-                    validItemsReadable.push(link("/bak fetch:" + validItems[i], itemAlias(validItems[i], false, true)));
+                    validItemsReadable.push(link("/bak fetch:" + validItems[i], itemAlias(validItems[i], false, true), false, false, this.phase == 1 ? bakingData.apricorns[validItems[i]].color : bakingData.berries[validItems[i]].color));
                 }
                 if (this.phase == 1 || this.phase == 2) {
-                    this.msg(player, "Items on the table (you can add up to two to the bowl): " + tableReadable.join(", ") + ".");
+                    this.msg(player, "Items on the table (you can add up to two to the bowl):");
+                    this.msg(player, tableReadable.join(", "))
                     if (this.turn < 6) {
-                        this.msg(player, "Or you can add the following to the table: " + validItemsReadable.join(", ") + ".");
+                        this.msg(player, "Or you can add the following to the table:");
+                        this.msg(player, validItemsReadable.join(", "));
                     }
                     if (this.turn == 6) {
                         this.msg(player, "<b>This is the last turn of the phase!</b>")
@@ -29367,7 +29391,7 @@ function Safari() {
             return false;
         }
         if (this.turn < 1) {
-            this.msg(player, "You can't add a " + get + " to the table yet!");
+            this.msg(player, "You can't add a " + itemAlias(get, false, true) + " to the table yet!");
             return false;
         }
         var playerName = player.toLowerCase();
@@ -29380,11 +29404,11 @@ function Safari() {
             validItems = ["oran", "pecha", "leppa", "bluk", "razz", "tamato", "pinap", "nanab", "petaya", "watmel", "miracle", "platinum"]
         }
         if (!(validItems.contains(get))) {
-            this.msg(playerName, "What are you doing? You can't just add " + get + " to the recipe now!");
+            this.msg(playerName, "What are you doing? You can't just add " + itemAlias(get, false, true) + " to the recipe now!");
             return false;
         }
         if (player.balls[get] <= 0) {
-            this.msg(playerName, "Sorry, you don't have any " + get + " to add to the table!");
+            this.msg(playerName, "Sorry, you don't have any " + itemAlias(get, false, true) + " to add to the table!");
             return false;
         }
         if (["ingredient", "ingredient2"].contains(this.playersActions[playerName.toLowerCase()])) {
