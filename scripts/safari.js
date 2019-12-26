@@ -29224,7 +29224,7 @@ function Safari() {
                 "scent": 0,
                 "quality": -1,
                 "flavor": "None",
-                "color": "#EAEAEA",
+                "color": "#A1A1A1",
                 "description": "Moomoo Milk helps keep thick recipes under control!"
             }
         }
@@ -29342,13 +29342,13 @@ function Safari() {
         for (var i = 0; i < tableKeys.length; i++) {
             var ingredient = tableKeys[i];
             if (ingredient == "milk") {
-                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk", false, bakingData.berries.milk.color));
+                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk", false, "#A1A1A1"));
             } else if (ingredient == "flour") {
                 tableReadable.push(link("/bak add:" + ingredient, "Flour", false, "#8B795E"));
             } else if (ingredient == "sugar") {
                 tableReadable.push(link("/bak add:" + ingredient, "Sugar", false, "#808080"));
             } else if (ingredient == "blend") {
-                tableReadable.push(link("/bak add:blend", "Blend", false, "#000000"));
+                tableReadable.push(link("/bak add:blend", "Blend", false, "#292421"));
             } else {
                 tableReadable.push(link("/bak add:" + ingredient, itemAlias(ingredient, false, true), false, this.phase == 1 ? bakingData.apricorns[ingredient].color : bakingData.berries[ingredient].color) + " (" + tableItems[ingredient] + ")");
             }
