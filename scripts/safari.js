@@ -817,7 +817,7 @@ function Safari() {
             rock: {name: "rock", fullName: "Snowball", type: "items", icon: 206, price: 50, successRate: 0.65, bounceRate: 0.1, targetCD: 7000, bounceCD: 11000, throwCD: 15000,  aliases:["rock", "rocks", "snow", "snowball", "snowballs"], tradable: false, cap: 9999},
             bait: {name: "bait", fullName: "Bait", type: "items", icon: 8017, price: 129, successRate: 0.4, failCD: 13, successCD: 70, aliases:["bait"], tradable: false},
             golden: {name: "golden", fullName: "Golden Bait", type: "items", icon: 8016, price: 750, successRate: 0.75, failCD: 20, successCD: 30, minBstBonus: 10, bstBonus: 8, shinyBonus: 0, aliases:["goldenbait", "golden bait", "golden"], tradable: false},
-            deluxe: {name: "deluxe", fullName: "Deluxe Bait", type: "items", icon: 8016, price: 200, successRate: 1, failCD: 20, successCD: 6, minBstBonus: 10, bstBonus: 8, shinyBonus: 0, aliases:["deluxebait", "deluxe bait", "deluxe"], tradable: false},
+            deluxe: {name: "deluxe", fullName: "Deluxe Bait", type: "items", icon: 8016, price: 200, successRate: 1, failCD: 0, successCD: 6, minBstBonus: 10, bstBonus: 8, shinyBonus: 0, aliases:["deluxebait", "deluxe bait", "deluxe"], tradable: false},
             gacha: {name: "gacha", fullName: "Gachapon Ticket", type: "items", icon: 132, price: 218, cooldown: 9000, aliases:["gacha", "gachapon", "gachapon ticket", "gachaponticket"], tradable: false},
             spray: {name: "spray", fullName: "Devolution Spray", type: "items", icon: 137, price: 5000, aliases:["spray", "devolution", "devolution spray", "devolutionspray"], tradable: true},
             mega: {name: "mega", fullName: "Mega Stone", type: "items", icon: 2001, price: 10000, aliases:["mega", "mega stone", "megastone"], duration: 3, tradable: true},
@@ -15893,6 +15893,7 @@ function Safari() {
                 rew += ("," + amt + "@nugget");
             }
             members = teams[t].players;
+            var n = now();
             for (var p in members) {
                 s = idnumList.get(members[p]);
                 if (!(s)) {
@@ -15901,6 +15902,11 @@ function Safari() {
                 player = getAvatarOff(s);
                 if (!player) {
                     continue;
+                }
+                if (teams[t].activityWarned.hasOwnProperty(members[p]+"")) {
+                    if (n > teams[t].activityWarned[members[p]+""]) {
+                        continue;
+                    }
                 }
                 g = giveStuff(player, toStuffObj(rew));
                 safari.saveGame(player);
@@ -15962,18 +15968,37 @@ function Safari() {
         safari.events.spiritDuelsViewers = [];
         var team1 = [], team2 = [];
         var p1 = safari.events.spiritDuelsTeams[0].name + ": ", p2 = safari.events.spiritDuelsTeams[1].name + ": ";
-        var army1 = safari.events.spiritDuelsTeams[0].players;
-        var army2 = safari.events.spiritDuelsTeams[1].players;
+        var army1init = safari.events.spiritDuelsTeams[0].players;
+        var army2init = safari.events.spiritDuelsTeams[1].players;
+        var army1 = [];
+        var army2 = [];
+        for (var a in army1init) {
+            if (safari.events.spiritDuelsTeams[0].activityWarned.hasOwnProperty(army1init[a]+"")) {
+                if (n > safari.events.spiritDuelsTeams[0].activityWarned[army1init[a]+""]) {
+                    continue;
+                }
+            }
+            army1.push(army1init[a]);
+        }
+        for (var a in army2init) {
+            if (safari.events.spiritDuelsTeams[0].activityWarned.hasOwnProperty(army2init[a]+"")) {
+                if (n > safari.events.spiritDuelsTeams[0].activityWarned[army2init[a]+""]) {
+                    continue;
+                }
+            }
+            army2.push(army2init[a]);
+        }
+        if (army1.length < 2) {
+            army1 = army1init;
+        }
+        if (army2.length < 2) {
+            army2 = army2init;
+        }
         var enlistPerPlayer1 = (army1.length >= 6 ? 3 : (army1.length >= 5 ? 4 : (army1.length >= 4 ? 5 : 6)));
         var enlistPerPlayer2 = (army2.length >= 6 ? 3 : (army2.length >= 5 ? 4 : (army2.length >= 4 ? 5 : 6)));
 
         var p, j, n = now();
         for (var a in army1) {
-            if (safari.events.spiritDuelsTeams[0].activityWarned.hasOwnProperty(army1[a]+"")) {
-                if (n > safari.events.spiritDuelsTeams[0].activityWarned[army1[a]+""]) {
-                    continue;
-                }
-            }
             p = getAvatarOff(idnumList.get(army1[a]));
             j = 0;
             for (var i = 0; i < enlistPerPlayer1; i++) {
@@ -15992,11 +16017,6 @@ function Safari() {
             }
         }
         for (var a in army2) {
-            if (safari.events.spiritDuelsTeams[1].activityWarned.hasOwnProperty(army2[a]+"")) {
-                if (n > safari.events.spiritDuelsTeams[1].activityWarned[army2[a]+""]) {
-                    continue;
-                }
-            }
             p = getAvatarOff(idnumList.get(army2[a]));
             j = 0;
             for (var i = 0; i < enlistPerPlayer2; i++) {
@@ -16398,7 +16418,7 @@ function Safari() {
             safaribot.sendMessage( src,"You are not on a team!",safchan );
             return;
         }
-        if (Object.keys(safari.events.spiritDuelsTeams[a].activityWarned).contains(player.idnum+"")) {
+        if (!(Object.keys(safari.events.spiritDuelsTeams[a].activityWarned).contains(player.idnum+""))) {
             safaribot.sendMessage( src,"You are not activity warned!",safchan );
             return;
         }
@@ -26816,8 +26836,13 @@ function Safari() {
             safaribot.sendHtmlMessage(src, trainerSprite + "Alchemist: Y'see, the " + finishName("philosopher") + " is a legendary artifact with heavenly transmutation powers! They say it can even transform life itself!", safchan);
             safaribot.sendHtmlMessage(src, "Alchemist: So that's the thing, I'm eager to play around with those things. With those I believe I can completely reshape some Pokémon! If you have some, use " + link("/quest alchemist:philosopher:Pokémon", null, true) + " and I will see if I can change their form!", safchan);
         } else {
-            var base = pokeInfo.species(info.num);
-            var eligible = { "201": { "cost": 1, "forms": [201, 65737, 131273, 196809, 262345, 327881, 393417, 458953, 524489, 590025, 655561, 721097, 786633, 852169, 917705, 983241, 1048777, 1114313, 1179849, 1245385, 1310921, 1376457, 1441993, 1507529, 1573065, 1638601, 1704137, 1769673] }, "412": { "cost": 1, "forms": [412, 65948, 131484] }, "422": { "cost": 1, "forms": [422, 65958] }, "423": { "cost": 1, "forms": [423, 65959] }, "550": { "cost": 1, "forms": [550, 66086] }, "585": { "cost": 1, "forms": [585, 66121, 131657, 197193] }, "586": { "cost": 1, "forms": [586, 66122, 131658, 197194] }, "666": { "cost": 1, "forms": [666, 66202, 131738, 197274, 262810, 328346, 393882, 459418, 524954, 590490, 656026, 721562, 787098, 852634, 918170, 983706, 1049242, 1114778, 1180314, 1245850] }, "669": { "cost": 1, "forms": [669, 66205, 131741, 197277, 262813] }, "671": { "cost": 1, "forms": [671, 66207, 131743, 197279, 262815] }, "710": { "cost": 1, "forms": [710, 66246, 131782, 197318] }, "711": { "cost": 1, "forms": [711, 66247, 131783, 197319] }, "741": { "cost": 1, "forms": [741, 66277, 131813, 197349] }, "745": { "cost": 1, "forms": [745, 66281] }, "351": { "cost": 2, "forms": [351, 65887, 131423, 262495] }, "413": { "cost": 2, "forms": [413, 65949, 131485] }, "421": { "cost": 2, "forms": [421, 65957] }, "676": { "cost": 2, "forms": [676, 66212, 131748, 197284, 262820, 328356, 393892, 459428, 524964, 590500] }, "19": { "cost": 3, "forms": [19, 65555] }, "20": { "cost": 3, "forms": [20, 65556] }, "25": { "cost": 3, "forms": [25, 65561, 131097, 196633, 262169, 327705, 458777, 524313, 589849, 655385, 720921, 786457] }, "26": { "cost": 3, "forms": [26, 65562] }, "27": { "cost": 3, "forms": [27, 65563] }, "28": { "cost": 3, "forms": [28, 65564] }, "37": { "cost": 3, "forms": [37, 65573] }, "38": { "cost": 3, "forms": [38, 65574] }, "50": { "cost": 3, "forms": [50, 65586] }, "51": { "cost": 3, "forms": [51, 65587] }, "52": { "cost": 3, "forms": [52, 65588] }, "53": { "cost": 3, "forms": [53, 65589] }, "74": { "cost": 3, "forms": [74, 65610] }, "75": { "cost": 3, "forms": [75, 65611] }, "76": { "cost": 3, "forms": [76, 65612] }, "88": { "cost": 3, "forms": [88, 65624] }, "89": { "cost": 3, "forms": [89, 65625] }, "103": { "cost": 3, "forms": [103, 65639] }, "105": { "cost": 3, "forms": [105, 65641] }, "670": { "cost": 3, "forms": [670, 66206, 131742, 197278, 262814, 328350] }, "678": { "cost": 3, "forms": [678, 66214] }, "681": { "cost": 3, "forms": [681, 66217] }, "658": { "cost": 4, "forms": [658, 131730] }, "746": { "cost": 4, "forms": [746, 66282] }, "774": { "cost": 4, "forms": [774, 66310, 131846, 197382, 262918, 328454, 393990, 459526] }, "801": { "cost": 4, "forms": [801, 66337] }, "386": { "cost": 5, "forms": [386, 65922, 131458, 196994] }, "487": { "cost": 5, "forms": [487, 66023] }, "641": { "cost": 5, "forms": [641, 66177] }, "642": { "cost": 5, "forms": [642, 66178] }, "645": { "cost": 5, "forms": [645, 66181] }, "647": { "cost": 5, "forms": [647, 66183] }, "649": { "cost": 5, "forms": [649, 66185, 131721, 197257, 262793] }, "479": { "cost": 8, "forms": [479, 66015, 131551, 197087, 262623, 328159] }, "492": { "cost": 8, "forms": [492, 66028] }, "555": { "cost": 8, "forms": [555, 66091] }, "648": { "cost": 8, "forms": [648, 66184] }, "773": { "cost": 8, "forms": [773, 66309, 131845, 197381, 262917, 328453, 393989, 459525, 525061, 590597, 656133, 721669, 787205, 852741, 918277, 983813, 1049349, 1114885] }, "493": { "cost": 10, "forms": [493, 66029, 131565, 197101, 262637, 328173, 393709, 459245, 524781, 590317, 655853, 721389, 786925, 852461, 917997, 983533, 1049069, 1114605] }, "646": { "cost": 10, "forms": [646, 66182, 131718] }, "718": { "cost": 10, "forms": [718, 66254, 131790] }, "720": { "cost": 10, "forms": [720, 66256] } };
+            var base = pokeInfo.species(info.num), eligible;
+            if (info.num == (form(555, 2))) {
+                eligible = {"555": {"cost": 8, "forms": [form(555, 3)]}}
+            }
+            else {
+                eligible = { "201": { "cost": 1, "forms": [201, 65737, 131273, 196809, 262345, 327881, 393417, 458953, 524489, 590025, 655561, 721097, 786633, 852169, 917705, 983241, 1048777, 1114313, 1179849, 1245385, 1310921, 1376457, 1441993, 1507529, 1573065, 1638601, 1704137, 1769673] }, "412": { "cost": 1, "forms": [412, 65948, 131484] }, "422": { "cost": 1, "forms": [422, 65958] }, "423": { "cost": 1, "forms": [423, 65959] }, "550": { "cost": 1, "forms": [550, 66086] }, "585": { "cost": 1, "forms": [585, 66121, 131657, 197193] }, "586": { "cost": 1, "forms": [586, 66122, 131658, 197194] }, "666": { "cost": 1, "forms": [666, 66202, 131738, 197274, 262810, 328346, 393882, 459418, 524954, 590490, 656026, 721562, 787098, 852634, 918170, 983706, 1049242, 1114778, 1180314, 1245850] }, "669": { "cost": 1, "forms": [669, 66205, 131741, 197277, 262813] }, "671": { "cost": 1, "forms": [671, 66207, 131743, 197279, 262815] }, "710": { "cost": 1, "forms": [710, 66246, 131782, 197318] }, "711": { "cost": 1, "forms": [711, 66247, 131783, 197319] }, "741": { "cost": 1, "forms": [741, 66277, 131813, 197349] }, "745": { "cost": 1, "forms": [745, 66281] }, "351": { "cost": 2, "forms": [351, 65887, 131423, 262495] }, "413": { "cost": 2, "forms": [413, 65949, 131485] }, "421": { "cost": 2, "forms": [421, 65957] }, "676": { "cost": 2, "forms": [676, 66212, 131748, 197284, 262820, 328356, 393892, 459428, 524964, 590500] }, "19": { "cost": 3, "forms": [19, 65555] }, "20": { "cost": 3, "forms": [20, 65556] }, "25": { "cost": 3, "forms": [25, 65561, 131097, 196633, 262169, 327705, 458777, 524313, 589849, 655385, 720921, 786457] }, "26": { "cost": 3, "forms": [26, 65562] }, "27": { "cost": 3, "forms": [27, 65563] }, "28": { "cost": 3, "forms": [28, 65564] }, "37": { "cost": 3, "forms": [37, 65573] }, "38": { "cost": 3, "forms": [38, 65574] }, "50": { "cost": 3, "forms": [50, 65586] }, "51": { "cost": 3, "forms": [51, 65587] }, "52": { "cost": 3, "forms": [52, 65588, form(52, 2)] }, "53": { "cost": 3, "forms": [53, 65589, form(53, 2)] }, "74": { "cost": 3, "forms": [74, 65610] }, "75": { "cost": 3, "forms": [75, 65611] }, "76": { "cost": 3, "forms": [76, 65612] }, "88": { "cost": 3, "forms": [88, 65624] }, "89": { "cost": 3, "forms": [89, 65625] }, "103": { "cost": 3, "forms": [103, 65639] }, "105": { "cost": 3, "forms": [105, 65641] }, "670": { "cost": 3, "forms": [670, 66206, 131742, 197278, 262814, 328350] }, "678": { "cost": 3, "forms": [678, 66214] }, "681": { "cost": 3, "forms": [681, 66217] }, "658": { "cost": 4, "forms": [658, 131730] }, "746": { "cost": 4, "forms": [746, 66282] }, "774": { "cost": 4, "forms": [774, 66310, 131846, 197382, 262918, 328454, 393990, 459526] }, "801": { "cost": 4, "forms": [801, 66337] }, "386": { "cost": 5, "forms": [386, 65922, 131458, 196994] }, "487": { "cost": 5, "forms": [487, 66023] }, "641": { "cost": 5, "forms": [641, 66177] }, "642": { "cost": 5, "forms": [642, 66178] }, "645": { "cost": 5, "forms": [645, 66181] }, "647": { "cost": 5, "forms": [647, 66183] }, "649": { "cost": 5, "forms": [649, 66185, 131721, 197257, 262793] }, "479": { "cost": 8, "forms": [479, 66015, 131551, 197087, 262623, 328159] }, "492": { "cost": 8, "forms": [492, 66028] }, "555": { "cost": 8, "forms": [555, 66091, form(555, 2)] }, "648": { "cost": 8, "forms": [648, 66184] }, "773": { "cost": 8, "forms": [773, 66309, 131845, 197381, 262917, 328453, 393989, 459525, 525061, 590597, 656133, 721669, 787205, 852741, 918277, 983813, 1049349, 1114885] }, "493": { "cost": 10, "forms": [493, 66029, 131565, 197101, 262637, 328173, 393709, 459245, 524781, 590317, 655853, 721389, 786925, 852461, 917997, 983533, 1049069, 1114605] }, "646": { "cost": 10, "forms": [646, 66182, 131718] }, "718": { "cost": 10, "forms": [718, 66254, 131790] }, "720": { "cost": 10, "forms": [720, 66256] }, "77": {"cost": 4, "forms": [form(77, 1)]}, "78": {"cost": 4, "forms": [form(78, 1)]}, "263": {"cost": 4, "forms": [form(263, 1)]}, "264": {"cost": 4, "forms": [form(264, 1)]}, "562": {"cost": 4, "forms": [form(562, 1)]}, "122": {"cost": 4, "forms": [form(122, 1)]}, "109": {"cost": 4, "forms": [form(109, 1)]}, "110": {"cost": 4, "forms": [form(110, 1)]}, "222": {"cost": 4, "forms": [form(222, 1)]} };
+            }
             if (!eligible.hasOwnProperty(base)) {
                 safaribot.sendHtmlMessage(src, trainerSprite + "Alchemist: Doesn't look like I can transform this Pokémon into anything!", safchan);
                 return;
@@ -32208,7 +32233,7 @@ function Safari() {
             "barrier":[100,442,107]
         };
         this.hazardAbilites = {
-            "plants": 181,
+            "plants": 180,
             "water": 33,
             "boulder": 159,
             "toxic": 81,
