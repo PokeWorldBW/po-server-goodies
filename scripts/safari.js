@@ -29080,7 +29080,7 @@ function Safari() {
                 "scent": 2,
                 "quality": 2,
                 "flavor": "Citrus",
-                "color": "#00688B",
+                "color": "#33A1C9",
                 "description": "A middling berry that has some of everything. Its Citrus taste attracts Bug- and Normal-types."
             },
             "pecha": {
@@ -29116,7 +29116,7 @@ function Safari() {
                 "scent": 1,
                 "quality": 2,
                 "flavor": "Spicy",
-                "color": "#EE6A50",
+                "color": "#8B1A1A",
                 "description": "A moist, rich berry. Its Spicy taste attracts Dragon- and Ground-types."
             },
             "leppa": {
@@ -29342,15 +29342,15 @@ function Safari() {
         for (var i = 0; i < tableKeys.length; i++) {
             var ingredient = tableKeys[i];
             if (ingredient == "milk") {
-                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk"), false, bakingData.berries.milk);
+                tableReadable.push(link("/bak add:" + ingredient, "Moomoo Milk"), false, bakingData.berries.milk.color);
             } else if (ingredient == "flour") {
-                tableReadable.push(link("/bak add:" + ingredient, "Flour", false, "#CDB38B"));
+                tableReadable.push(link("/bak add:" + ingredient, "Flour", false, "#8B795E"));
             } else if (ingredient == "sugar") {
                 tableReadable.push(link("/bak add:" + ingredient, "Sugar", false, "#808080"));
             } else if (ingredient == "blend") {
                 tableReadable.push(link("/bak add:blend", "Blend", false, "#000000"));
             } else {
-                tableReadable.push(link("/bak add:" + ingredient, itemAlias(ingredient, false, true), false, this.phase == 1 ? bakingData.apricorns[this.table[i]].color : bakingData.berries[this.table[i]].color) + " <i>(" + tableItems[ingredient] + "</i>)");
+                tableReadable.push(link("/bak add:" + ingredient, itemAlias(ingredient, false, true), false, this.phase == 1 ? bakingData.apricorns[ingredient].color : bakingData.berries[ingredient].color) + " (" + tableItems[ingredient] + ")");
             }
         }
         for (var p in this.players) {
