@@ -5084,7 +5084,7 @@ function Safari() {
         },
         "66411": {
             "types": ["Ice", "???"],
-            "name": "Eiscue-Noice Face",
+            "name": "Eiscue-Noice",
             "stats": [75, 80, 70, 65, 50, 130],
             "abilities": [ "Ice Face" ],
             "tier": "SM OU",
@@ -6541,7 +6541,7 @@ function Safari() {
                         canLegend = false;
                     }
                     var list = [], bst, extrabst = 0, extrabstChance = 1, h, i, id, extrabstChanceModifier = 0.22;
-                    for (i = 1; i < 890; i++) {
+                    for (i = 1; i < 891; i++) {
                         bst = "editBST" in theme && i in theme.editBST ? theme.editBST[i] : getBST(i);
                         extrabstChance = 1;
                         if (bst >= 600) {
@@ -24836,7 +24836,7 @@ function Safari() {
                     safaribot.sendHtmlMessage(src, trainerSprite + "Collector: My requests are organized into different levels:", safchan);
                     safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Easy", "Easy") + " - Three Pokémon with BST between 175 and 320. Reward is 2.4x their price.", safchan);
                     safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Normal", "Normal") + " - Four Pokémon with BST between 320 and 460. Reward is 3.3x their price.", safchan);
-                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Hard", "Hard") + " - Five Pokémon with BST between 460 and 599. Reward is 4.8x their price.", safchan);
+                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Hard", "Hard") + " - Five Pokémon with BST between 440 and 599. Reward is 4.8x their price.", safchan);
                     safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Epic", "Epic") + " - Six Pokémon with BST between 480 and 600, with one of them being a Legendary. Reward is 10x their price.", safchan);
                     safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Insane", "Insane") + " - For crazy people.", safchan);
                     sys.sendMessage(src, "", safchan);
@@ -24901,7 +24901,7 @@ function Safari() {
                 var deadlineDays = 2;
 
                 while (request.length < amount) {
-                    var randomNum = sys.rand(1, 890);
+                    var randomNum = sys.rand(1, 891);
                     if (level < 2) {
                         randomNum = sys.rand(1, 800);
                     }
@@ -25899,13 +25899,15 @@ function Safari() {
         safaribot.sendHtmlMessage(src, trainerSprite + "Wonder Trade Operator: So you want to try the Wonder Trade? Please give me the $" + addComma(fee) + " and your " + input.name + "!", safchan);
 
         var receivedId, receivedBST, pickedForm, isShiny = sys.rand(0, shinyChance) < (input.shiny ? 16 : 1);
+        // Kills spawns that aren't supposed to appear in the wild due to edited BST
+        var defTheme = contestThemes.hasOwnProperty("none") ? contestThemes.none : {"name":"Default","types":[],"excludeTypes":[],"include":[],"exclude":[],"editBST":{},"floorBST":300,"ceilBST":600,"icon":0};
         do {
             receivedId = sys.rand(1, 803);
             if (receivedId in wildForms && chance(0.5)) {
                 pickedForm = sys.rand(1, wildForms[receivedId] + 1);
                 receivedId = pokeInfo.calcForme(receivedId, pickedForm);
             }
-            receivedBST = getBST(receivedId);
+            receivedBST = defTheme.hasOwnProperty("editBST") && defTheme.editBST.hasOwnProperty(""+receivedId) ? defTheme.editBST[""+receivedId] : getBST(receivedId);
         } while (receivedBST < bstRange[0] || receivedBST > bstRange[1] || isLegendary(receivedId) || receivedId == input.num);
         
         if (noShinySprite.indexOf(receivedBST) !== -1) {
@@ -28897,11 +28899,11 @@ function Safari() {
         }
     };
     function generateName() {
-        var part1 = sys.rand(1, 803), part2, name2, out,
+        var part1 = sys.rand(1, 891), part2, name2, out,
             name1 = pokePlain(part1);
 
         do {
-            part2 = sys.rand(1, 803);
+            part2 = sys.rand(1, 891);
             name2 = pokePlain(part2);
 
             out = name1.substr(0, Math.floor(name1.length/2)) + name2.substr(Math.floor(name2.length/2));
@@ -30198,7 +30200,7 @@ function Safari() {
             if (loop > 500) {
                 break;
             }
-            var get = sys.rand(1, 890);
+            var get = sys.rand(1, 891);
             bst = getBST(get);
             if (bst < 361 && (!(legendaries.contains(get)))) {
                 out.commons.list.push(get);
@@ -30210,7 +30212,7 @@ function Safari() {
             if (loop > 200) {
                 break;
             }
-            var get = sys.rand(1, 890);
+            var get = sys.rand(1, 891);
             bst = getBST(get);
             if (bst < 481 && (!(legendaries.contains(get)))) {
                 out.uncommons.list.push(get);
