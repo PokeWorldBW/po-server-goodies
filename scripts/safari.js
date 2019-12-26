@@ -25973,11 +25973,11 @@ function Safari() {
                 }
                 cost = Math.round(cost * (1 - (safari.hasCostumeSkill(player, "bakingDiscount") ? 0.5 : 0)));
                 if (player.money < cost) {
-                    safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: You need $" + addComma(cost) + " to enter the Pyramid!", safchan);
+                    safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: You need $" + addComma(cost) + " to enter the Kitchen!", safchan);
                     return;
                 }
                 if (stopQuests.baking) {
-                    safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: Sorry, it seems the Pharaoh's Curse is preventing access to the Kitchen right now. Man, that curse goes everywhere, doesn't it?", safchan);
+                    safaribot.sendHtmlMessage(src, trainerSprite + "Baking Administrator: Sorry, but we're putting out a fire in the Kitchen right now!", safchan);
                     return;
                 }
                 if (cantBecause(src, "start a Baking quest", ["wild", "contest", "auction", "battle", "event", "pyramid", "baking"])) {
@@ -29344,7 +29344,9 @@ function Safari() {
                 }
                 if (this.phase == 1 || this.phase == 2) {
                     this.msg(player, "Items on the table (you can add up to two to the bowl): " + tableReadable.join(", ") + ".");
-                    this.msg(player, "Or you can add the following to the table: " + validItemsReadable.join(", ") + ".");
+                    if (this.turn < 6) {
+                        this.msg(player, "Or you can add the following to the table: " + validItemsReadable.join(", ") + ".");
+                    }
                     if (this.turn == 6) {
                         this.msg(player, "<b>This is the last turn of the phase!</b>")
                     } else if (this.phase == 2 && this.needsBlending > 15) {
@@ -37402,7 +37404,7 @@ function Safari() {
                 rows[p.pos] = {mon: mon, owner: p.owner, id: p.uid};
             }
         }
-        ret += "<table cellpadding='0'>";
+        ret += "<table cellspacing='0'>";
         for (var i = 0; i < props.length; i++) {
             bg = null;
             ret += "<tr>";
@@ -37441,7 +37443,7 @@ function Safari() {
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, "#FFB5C5") + "</p>";
+                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, bg === "#2366ed" ? "#FFFAFA" : null) + "</p>";
                 } else {
                     if (features.hasOwnProperty(place)) {
                         ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
