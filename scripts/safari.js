@@ -9399,7 +9399,7 @@ function Safari() {
         }
         var medals = player.medals;
         if (costumed || (medals && medals.length > 0)) {
-            out += "<td align=center>";
+            out += "<td align=center style='vertical-align: middle;'>";
             if (costumed) {
                 out += costumeSprite(player.costume, os);
             }
@@ -12027,7 +12027,7 @@ function Safari() {
             default:
                 if (chance(0.05)) {
                     safaribot.sendHtmlMessage(src, "You pull out your Itemfinder ... ... ... <b>KER-BONK!</b> You walked right into a sign! ...Huh? It has a Trainer Tip written on it!", safchan);
-                    safaribot.sendHtmlMessage(src, "±Hint: " + safariHints.random(), safchan);
+                    sys.sendMessage(src, "±Hint: " + safariHints.random(), safchan);
                 }
                 else {
                     safaribot.sendHtmlMessage(src, "You pull out your Itemfinder ... ... ... But it did not detect anything. "+(freefinder ? "<i>At least no charge was used... </i>" : "") + "[Remaining charges: " + totalCharges + (permCharges > 0 ? " (Daily " + dailyCharges + " plus " + permCharges + " bonus)" : "") + "].", safchan);
@@ -29969,16 +29969,16 @@ function Safari() {
                 score = 0;
                 this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": PERFECT.", true);
             } else if (score < 1.5) {
-                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": GOOD. (" + toColor("-" + (score), "orange") + ") " + (underbaked ? " [Slightly Underbaked])." : " [Slightly Overbaked])."), true);
+                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": GOOD. (" + toColor("-" + toFixed(score, 2), "orange") + ") " + (underbaked ? " [Slightly Underbaked])." : " [Slightly Overbaked])."), true);
             } else if (score < 5) {
                 score *= parseInt(1.5 * score, 10);
-                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": OKAY. (" + toColor("-" + (score), "red") + (underbaked ? " [Underbaked])." : " [Overbaked])."), true);
+                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": OKAY. (" + toColor("-" + toFixed(score, 2), "red") + (underbaked ? " [Underbaked])." : " [Overbaked])."), true);
             } else if (score < 10) {
                 score *= parseInt(2 * score, 10);
-                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": POOR. (" + toColor("-" + (score), "red") + (underbaked ? " [Underbaked])." : " [Overbaked])."), true);
+                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": POOR. (" + toColor("-" + toFixed(score, 2), "red") + (underbaked ? " [Underbaked])." : " [Overbaked])."), true);
             } else {
                 score *= parseInt(2.5 * score, 10);
-                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": DISASTROUS. (" + toColor("-" + (score), "red") + (underbaked ? " [Underbaked])." : " [Overbaked])."), true);
+                this.msgAll("Baking score for " + toColored(a.toCorrectCase(), a) + ": DISASTROUS. (" + toColor("-" + toFixed(score, 2), "red") + (underbaked ? " [Underbaked])." : " [Overbaked])."), true);
             }
             bakeScores[a.toLowerCase()] = score;
         }
@@ -30581,21 +30581,21 @@ function Safari() {
         }
         bonusMult = Math.round(bonusMult * 10) * 0.1
         if (bonusMult > 1) {
-            this.sendToViewers("You received a bonus x" + bonusMult + " from your Bonus Pokémon!");
+            this.sendToViewers("You received a bonus x" + toFixed(bonusMult, 1) + " from your Bonus Pokémon!");
         }
         this.points *= bonusMult;
         if (this.usingVoucher) {
             var voucherPoints = Math.round(this.points * itemData.fossil.bonusRate);
             this.points += voucherPoints;
-            this.sendToViewers("You received a bonus " + plural(voucherPoints, "Point") + " for using " + an(finishName("fossil")) + "!");
+            this.sendToViewers("You received a bonus " + plural(toFixed(voucherPoints), "Point") + " for using " + an(finishName("fossil")) + "!");
         }
         if (this.finishMode === "cleared") {
             var finishBonus = Math.round(this.points * 0.10);
             this.points += finishBonus;
             this.sendToViewers("You received a bonus " + plural(finishBonus, "Point") + " for clearing all floors!");
-            safaribot.sendAll(readable(this.fullNames, "and") + " reached the " + getOrdinal(this.room) + " room of the " + getOrdinal(this.level) + " floor with a total of " + plural(this.points, "Point") + "!", safchan);
+            safaribot.sendAll(readable(this.fullNames, "and") + " reached the " + getOrdinal(this.room) + " room of the " + getOrdinal(this.level) + " floor with a total of " + plural(toFixed(this.points, 2), "Point") + "!", safchan);
         } else {
-            this.sendToViewers(readable(this.fullNames, "and") + " reached the " + getOrdinal(this.room) + " room of the " + getOrdinal(this.level) + " floor with a total of " + plural(this.points, "Point") + "!");
+            this.sendToViewers(readable(this.fullNames, "and") + " reached the " + getOrdinal(this.room) + " room of the " + getOrdinal(this.level) + " floor with a total of " + plural(toFixed(this.points, 2), "Point") + "!");
         }
         var finishVerb;
         switch (this.finishMode) {
@@ -37402,7 +37402,7 @@ function Safari() {
                 rows[p.pos] = {mon: mon, owner: p.owner, id: p.uid};
             }
         }
-        ret += "<table style='border-collapse: collapse;'>";
+        ret += "<table cellpadding='0'>";
         for (var i = 0; i < props.length; i++) {
             bg = null;
             ret += "<tr>";
@@ -37441,7 +37441,7 @@ function Safari() {
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
                     ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
-                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, "#FFFAFA") + "</p>";
+                    ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, "#FFB5C5") + "</p>";
                 } else {
                     if (features.hasOwnProperty(place)) {
                         ret += "<img src='" + icon + "' title='" + features[place] + "'" + (bg ? " style='background:" + bg + "'" : "") + ">";
@@ -44473,11 +44473,11 @@ function Safari() {
                     if (evo !== -1) {
                         var conditionals = [];
                         if (!info.shiny) {
-                            conditionals.push(Math.floor(safari.candyCostConversion(player, candiesRequired *  1.25)) + " if shiny");
+                            conditionals.push(addComma(Math.floor(safari.candyCostConversion(player, candiesRequired *  1.25))) + " if shiny");
                         }
                         candiesRequired = safari.candyCostConversion(player, candiesRequired);
                         if (player && player.costumes.contains("breeder") && (!(player.costume == "breeder"))) {
-                            conditionals.push(Math.floor(Math.max(breederRequired, 1)) + " if using " + costumeAlias("breeder", true, true));
+                            conditionals.push(addComma(Math.floor(Math.max(breederRequired, 1))) + " if using " + costumeAlias("breeder", true, true));
                         }
 
                         safaribot.sendMessage(src, info.name + " requires " + plural(candiesRequired, "rare") + " to evolve into " + (Array.isArray(evo) ? readable(evo.map(poke), "or") : poke(evo)) + (conditionals.length > 0 ? " (" + conditionals.join(", ") + ")" : "") + ". ", safchan);
