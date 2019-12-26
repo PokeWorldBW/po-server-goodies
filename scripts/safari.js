@@ -29026,7 +29026,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 0,
                 "flavor": "Tart",
-                "color": "#D6D6D6",
+                "color": "#C9C9C9",
                 "description": "A fairly average ingredient that has good bulk for its size. Its Tart taste attracts Psychic- and Fire-types."
             },
             "pnkapricorn": {
@@ -29046,7 +29046,7 @@ function Safari() {
                 "acidity": 2,
                 "dryness": 2,
                 "flavor": "Kokumi",
-                "color": "#FFD700",
+                "color": "#CDAD00",
                 "description": "A volatile ingredient that has poor bulk for its size. Its Kokumi taste attracts Steel- and Fairy-types."
             },
             "dew": {
@@ -29066,7 +29066,7 @@ function Safari() {
                 "acidity": 1,
                 "dryness": 0,
                 "flavor": "Citrus",
-                "color": "#CDB5CD",
+                "color": "#8B668B",
                 "description": "A smooth ingredient. Its Citrus taste attracts Bug- and Normal-types."
             }
         },
@@ -29092,7 +29092,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 2,
                 "flavor": "Umami",
-                "color": "#FFBBFF",
+                "color": "#FF1493",
                 "description": "A tasty, juicy berry. Its Umami taste attracts Ice- and Electric-types."
             },
             "bluk": {
@@ -29152,7 +29152,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 3,
                 "flavor": "Bitter",
-                "color": "#E3CF57",
+                "color": "#CD9B1D",
                 "description": "An incredibly sweet berry. Its Bitter taste attracts Ghost- and Fighting-types."
             },
             "nanab": {
@@ -29164,7 +29164,7 @@ function Safari() {
                 "scent": 0,
                 "quality": 3,
                 "flavor": "Kokumi",
-                "color": "#FFC1C1",
+                "color": "#DA70D6",
                 "description": "A thick berry. Its Kokumi taste attracts Steel- and Fairy-types."
             },
             "petaya": {
@@ -48615,7 +48615,7 @@ function Safari() {
         permObj.save();
 
         this.updateLeaderboards();
-        //sys.sendHtmlAll(openedMessage, safchan);
+        sys.sendHtmlAll(openedMessage, safchan);
         if (baitCooldown < 7) {
             baitCooldown = sys.rand(5,7);
         }
