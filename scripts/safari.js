@@ -6005,8 +6005,7 @@ function Safari() {
         for (var i = 0; i < allBalls.length; i++) {
             var e = allBalls[i];
             if (isBallAvailable(player, e) && (e !== "master" || !isAndroid)) {
-                var name = itemData[e].fullName;
-                ret += "«" + link("/" + ccatch + " " + itemData[e].name, name.substring(0, name.indexOf(" Ball"))) + "» ";
+                ret += "«" + link("/" + ccatch + " " + itemData[e].name, itemData[e].fullName.split(" ")[0]) + "» ";
                 hasBalls = true;
             }
         }
