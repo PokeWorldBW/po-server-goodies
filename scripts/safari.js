@@ -6006,7 +6006,7 @@ function Safari() {
             var e = allBalls[i];
             if (isBallAvailable(player, e) && (e !== "master" || !isAndroid)) {
                 var name = itemData[e].name === "uturn" ? "switch" : itemData[e].name; // Make ball macro show Switch instead of Uturn for Switch Ball
-                ret += "«" + link("/" + ccatch + " " + itemData[e].name, cap(name) + "» ";
+                ret += "«" + link("/" + ccatch + " " + itemData[e].name, cap(name)) + "» ";
                 hasBalls = true;
             }
         }
