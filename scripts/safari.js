@@ -29388,8 +29388,8 @@ function Safari() {
                     if (this.turn < 6) {
                         this.msg(player, "You can add the following to the table:");
                         this.msg(player, validItemsReadable.join(", "));
+                        this.msg(player, "");
                     }
-                    this.msg(player, "");
                     this.msg(player, "Items on the table (you can add up to two to the bowl):");
                     this.msg(player, tableReadable.join(", "))
                     if (this.turn == 6) {
