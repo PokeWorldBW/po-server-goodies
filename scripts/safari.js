@@ -8230,116 +8230,27 @@ function Safari() {
             if (isRare(currentPokemon) || ball === "master") {
                 sys.appendToFile(mythLog, now() + "|||" + poke(currentPokemon) + (poke(currentDisplay) != poke(currentPokemon) ? " (disguised as "+ poke(currentDisplay) +")" : "") + "::caught::" + name + "'s " + finishName(ball) + (contestCount > 0 ? " during " + an(themeName(currentTheme)) + " contest" : "") + "\n");
             }
-            if (evolutions.hasOwnProperty(parseInt(player.party[0], 10) + "")) {
+            var active = player.party[0];
+            var activeNum = parseInt(active, 10);
+            var activeSpecies = evolutions.hasOwnProperty(activeNum+"") ? activeNum : pokeInfo.species(activeNum);
+            if (evolutions.hasOwnProperty(activeSpecies) && evolutions[activeSpecies] !== -1) {
                 if (player.helds[0] == 9) {
                     player.berries.petayaCombo++;
-
-        /*var input = commandData.split(":");
-        var info = getInputPokemon(input[0]);
-        var starter = input.length > 1 ? input[1].toLowerCase() : "*";
-        var shiny = info.shiny;
-        var num = info.num;
-
-        var species = evolutions.hasOwnProperty(info.num+"") ? info.num : pokeInfo.species(info.num);
-        if (!(species in evolutions) || evolutions[species].evo === -1) {
-            safaribot.sendMessage(src, "This Pokémon cannot evolve!", safchan);
-            return;
-        }
-        
-        var evoData = evolutions[species];
-        var candiesRequired = Math.floor((evoData.candies || 300) * (info.shiny ? 1.25 : 1));
-        var costumed = player.costume === "breeder";
-        var prev = this.candyCostConversion(player, candiesRequired);
-        var discountRate = (costumed ? costumeData.breeder.rate : 1);
-        candiesRequired = Math.floor(candiesRequired * discountRate);
-        candiesRequired = this.candyCostConversion(player, candiesRequired);
-
-        if (!["confirm", "starter", "normal"].contains(starter)) {
-            var evo = evoData.evo;
-
-            safaribot.sendHtmlMessage(src, info.name + " requires " + plural(candiesRequired, "rare") + " to evolve into " + (Array.isArray(evo) ? readable(evo.map(poke), "or") : poke(evo)) + ". " + (costumed ? "<i>[Note: Without " + costumeAlias("breeder", true, true) + " " + plural(prev, "rare") + " are required.]</i>" : ""), safchan);
-            safaribot.sendHtmlMessage(src, "If you really wish to evolve " + info.name + ", type " + link("/evolve " + info.input + ":confirm") + ".", safchan);
-            return;
-        }
-
-        if (info.input in player.shop) {
-            safaribot.sendMessage(src, "You need to remove this Pokémon from your shop before evolving them!", safchan);
-            return;
-        }
-
-        if (player.balls.rare < candiesRequired) {
-            safaribot.sendMessage(src, info.name + " requires " + plural(candiesRequired, "rare") + " to evolve!", safchan);
-            return;
-        }
-
-        var evolveStarter = true;
-        if (player.starter == id) {
-            var count = countRepeated(player.pokemon, id);
-            if (count > 1) {
-                if (starter == "starter") {
-                    evolveStarter = true;
-                } else if (starter == "normal") {
-                    evolveStarter = false;
-                } else {
-                    safaribot.sendMessage(src, "This Pokémon is your starter, but you have more than one! To pick which one you want to evolve, type /evolve " + info.input +":starter or /evolve " + info.input +":normal.", safchan);
-                    return;
-                }
-            }
-        }
-
-        var restrictions = ["auction", "battle", "item", "event", "pyramid"];
-        //Allow selling of pokemon that are not the lead if the rest of the party doesn't matter at that point
-        if (player.party[0] === id) {
-            restrictions = restrictions.concat(["wild", "contest"]);
-            reason = "evolve your active Pokémon";
-        }
-        if (cantBecause(src, reason, restrictions, "rare")) {
-            return;
-        }
-        
-        
-        var evolveTo = getPossibleEvo(id);
-        var evolvedId = shiny ? "" + evolveTo : evolveTo;
-
-        player.balls.rare -= candiesRequired;
-        if (!isTut) {
-            player.records.pokesEvolved += 1;
-        }
-        this.missionProgress(player, "evolve", id, 1, {});
-
-        this.evolvePokemon(src, info, evolvedId, "evolved into", evolveStarter, isTut);
-
-        var bstval = getBST(evolveTo);
-        var amt = ((bstval + (Math.max((bstval-300) * 2, 0)) + (Math.max((bstval-480) * 4, 0))) * (0.075 + (Math.random() * 0.05))) * 2 * (shiny ? 1.5 : 1);
-        if (this.hasCostumeSkill(player, "extraDust")) {
-            amt *= (1 + (this.getCostumeLevel(player)/30));
-        }
-        if (this.getFortune(player, "breeder", 0, null, true)) {
-            amt *= (1 + (0.01 * this.getFortune(player, "breeder", 0, null, false)));
-        }
-        amt = Math.round(amt);
-
-        var g = giveStuff(player, toStuffObj(amt + "@dust"));
-        safaribot.sendMessage(src, "You " + g + " for evolving your Pokémon!", safchan);
-
-        this.logLostCommand(sys.name(src), "evolve " + commandData, "evolved into " + poke(evolvedId));
-        if (costumed) {
-            safaribot.sendMessage(src, "Your " + info.name + " only needed to eat " + plural(candiesRequired, "rare") + " before evolving into " + poke(evolvedId) + "!", safchan);
-        } else {
-            safaribot.sendMessage(src, "Your " + info.name + " ate " + plural(candiesRequired, "rare") + " and evolved into " + poke(evolvedId) + "!", safchan);
-        }
-        if (isTut) {
-            advanceTutorial(src, 9);
-        }*/
-                    if (player.berries.petayaCombo >= safari.candyCostConversion(null, (evolutions[player.party[0]+""].candies))) {
+                    var activeShiny = pokeInfo.shiny(active);
+                    var evoData = evolutions[species];
+                    var candiesRequired = Math.floor((evoData.candies || 300) * (info.shiny ? 1.25 : 1));
+                    var discountRate = player.costume === "breeder" ? costumeData.breeder.rate : 1;
+                    candiesRequired = Math.floor(candiesRequired * discountRate);
+                    candiesRequired = this.candyCostConversion(player, candiesRequired);
+                    if (player.berries.petayaCombo >= candiesRequired) {
                         player.berries.petayaCombo = 0;
                         player.helds[0] = -1;
-                        var evolvedId = evolutions[player.party[0]+""].evo;
-                        if (Array.isArray(evolvedId)) {
-                            evolvedId = evolvedId.random();
-                        }
+                        var evolveTo = getPossibleEvo(active);
+                        var evolvedId = shiny ? "" + evolveTo : evolveTo;
+                        this.missionProgress(player, "evolve", active, 1, {});
+                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: shiny, name: poke(active), input: (shiny ? "*" : "") + pokePlain(name), type: "poke" }, evolvedId, "evolved into", false, false);
+                        this.logLostCommand(sys.name(src), "evolve " + commandData, "evolved into " + poke(evolvedId));
                         safaribot.sendMessage(src, "Your " + player.party[0] + " ate its Petaya Berry and evolved!", safchan);
-                        safari.evolvePokemon(src, getInputPokemon(poke(player.party[0])), evolvedId, "evolved into", false, false);
                     }
                 }
             }
@@ -8520,44 +8431,35 @@ function Safari() {
         var userColor = colorOverride ? colorOverride : getPokeColor(poke1);
         if (hasType(poke2, type1(poke1))) {
             out = Math.max(2, out + 0.5);
-            sys.sendMessage(sys.id("Yttrium"), "out after has type1: " + out);
             if (hasType(poke2, type2(poke1)) && type2(poke1) === "???") {
                 out = Math.max(2, out + 2);
-                sys.sendMessage(sys.id("Yttrium"), "out after has type1 and type2 == ???: " + out);
             } else if (hasType(poke2, type2(poke1))) {
                 out = Math.max(out + 2, 4);
-                sys.sendMessage(sys.id("Yttrium"), "out after has type1 and type2: " + out);
             }
         }
         else if (hasType(poke2, type2(poke1)) && type2(poke1) !== "???") {
             out = Math.max(2, out + 0.5);
-            sys.sendMessage(sys.id("Yttrium"), "out after has type2 and type != ???: " + out);
         }
         var ab = [getPokeAbility(poke2, 0), getPokeAbility(poke2, 1), getPokeAbility(poke2, 2)].filter(function (a) { return a !== 0; });
         for (var i = 0; i < ab.length; i++) {
             if (canHaveAbility(poke1, ab[i])) {
                 out = Math.max(6, out + (3 / ab.length));
-                sys.sendMessage(sys.id("Yttrium"), "out after has ability " + i + " : " + out);
             }
         }
         if (userColor === getPokeColor(poke2)) {
             out += 2;
         }
-        sys.sendMessage(sys.id("Yttrium"), "out after has color: " + out);
         if (hasCommonEggGroup(poke1, poke2)) {
             out *= 1.667;
         }
-        sys.sendMessage(sys.id("Yttrium"), "out after has common egg group: " + out);
         var stats = ["HP", "Attack", "Defense", "Special Attack", "Special Defense", "Speed"], st;
         for (var s in stats) {
             st = stats[s];
             if (Math.abs(getStatsNamed(poke1)[st] - getStatsNamed(poke2))[st] <= 10) {
                 out *= 1.2;
-                sys.sendMessage(sys.id("Yttrium"), "out after has same stat " + stats[st] + ": " + out);
             }
             if (Math.abs(getStatsNamed(poke1)[st] - getStatsNamed(poke2))[st] <= 1) {
                 out *= 1.2;
-                sys.sendMessage(sys.id("Yttrium"), "out after has same stat " + stats[st] + ": " + out);
             }
         }
         if (out > 16) {
