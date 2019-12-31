@@ -47112,7 +47112,7 @@ function Safari() {
                     return true;
                 }
                 lastCheckedRepo = now();
-                safaribot.sendMessage(src, "Getting Safari script from the web repository. . .", safchan);
+                safaribot.sendMessage(src, "Getting Safari script from the web repository . . .", safchan);
                 if (scriptHashCode === null) {
                     scriptHashCode = hashCode(sys.getFileContent("scripts/safari.js"));
                 }
