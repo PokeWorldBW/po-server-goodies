@@ -3824,7 +3824,7 @@ function Safari() {
             "types": ["Fire", "Ghost"],
             "name": "Blacephalon",
             "stats": [53, 127, 53, 151, 79, 107],
-            "abilities": [  ],
+            "abilities": [ "Beast Boost" ],
             "tier": "SM OU",
             "height": 1.8,
             "weight": 13,
@@ -47109,10 +47109,9 @@ function Safari() {
                 var currentTime = now();
                 var lastView = SESSION.users(src).secretBaseView || 0;
                 if (currentTime - lastCheckedRepo < 30000) {
-                    safaribot.sendMessage(src, "Please wait " + timeLeftString((30000 - currentTime + lastCheckedRepo) / 1000) + " before checking if the update is ready again!", safchan);
+                    safaribot.sendMessage(src, "Please wait " + timeLeftString(timeLeft(lastCheckedRepo + 30000)) + " before checking if the update is ready again!", safchan);
                     return true;
                 }
-                lastCheckedRepo = now();
                 var url = Config.base_url + "scripts/safari.js";
                 var resp = sys.synchronousWebCall(url);
                 if (hashCode(resp) === hashCode(sys.getFileContent("scripts/safari.js"))) {
@@ -47120,6 +47119,7 @@ function Safari() {
                 } else {
                     safaribot.sendMessage(src, "The repository for Safari has refreshed! Safari is ready to be updated!", safchan);
                 }
+                lastCheckedRepo = now();
                 return true;
             }
             if (command === "updatefile") {
