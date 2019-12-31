@@ -8246,9 +8246,9 @@ function Safari() {
                         player.berries.petayaCombo = 0;
                         player.helds[0] = -1;
                         var evolveTo = getPossibleEvo(active);
-                        var evolvedId = shiny ? "" + evolveTo : evolveTo;
+                        var evolvedId = activeShiny ? "" + evolveTo : evolveTo;
                         this.missionProgress(player, "evolve", active, 1, {});
-                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: shiny, name: poke(active), input: (shiny ? "*" : "") + pokePlain(name), type: "poke" }, evolvedId, "evolved into", false, false);
+                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: activeShiny, name: poke(active), input: (shiny ? "*" : "") + pokePlain(activeNum), type: "poke" }, evolvedId, "evolved into", false, false);
                         this.logLostCommand(sys.name(src), "evolve " + commandData, "evolved into " + poke(evolvedId));
                         safaribot.sendMessage(src, "Your " + player.party[0] + " ate its Petaya Berry and evolved!", safchan);
                     }
@@ -47087,6 +47087,16 @@ function Safari() {
                     safaribot.sendMessage(src, "Safari will be updated at the next available opportunity.", safchan);
                     needsUpdating = true;
                     checkUpdate(); //in case it can go right away
+                }
+                return true;
+            }
+            if (command === "checkupdateready") {
+                var url = Config.base_url + "scripts/safari.js";
+                var resp = sys.synchronousWebCall(url);
+                if (resp === sys.getFileContent("scripts/safari.js")) {
+                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. (Note: GitHub caches 'raw' pages for 5 minutes)", safchan);
+                } else {
+                    safaribot.sendMessage(src, "The repository for Safari has refreshed! Safari is ready to be updated!", safchan);
                 }
                 return true;
             }
