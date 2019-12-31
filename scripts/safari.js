@@ -8529,10 +8529,10 @@ function Safari() {
         else if (hasType(poke2, type2(poke1)) && type2(poke1) !== "???") {
             out = Math.max(2, out + 0.5);
         }
-        var ab = [getPokeAbility(poke1, 0), getPokeAbility(poke1, 1), getPokeAbility(poke1, 2)];
+        var ab = [getPokeAbility(poke2, 0), getPokeAbility(poke2, 1), getPokeAbility(poke2, 2)].filter(function (a) { return a !== 0; });
         for (var a in ab) {
-            if (ab[a] && canHaveAbility(poke2, ab[a])) {
-                out = Math.max(6, out + 1);
+            if (canHaveAbility(poke1, ab[a])) {
+                out = Math.max(6, out + (3 / ab.length));
             }
         }
         if (userColor === getPokeColor(poke2)) {
