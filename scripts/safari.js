@@ -8520,30 +8520,30 @@ function Safari() {
         var userColor = colorOverride ? colorOverride : getPokeColor(poke1);
         if (hasType(poke2, type1(poke1))) {
             out = Math.max(2, out + 0.5);
-            sys.sendMessage(sys.id("Yttrium") "out after has type1: " + out);
+            sys.sendMessage(sys.id("Yttrium"), "out after has type1: " + out);
             if (hasType(poke2, type2(poke1)) && type2(poke1) === "???") {
                 out = Math.max(2, out + 2);
-                sys.sendMessage(sys.id("Yttrium") "out after has type1 and type2 == ???: " + out);
+                sys.sendMessage(sys.id("Yttrium"), "out after has type1 and type2 == ???: " + out);
             } else if (hasType(poke2, type2(poke1))) {
                 out = Math.max(out + 2, 4);
-                sys.sendMessage(sys.id("Yttrium") "out after has type1 and type2: " + out);
+                sys.sendMessage(sys.id("Yttrium"), "out after has type1 and type2: " + out);
             }
         }
         else if (hasType(poke2, type2(poke1)) && type2(poke1) !== "???") {
             out = Math.max(2, out + 0.5);
-            sys.sendMessage(sys.id("Yttrium") "out after has type2 and type != ???: " + out);
+            sys.sendMessage(sys.id("Yttrium"), "out after has type2 and type != ???: " + out);
         }
         var ab = [getPokeAbility(poke2, 0), getPokeAbility(poke2, 1), getPokeAbility(poke2, 2)].filter(function (a) { return a !== 0; });
         for (var i = 0; i < ab.length; i++) {
             if (canHaveAbility(poke1, ab[i])) {
                 out = Math.max(6, out + (3 / ab.length));
-                sys.sendMessage(sys.id("Yttrium") "out after has ability " + i + " : " + out);
+                sys.sendMessage(sys.id("Yttrium"), "out after has ability " + i + " : " + out);
             }
         }
         if (userColor === getPokeColor(poke2)) {
             out += 2;
         }
-        sys.sendMessage(sys.id("Yttrium") "out after has color: " + out);
+        sys.sendMessage(sys.id("Yttrium"), "out after has color: " + out);
         if (hasCommonEggGroup(poke1, poke2)) {
             out *= 1.667;
         }
@@ -8553,11 +8553,11 @@ function Safari() {
             st = stats[s];
             if (Math.abs(getStatsNamed(poke1)[st] - getStatsNamed(poke2))[st] <= 10) {
                 out *= 1.2;
-                sys.sendMessage(sys.id("Yttrium") "out after has same stat " + stats[st] + ": " + out);
+                sys.sendMessage(sys.id("Yttrium"), "out after has same stat " + stats[st] + ": " + out);
             }
             if (Math.abs(getStatsNamed(poke1)[st] - getStatsNamed(poke2))[st] <= 1) {
                 out *= 1.2;
-                sys.sendMessage(sys.id("Yttrium") "out after has same stat " + stats[st] + ": " + out);
+                sys.sendMessage(sys.id("Yttrium"), "out after has same stat " + stats[st] + ": " + out);
             }
         }
         if (out > 16) {
