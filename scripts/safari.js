@@ -8531,7 +8531,7 @@ function Safari() {
         }
         var ab = [getPokeAbility(poke2, 0), getPokeAbility(poke2, 1), getPokeAbility(poke2, 2)].filter(function (a) { return a !== 0; });
         for (var i = 0; i < ab.length; i++) {
-            if (canHaveAbility(poke1, ab[a])) {
+            if (canHaveAbility(poke1, ab[i])) {
                 out = Math.max(6, out + (3 / ab.length));
             }
         }
