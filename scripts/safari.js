@@ -47106,16 +47106,16 @@ function Safari() {
                 return true;
             }
             if (command === "isupdateready") {
-                if (now() - lastCheckedRepo < 30000) {
-                    safaribot.sendMessage(src, "Please wait " + timeLeftString(lastCheckedRepo + 30000) + " before checking if the update is ready again!", safchan);
+                if (now() - lastCheckedRepo < 60000) {
+                    safaribot.sendMessage(src, "Please wait " + timeLeftString(lastCheckedRepo + 60000) + " before checking if the update is ready again!", safchan);
                     return true;
                 }
                 var url = Config.base_url + "scripts/safari.js";
                 var resp = sys.synchronousWebCall(url);
                 if (hashCode(resp) === hashCode(sys.getFileContent("scripts/safari.js"))) {
-                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. (Note: GitHub caches 'raw' pages for 5 minutes after the last commit)", safchan);
+                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating.", safchan);
                 } else {
-                    safaribot.sendMessage(src, "The repository for Safari has refreshed! Safari is ready to be updated!", safchan);
+                    safaribot.sendHtmlMessage(src, "The repository for Safari has refreshed! <b>Safari is ready to be updated!</b>", safchan);
                 }
                 lastCheckedRepo = now();
                 return true;
