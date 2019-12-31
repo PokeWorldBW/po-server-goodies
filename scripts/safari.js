@@ -43246,7 +43246,7 @@ function Safari() {
     // Stolen from https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
     function hash(string) { // Used to check if the local Safari script is the same as the one in the GitHub repository
         var hash = 0;
-        if (string.length == 0) {
+        if (typeof string !== "string" || string.length == 0) {
             return hash;
         }
         for (var i = 0; i < string.length; i++) {
@@ -47108,8 +47108,8 @@ function Safari() {
             if (command === "isupdateready") {
                 var currentTime = now();
                 var lastView = SESSION.users(src).secretBaseView || 0;
-                if (currentTime - lastCheckedRepo < 60000) {
-                    safaribot.sendMessage(src, "Please wait " + timeLeftString((60000 - currentTime - lastCheckedRepo) / 1000) + " before trying to visit another Secret Base!", safchan);
+                if (currentTime - lastCheckedRepo < 30000) {
+                    safaribot.sendMessage(src, "Please wait " + timeLeftString((30000 - currentTime + lastCheckedRepo) / 1000) + " before checking if the update is ready again!", safchan);
                     return true;
                 }
                 lastCheckedRepo = now();
