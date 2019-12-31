@@ -8420,15 +8420,15 @@ function Safari() {
     this.checkSimilarity = function(poke1, poke2, colorOverride) {
         var out = 1;
         var userColor = colorOverride ? colorOverride : getPokeColor(poke1);
-        if (hasType(type1(poke1), poke2)) {
+        if (hasType(poke2, type1(poke1)) {
             out = Math.max(2, out + 0.5);
-            if (hasType(type2(poke1), poke2) && sys.pokeType2(poke1) === "???") {
+            if (hasType(poke2, type2(poke1)) && type2(poke1) === "???") {
                 out = Math.max(2, out + 2);
-            } else if (hasType(type2(poke1), poke2)) {
+            } else if (hasType(poke2, type2(poke1)) {
                 out = Math.max(out + 2, 4);
             }
         }
-        else if (hasType(type2(poke1), poke2) && sys.pokeType2(poke1) !== "???") {
+        else if (hasType(poke2, type2(poke1)) && type2(poke1) !== "???") {
             out = Math.max(2, out + 0.5);
         }
         var ab = [];
