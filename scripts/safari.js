@@ -8547,7 +8547,7 @@ function Safari() {
         if (hasCommonEggGroup(poke1, poke2)) {
             out *= 1.667;
         }
-        sys.sendMessage(sys.id("Yttrium") "out after has common egg group: " + out);
+        sys.sendMessage(sys.id("Yttrium"), "out after has common egg group: " + out);
         var stats = ["HP", "Attack", "Defense", "Special Attack", "Special Defense", "Speed"], st;
         for (var s in stats) {
             st = stats[s];
