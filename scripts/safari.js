@@ -8248,7 +8248,7 @@ function Safari() {
                         var evolveTo = getPossibleEvo(active);
                         var evolvedId = activeShiny ? "" + evolveTo : evolveTo;
                         this.missionProgress(player, "evolve", active, 1, {});
-                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: activeShiny, name: poke(active), input: (shiny ? "*" : "") + pokePlain(activeNum), type: "poke" }, evolvedId, "evolved into", false, false);
+                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: activeShiny, name: poke(active), input: (activeShiny ? "*" : "") + pokePlain(activeNum), type: "poke" }, evolvedId, "evolved into", false, false);
                         this.logLostCommand(sys.name(src), "evolve " + commandData, "evolved into " + poke(evolvedId));
                         safaribot.sendMessage(src, "Your " + player.party[0] + " ate its Petaya Berry and evolved!", safchan);
                     }
@@ -47094,7 +47094,7 @@ function Safari() {
                 var url = Config.base_url + "scripts/safari.js";
                 var resp = sys.synchronousWebCall(url);
                 if (resp === sys.getFileContent("scripts/safari.js")) {
-                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. (Note: GitHub caches 'raw' pages for 5 minutes)", safchan);
+                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. Try again in 1 minute. (Note: GitHub caches 'raw' pages for 5 minutes after the last commit)", safchan);
                 } else {
                     safaribot.sendMessage(src, "The repository for Safari has refreshed! Safari is ready to be updated!", safchan);
                 }
