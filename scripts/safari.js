@@ -47106,10 +47106,9 @@ function Safari() {
                 return true;
             }
             if (command === "isupdateready") {
-                var currentTime = now();
-                var lastView = SESSION.users(src).secretBaseView || 0;
-                if (currentTime - lastCheckedRepo < 30000) {
-                    safaribot.sendMessage(src, "Please wait " + timeLeftString(timeLeft(lastCheckedRepo + 30000)) + " before checking if the update is ready again!", safchan);
+                var wait = timeLeft(lastCheckedRepo + 30000);
+                if (wait > 0) {
+                    safaribot.sendMessage(src, "Please wait " + timeLeftString(wait) + " before checking if the update is ready again!", safchan);
                     return true;
                 }
                 var url = Config.base_url + "scripts/safari.js";
