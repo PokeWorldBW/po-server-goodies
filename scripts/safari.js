@@ -47122,7 +47122,7 @@ function Safari() {
                         safaribot.sendHtmlMessage(src, "The web repository for Safari has refreshed! <b>Safari is ready to be updated!</b><ping/>", safchan);
                     }
                     lastCheckedRepo = now();
-                }
+                });
                 return true;
             }
             if (command === "updatefile") {
