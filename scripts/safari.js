@@ -20,6 +20,7 @@ function Safari() {
     var openedMessage = "<font color='#3daa68'><timestamp/><b>±Attendant:</b></font> <b>Welcome to the Safari Zone! You can catch all the Pokémon you want in the park! We'll call you on the PA when you run out of time or an update is needed!</b>";
     var wildPokemonMessage = "A {2}wild {0} appeared! <i>(BST: {1})</i>";
     var separator = "*** *********************************************************** ***";
+    var lastCheckedRepo = 0;
 
     var saveFiles = "scriptdata/safarisaves.txt";
     var saveBackupFile1 = "scriptdata/safari/savesBackup1.txt";
@@ -8248,9 +8249,10 @@ function Safari() {
                         var evolveTo = getPossibleEvo(active);
                         var evolvedId = activeShiny ? "" + evolveTo : evolveTo;
                         this.missionProgress(player, "evolve", active, 1, {});
-                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: activeShiny, name: poke(active), input: (activeShiny ? "*" : "") + pokePlain(activeNum), type: "poke" }, evolvedId, "evolved into", false, false);
-                        this.logLostCommand(sys.name(src), "evolve " + commandData, "evolved into " + poke(evolvedId));
-                        safaribot.sendMessage(src, "Your " + player.party[0] + " ate its Petaya Berry and evolved!", safchan);
+                        var activeName = poke(active);
+                        this.evolvePokemon(src, { num: activeNum, id: active, shiny: activeShiny, name: activeName, input: (activeShiny ? "*" : "") + pokePlain(activeNum), type: "poke" }, evolvedId, "evolved into", false, false);
+                        this.logLostCommand(sys.name(src), "evolve " + activeName, "evolved into " + poke(evolvedId));
+                        safaribot.sendMessage(src, "Your " + activeName + " ate its Petaya Berry and evolved!", safchan);
                     }
                 }
             }
@@ -43241,6 +43243,19 @@ function Safari() {
         sys.sendHtmlAll(closedMessage, safchan);
         runUpdate();
     }
+    // Stolen from https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
+    function hash(string) { // Used to check if the local Safari script is the same as the one in the GitHub repository
+        var hash = 0;
+        if (string.length == 0) {
+            return hash;
+        }
+        for (var i = 0; i < string.length; i++) {
+            var c = string.charCodeAt(i);
+            hash = ((hash << 5) - hash) + c;
+            hash = hash & hash;
+        }
+        return hash;
+    }
 
     /* Help & Commands */
     this["help-string"] = ["safari: To know the safari commands"];
@@ -47090,11 +47105,18 @@ function Safari() {
                 }
                 return true;
             }
-            if (command === "checkupdateready") {
+            if (command === "isupdateready") {
+                var currentTime = now();
+                var lastView = SESSION.users(src).secretBaseView || 0;
+                if (currentTime - lastCheckedRepo < 60000) {
+                    safaribot.sendMessage(src, "Please wait " + timeLeftString((60000 - currentTime - lastCheckedRepo) / 1000) + " before trying to visit another Secret Base!", safchan);
+                    return true;
+                }
+                lastCheckedRepo = now();
                 var url = Config.base_url + "scripts/safari.js";
                 var resp = sys.synchronousWebCall(url);
-                if (resp === sys.getFileContent("scripts/safari.js")) {
-                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. Try again in 1 minute. (Note: GitHub caches 'raw' pages for 5 minutes after the last commit)", safchan);
+                if (hash(resp) === hash(sys.getFileContent("scripts/safari.js"))) {
+                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. (Note: GitHub caches 'raw' pages for 5 minutes after the last commit)", safchan);
                 } else {
                     safaribot.sendMessage(src, "The repository for Safari has refreshed! Safari is ready to be updated!", safchan);
                 }
