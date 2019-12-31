@@ -5494,19 +5494,19 @@ function Safari() {
         if (isMega(pokeNum) && num !== 0) {
             return 0;
         }
-        if (ultraPokes.hasOwnProperty(num+"")) {
-            if (!(ultraPokes[num+""].hasOwnProperty("abilities"))) {
+        if (ultraPokes.hasOwnProperty(pokeNum+"")) {
+            if (!(ultraPokes[pokeNum + ""].hasOwnProperty("abilities"))) {
                 return 0;
             }
-            var abilities = ultraPokes[num + ""].abilities.map(function(a) { return abilitynum(a); });
+            var abilities = ultraPokes[pokeNum + ""].abilities.map(function(a) { return abilitynum(a); });
             if (num < abilities.length && num >= 0) {
                 return abilities[num];
             } else {
                 return 0;
             }
         }
-        if (updatedAbilities.hasOwnProperty(num + "")) {
-            var abilities = updatedAbilities[num + ""];
+        if (updatedAbilities.hasOwnProperty(pokeNum + "")) {
+            var abilities = updatedAbilities[pokeNum + ""];
             if (num < abilities.length && num >= 0) {
                 return abilities[num];
             } else {
@@ -8530,7 +8530,7 @@ function Safari() {
             out = Math.max(2, out + 0.5);
         }
         var ab = [getPokeAbility(poke2, 0), getPokeAbility(poke2, 1), getPokeAbility(poke2, 2)].filter(function (a) { return a !== 0; });
-        for (var a in ab) {
+        for (var i = 0; i < ab.length; i++) {
             if (canHaveAbility(poke1, ab[a])) {
                 out = Math.max(6, out + (3 / ab.length));
             }
