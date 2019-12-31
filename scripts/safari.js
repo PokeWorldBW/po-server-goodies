@@ -8238,7 +8238,7 @@ function Safari() {
                     player.berries.petayaCombo++;
                     var activeShiny = pokeInfo.shiny(active);
                     var evoData = evolutions[activeSpecies];
-                    var candiesRequired = Math.floor((evoData.candies || 300) * (info.shiny ? 1.25 : 1));
+                    var candiesRequired = Math.floor((evoData.candies || 300) * (activeShiny ? 1.25 : 1));
                     var discountRate = player.costume === "breeder" ? costumeData.breeder.rate : 1;
                     candiesRequired = Math.floor(candiesRequired * discountRate);
                     candiesRequired = this.candyCostConversion(player, candiesRequired);
