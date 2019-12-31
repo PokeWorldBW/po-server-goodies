@@ -47106,9 +47106,8 @@ function Safari() {
                 return true;
             }
             if (command === "isupdateready") {
-                var wait = timeLeft(lastCheckedRepo + 30000);
-                if (wait > 0) {
-                    safaribot.sendMessage(src, "Please wait " + timeLeftString(wait) + " before checking if the update is ready again!", safchan);
+                if (now() - lastCheckedRepo < 30000) {
+                    safaribot.sendMessage(src, "Please wait " + timeLeftString(lastCheckedRepo + 30000) + " before checking if the update is ready again!", safchan);
                     return true;
                 }
                 var url = Config.base_url + "scripts/safari.js";
