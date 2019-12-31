@@ -43244,7 +43244,7 @@ function Safari() {
         runUpdate();
     }
     // Stolen from https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
-    function hash(string) { // Used to check if the local Safari script is the same as the one in the GitHub repository
+    function hashCode(string) { // Used to check if the local Safari script is the same as the one in the GitHub repository
         var hash = 0;
         if (typeof string !== "string" || string.length == 0) {
             return hash;
@@ -47115,7 +47115,7 @@ function Safari() {
                 lastCheckedRepo = now();
                 var url = Config.base_url + "scripts/safari.js";
                 var resp = sys.synchronousWebCall(url);
-                if (hash(resp) === hash(sys.getFileContent("scripts/safari.js"))) {
+                if (hashCode(resp) === hashCode(sys.getFileContent("scripts/safari.js"))) {
                     safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating. (Note: GitHub caches 'raw' pages for 5 minutes after the last commit)", safchan);
                 } else {
                     safaribot.sendMessage(src, "The repository for Safari has refreshed! Safari is ready to be updated!", safchan);
