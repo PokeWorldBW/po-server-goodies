@@ -47113,9 +47113,9 @@ function Safari() {
                 var url = Config.base_url + "scripts/safari.js";
                 var resp = sys.synchronousWebCall(url);
                 if (hashCode(resp) === hashCode(sys.getFileContent("scripts/safari.js"))) {
-                    safaribot.sendMessage(src, "The repository for Safari is the same as the local version! Nothing will be changed by updating.", safchan);
+                    safaribot.sendMessage(src, "The web repository for Safari is the same as the local version! Nothing will be changed by updating.", safchan);
                 } else {
-                    safaribot.sendHtmlMessage(src, "The repository for Safari has refreshed! <b>Safari is ready to be updated!</b>", safchan);
+                    safaribot.sendHtmlMessage(src, "The web repository for Safari has refreshed! <b>Safari is ready to be updated!</b>", safchan);
                 }
                 lastCheckedRepo = now();
                 return true;
