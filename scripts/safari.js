@@ -9534,10 +9534,10 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border=1 style='display:inline-block;'><tr><th>" + title + "</th></tr><tr><td><table cellpadding=5 style='display:inline-block'>"];
+        out = ["<table border=1><tr><th>" + title + "</th></tr><tr><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr><td><table style='display: inline-block;'><tr>");
+                out.push("<tr><td><table style='display: inline;'><tr>");
             }
             count++;
             if (count == (rowSize / 2) + 1) {
@@ -47117,7 +47117,7 @@ function Safari() {
                     return true;
                 }
                 lastCheckedRepo = now();
-                safaribot.sendMessage(src, "Getting Safari script from the web repository . . .", safchan);
+                safaribot.sendMessage(src, "Getting Safari script from the web repository...", safchan);
                 if (scriptHashCode === null) {
                     scriptHashCode = hashCode(sys.getFileContent("scripts/safari.js"));
                 }
