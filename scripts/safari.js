@@ -9540,11 +9540,11 @@ function Safari() {
                 out.push("<tr word-wrap: break-word;><table><tr>");
             }
             count++;
-            if (count == (rowSize / 2) + 1) {
+            if (count == rowSize / 2) {
                 out.push("<table><tr>");
             }
-            out.push("<td align=center style='vertical-align: middle; word-wrap: break-word;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
-            if (count == rowSize / 2) {
+            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
+            if (count == rowSize / 2 - 1) {
                 out.push("</tr></table>");
             } else if (count == rowSize) {
                 out.push("</tr></table></tr>");
