@@ -9537,12 +9537,17 @@ function Safari() {
         out = ["<table border=1 style='word-wrap: break-word;'><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr word-wrap: break-word;>");
+                out.push("<tr word-wrap: break-word;><table><tr>");
             }
             count++;
+            if (count == (rowSize / 2) + 1) {
+                out.push("<table><tr>");
+            }
             out.push("<td align=center style='vertical-align: middle; word-wrap: break-word;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
-            if (count == rowSize) {
-                out.push("</tr>");
+            if (count == rowSize / 2) {
+                out.push("</tr></table>");
+            } else if (count == rowSize) {
+                out.push("</tr></table></tr>");
                 count = 0;
             }
         }
