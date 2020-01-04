@@ -9537,10 +9537,10 @@ function Safari() {
         out = ["<table border=1><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr>");
+                out.push("<tr style='word-break: break-all'>");
             }
             count++;
-            out.push("<td align=center style='vertical-align: middle; display: block; width: 100%;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
+            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize) {
                 out.push("</tr>");
                 count = 0;
