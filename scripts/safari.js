@@ -9534,13 +9534,13 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border=1><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=5>"];
+        out = ["<table border=1 style='word-wrap: break-word;'><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr>");
+                out.push("<tr word-wrap: break-word;>");
             }
             count++;
-            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>&#x200b;");
+            out.push("<td align=center style='vertical-align: middle; word-wrap: break-word;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize) {
                 out.push("</tr>");
                 count = 0;
