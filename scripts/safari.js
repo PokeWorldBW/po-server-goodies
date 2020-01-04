@@ -9541,7 +9541,7 @@ function Safari() {
             }
             count++;
             if (count == (rowSize / 2) + 1) {
-                out.push("<table><tr>");
+                out.push("<table style='display: inline;><tr>");
             }
             out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize / 2) {
