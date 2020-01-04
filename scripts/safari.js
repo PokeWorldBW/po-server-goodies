@@ -9540,7 +9540,7 @@ function Safari() {
                 out.push("<tr>");
             }
             count++;
-            out.push("<td align=center style='vertical-align: middle; display: inline-block;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
+            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>&#x200b;");
             if (count == rowSize) {
                 out.push("</tr>");
                 count = 0;
