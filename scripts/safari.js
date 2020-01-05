@@ -9547,7 +9547,7 @@ function Safari() {
             if (count == rowSize / 2) {
                 out.push("</tr></table>");
             } else if (count == rowSize) {
-                out.push("</tr></table></tr>");
+                out.push("</tr></table></td></tr>");
                 count = 0;
             }
         }
