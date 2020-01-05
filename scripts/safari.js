@@ -9534,18 +9534,18 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border=1><tr><th>" + title + "</th></tr><tr style='display: inline;'><td><table cellpadding=5 style='display: inline;'>"];
+        out = ["<table border=1><tr><th>" + title + "</th></tr><tr style='display: inline;'><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr><td><table style='display: inline;'><tr>");
+                out.push("<tr><td><table><tr>");
             }
             count++;
             if (count == (rowSize / 2) + 1) {
-                out.push("<table style='display: inline;'><tr>");
+                out.push("</td><table><tr>");
             }
             out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize / 2) {
-                out.push("</tr></table>");
+                out.push("</tr></table><td>");
             } else if (count == rowSize) {
                 out.push("</tr></table></td></tr>");
                 count = 0;
