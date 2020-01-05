@@ -481,6 +481,7 @@ function Safari() {
         lastSold: {},
         flashme: false,
         locked: false,
+        smallBox: false,
         altlog: [],
         tradeban: 0,
         truesalt: 0,
@@ -8921,15 +8922,14 @@ function Safari() {
                 case "off":
                     player.cherishOff = true;
                     safaribot.sendMessage(src, "Now hiding Cherished message on successful catch.", safchan);
-                    return;
                 case "on":
                     player.cherishOff = false;
                     safaribot.sendMessage(src, "Now allowing Cherished message on successful catch.", safchan);
-                    return;
+                default: 
+                    safaribot.sendMessage(src, "Type /cherishmsg on or type /cherishmsg off to toggle the Cherished message on successful catch.", safchan);
             }
         }
         this.saveGame(player);
-        return;
     }
     this.viewPlayer = function(src, data, textOnly) {
         var player = getAvatar(src);
@@ -9495,7 +9495,7 @@ function Safari() {
         if (textOnly) {
             out += this.listPokemonText(list, label, shopLink);
         } else {
-            out += this.listPokemon(list, label);
+            out += this.listPokemon(list, label, player.smallBox);
             if (isAndroid) {
                 out += "<br />";
             }
@@ -9522,15 +9522,15 @@ function Safari() {
         if (textOnly) {
             out += this.listPokemonText(list, label);
         } else {
-            out += this.listPokemon(list, label);
+            out += this.listPokemon(list, label, player.smallBox);
             if (isAndroid) {
                 out += "<br />";
             }
         }
         return out;
     };
-    this.listPokemon = function(list, title) {
-        var out = "", normal = [], count = 0, rowSize = 12, e;
+    this.listPokemon = function(list, title, small) {
+        var out = "", normal = [], count = 0, rowSize = small ? 6 : 12, e;
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
@@ -9805,7 +9805,7 @@ function Safari() {
         if (textOnly) {
             sys.sendHtmlMessage(src, this.listPokemonText(list, "Pokémon " + readable(title) + " (" + list.length + ")", shopLink), safchan);
         } else {
-            sys.sendHtmlMessage(src, this.listPokemon(list, "Pokémon " + readable(title) + " (" + list.length + ")"), safchan);
+            sys.sendHtmlMessage(src, this.listPokemon(list, "Pokémon " + readable(title) + " (" + list.length + ")", player.smallBox), safchan);
         }
     };
     function applyFilterCriteria(src, info, crit, val, list, current, commandData, box) {
@@ -16599,7 +16599,7 @@ function Safari() {
         if (textOnly) {
             out += this.listPokemonText(list, label);
         } else {
-            out += this.listPokemon(list, label);
+            out += this.listPokemon(list, label, player.smallBox);
             if (isAndroid) {
                 out += "<br />";
             }
@@ -43511,7 +43511,8 @@ function Safari() {
             "/contestrules: For information about contest rules.",
             "/eventhelp: For a explanation about events like Faction War and Pokémon Race.",
             "/favorite [ball]: Sets your favorite ball. This will be thrown automatically if you do not specify a different ball to throw.",
-            "/trials: Shows you your current trials missions. Only works while trials is in session."
+            "/trials: Shows you your current trials missions. Only works while trials is in session.",
+            "/smallbox: Toggles whether or not you see a narrower box size."
         ];
         var help = userHelp;
         var adminHelp = [
@@ -43847,6 +43848,13 @@ function Safari() {
             }
             if (command === "cherishmsg") {
                 safari.cherishVisible(src, commandData);
+                return true;
+            }
+            if (command === "smallbox") {
+                var player = getAvatar(src);
+                player.smallBox = player.smallBox ? false : true;
+                safaribot.sendMessage(src, "You will " + (player.smallbox ? "no longer" : "now") + " see a narrower Pokemon box.", safchan);
+                return true;
             }
             if (command === "bag" || command === "bagt") {
                 safari.viewItems(src, command === "bagt", commandData);
