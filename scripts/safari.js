@@ -9537,7 +9537,7 @@ function Safari() {
         out = ["<table border=1><tr><th>" + title + "</th></tr><tr style='display: inline;'><td><table cellpadding=5>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr><td><table><tr>");
+                out.push("<tr><td><table><tr><td>");
             }
             count++;
             if (count == (rowSize / 2) + 1) {
@@ -9547,7 +9547,7 @@ function Safari() {
             if (count == rowSize / 2) {
                 out.push("</tr></table><td>");
             } else if (count == rowSize) {
-                out.push("</tr></table></td></tr>");
+                out.push("</td></tr></table></td></tr>");
                 count = 0;
             }
         }
