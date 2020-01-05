@@ -9534,7 +9534,7 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border=1><tr><th>" + title + "</th></tr><tr><td><table cellpadding=5 style='display: inline;'>"];
+        out = ["<table border=1><tr><th>" + title + "</th></tr><tr style='display: inline;'><td><table cellpadding=5 style='display: inline;'>"];
         for (e in normal) {
             if (count == 0) {
                 out.push("<tr><td><table style='display: inline;'><tr>");
@@ -26657,7 +26657,7 @@ function Safari() {
             recipes["exp up"] = {ingredients: ing, reward: "@expup", immediate: true, failChance: 0, cooldown: 6}
         }
         else {
-            if (recipes.expup) {
+            if (recipes["exp up") {
                 delete recipes["exp up"];
             }
         }
@@ -48518,6 +48518,11 @@ function Safari() {
         safari.daycareRegions = parseFromPerm("daycareRegions", {});
         safari.daycarePokemon = parseFromPerm("daycarePokemon", []);
         recipeData = parseFromPerm("alchemistRecipes", {});
+        if (recipeData.hasOwnProperty("expup")) {
+            delete recipeData["expup"];
+            permObj.add("alchemistRecipes", JSON.stringify(recipeData));
+            permObj.save();
+        }
         gymData = parseFromPerm("gyms", {});
         eliteData = parseFromPerm("elite", []);
         eliteHall = parseFromPerm("hall", []);
