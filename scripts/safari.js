@@ -43475,7 +43475,7 @@ function Safari() {
             "/party: To add or remove a Pokémon from your party, set your party's leader*, or load a previously saved party. Type /party for more details.",
             "/quest: To view available quests.",
             "/mission: To view your daily missions.",
-            "/box [number]: To view all your caught Pokémon organized in boxes. Use /boxt for a text-only version or /boxs for a text version with links to sell them.",
+            "/box [number]: To view all your caught Pokémon organized in boxes. Use /boxt for a text-only version or /boxs for a text version with links to sell them. Use /smallbox to toggle an option to use a narrower box width.",
             "/bag: To view all money and items. Use /bagt for a text-only version.",
             "/photo: To take photos of wild Pokémon! Use /album to view your photos.",
             "/costumes: To view your current costumes. Use /getcostume to check your records to see if you earned any new costumes!",
@@ -43513,8 +43513,7 @@ function Safari() {
             "/contestrules: For information about contest rules.",
             "/eventhelp: For a explanation about events like Faction War and Pokémon Race.",
             "/favorite [ball]: Sets your favorite ball. This will be thrown automatically if you do not specify a different ball to throw.",
-            "/trials: Shows you your current trials missions. Only works while trials is in session.",
-            "/smallbox: Toggles whether or not you see a narrower box size."
+            "/trials: Shows you your current trials missions. Only works while trials is in session."
         ];
         var help = userHelp;
         var adminHelp = [
@@ -43855,7 +43854,7 @@ function Safari() {
             if (command === "smallbox") {
                 var player = getAvatar(src);
                 player.smallBox = player.smallBox ? false : true;
-                safaribot.sendMessage(src, "You will " + (player.smallbox ? "no longer" : "now") + " see a narrower Pokemon box.", safchan);
+                safaribot.sendMessage(src, "You will now see a " + (player.smallBox ? "narrower" : "regular-sized") + " Pokémon box.", safchan);
                 return true;
             }
             if (command === "bag" || command === "bagt") {
