@@ -9534,24 +9534,16 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border=1><tr><th>" + title + "</th></tr><tr style='display: inline;'><td><table cellpadding=5>"];
+        out = ["<table border = 1 cellpadding = 3><tr><th>" + title + "</th></td></tr><tr><td>"];
         for (e in normal) {
-            if (count == 0) {
-                out.push("<tr><td><table><tr><td>");
-            }
             count++;
-            if (count == (rowSize / 2) + 1) {
-                out.push("</td><table><tr>");
-            }
-            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
-            if (count == rowSize / 2) {
-                out.push("</tr></table><td>");
-            } else if (count == rowSize) {
-                out.push("</td></tr></table></td></tr>");
+            out.push(normal[e] + " ");
+            if (count == rowSize) {
+                out.push("<p>");
                 count = 0;
             }
         }
-        out.push("</table></td></tr></td></table>");
+        out.push("</td></tr></table>");
         return out.join("");
     };
     this.listPokemonText = function(list, title, shopLink) {
