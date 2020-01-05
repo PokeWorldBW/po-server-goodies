@@ -1759,7 +1759,7 @@ function Safari() {
             if (ultraPokes.hasOwnProperty(p2+"")) {
                 var species = pokeInfo.species(p2), form = pokeInfo.forme(p2);
                 var key = species + (form > 0 ? "-" + form : "");
-                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + poke(p) + '" style="min-width: 40px; object-fit: cover;' + (shinyBG && pokeInfo.shiny(p) ? ' background:yellow;' : '') + '">';
+                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
             }
            return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
         },
@@ -9534,16 +9534,19 @@ function Safari() {
         for (e in list) {
             normal.push(pokeInfo.icon(list[e], true));
         }
-        out = ["<table border = 1 cellpadding = 3><tr><th>" + title + "</th></td></tr><tr><td>"];
+        out = ["<table border=1><tr><th>" + title + "</th></td></tr><tr><td><table cellpadding=5>"];
         for (e in normal) {
+            if (count == 0) {
+                out.push("<tr>");
+            }
             count++;
-            out.push(normal[e] + " ");
+            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize) {
-                out.push("<p>");
+                out.push("</tr>");
                 count = 0;
             }
         }
-        out.push("</td></tr></table>");
+        out.push("</table></td></tr></table>");
         return out.join("");
     };
     this.listPokemonText = function(list, title, shopLink) {
