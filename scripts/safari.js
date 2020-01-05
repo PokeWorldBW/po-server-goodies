@@ -9537,11 +9537,11 @@ function Safari() {
         out = ["<table border=1><tr><th>" + title + "</th></tr><tr><td><table cellpadding=5 style='display: inline;'>"];
         for (e in normal) {
             if (count == 0) {
-                out.push("<tr><td><table style='display: inline;'><tr>");
+                out.push("<tr><td><table style='display: inline; width='50%'><tr>");
             }
             count++;
             if (count == (rowSize / 2) + 1) {
-                out.push("<table style='display: inline;><tr>");
+                out.push("<table style='display: inline; width='50%'><tr>");
             }
             out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize / 2) {
