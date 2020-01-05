@@ -26657,7 +26657,7 @@ function Safari() {
             recipes["exp up"] = {ingredients: ing, reward: "@expup", immediate: true, failChance: 0, cooldown: 6}
         }
         else {
-            if (recipes["exp up") {
+            if (recipes["exp up"]) {
                 delete recipes["exp up"];
             }
         }
