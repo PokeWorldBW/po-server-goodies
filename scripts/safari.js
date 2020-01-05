@@ -8922,9 +8922,11 @@ function Safari() {
                 case "off":
                     player.cherishOff = true;
                     safaribot.sendMessage(src, "Now hiding Cherished message on successful catch.", safchan);
+                    break;
                 case "on":
                     player.cherishOff = false;
                     safaribot.sendMessage(src, "Now allowing Cherished message on successful catch.", safchan);
+                    break;
                 default: 
                     safaribot.sendMessage(src, "Type /cherishmsg on or type /cherishmsg off to toggle the Cherished message on successful catch.", safchan);
             }
@@ -9540,7 +9542,7 @@ function Safari() {
                 out.push("<tr>");
             }
             count++;
-            out.push("<table><tr><td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td></tr></table>");
+            out.push("<td align=center style='vertical-align: middle;" + (normal[e].indexOf("style=\"background:yellow\"") !== -1 ? " background-color: yellow;" : "") + "'>" + normal[e] + "</td>");
             if (count == rowSize) {
                 out.push("</tr>");
                 count = 0;
