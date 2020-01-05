@@ -1759,7 +1759,7 @@ function Safari() {
             if (ultraPokes.hasOwnProperty(p2+"")) {
                 var species = pokeInfo.species(p2), form = pokeInfo.forme(p2);
                 var key = species + (form > 0 ? "-" + form : "");
-                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + poke(p) + '" style="width: 40px; object-fit: cover;' + (shinyBG && pokeInfo.shiny(p) ? ' background:yellow;' : '') + '">';
+                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + poke(p) + '" style="min-width: 40px; object-fit: cover;' + (shinyBG && pokeInfo.shiny(p) ? ' background:yellow;' : '') + '">';
             }
            return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
         },
