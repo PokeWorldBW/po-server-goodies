@@ -1733,16 +1733,25 @@ function Safari() {
     var immuneMultiplier = 0.15;
     var pokeInfo = {
         species: function(poke) {
+            if (hasGenderDifference(poke) && poke < 0) {
+                poke = -poke;
+            }
             return poke & ((1 << 16) - 1);
         },
         forme: function(poke) {
+            if (hasGenderDifference(poke) && poke < 0) {
+                poke = -poke;
+            }
             return poke >> 16;
         },
         shiny: function(poke) {
             return typeof poke === "string";
         },
+        gender: function(poke) {
+            return hasGenderDifference(poke) ? (parseInt(poke, 10) < 0 "F" : "M") : "N";
+        },
         readableNum: function(poke) {
-            var ret = [];
+            var ret = "";
             ret += pokeInfo.species(poke);
             if (pokeInfo.forme(poke) > 0) {
                 ret += "-";
@@ -1757,15 +1766,19 @@ function Safari() {
             if (pcheck === 710 || pcheck === 711) {
                 p2 = pcheck;
             }
+            if (pokeInfo.gender(p2) === "F" && specialFemaleIcons.contains(parseInt(p2, 10))) {
+                var key = pokeInfo.species(p2) + "-F";
+                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
+            }
             if (ultraPokes.hasOwnProperty(p2+"")) {
                 var species = pokeInfo.species(p2), form = pokeInfo.forme(p2);
                 var key = species + (form > 0 ? "-" + form : "");
                 return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
             }
-           return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
+            return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
         },
         sprite: function(pk) {
-            var shiny = pokeInfo.shiny(pk);
+            var shiny = pokeInfo.shiny(pk) gender = pokeInfo.gender(pk);
             if (ultraPokes.hasOwnProperty(pk+"")) {
                 var species = pokeInfo.species(pk), form = pokeInfo.forme(pk);
                 var key = species + (form > 0 ? "-" + form : "");
@@ -1790,6 +1803,9 @@ function Safari() {
                     ret += "&shiny=true";
                 }
             }
+            if (gender === "F") {
+                ret += "&gender=female";
+            }
             // ret += "&gen=7'>";
             /* Start of temporary hack due to windows client bug with shiny sprites. Enable the line above and remove this block once the client can properly show shiny sprites for non-gen 7 Pokémon*/
             var g = 6, id = parseInt(pk, 10), sp = pokeInfo.species(id);
@@ -1807,6 +1823,9 @@ function Safari() {
             return ret;
         },
         valid: function(pk) {
+            if (hasGenderDifference(pk) && pk < 0) {
+                pk = -pk;
+            }
             if (ultraPokes.hasOwnProperty(pk+"")) {
                 return true;
             }
@@ -1838,6 +1857,107 @@ function Safari() {
         "869": 62,
         "876": 1
     };
+    var genderDifferences = { // Pokemon with gender differences; Object key is the Pokemon number, corresponding value is the (approximate) chance of being female
+        "3": 0.125,
+        "12": 0.5,
+        "19": 0.5,
+        "20": 0.5,
+        "25": 0.5,
+        "26": 0.5,
+        "41": 0.5,
+        "42": 0.5,
+        "44": 0.5,
+        "45": 0.5,
+        "64": 0.25,
+        "65": 0.25,
+        "84": 0.5,
+        "85": 0.5,
+        "97": 0.5,
+        "111": 0.5,
+        "112": 0.5,
+        "118": 0.5,
+        "119": 0.5,
+        "123": 0.5,
+        "129": 0.5,
+        "130": 0.5,
+        "154": 0.125,
+        "165": 0.5,
+        "166": 0.5,
+        "178": 0.5,
+        "185": 0.5,
+        "186": 0.5,
+        "190": 0.5,
+        "194": 0.5,
+        "195": 0.5,
+        "198": 0.5,
+        "202": 0.5,
+        "203": 0.5,
+        "207": 0.5,
+        "208": 0.5,
+        "212": 0.5,
+        "214": 0.5,
+        "215": 0.5,
+        "217": 0.5,
+        "221": 0.5,
+        "224": 0.5,
+        "229": 0.5,
+        "232": 0.5,
+        "255": 0.125,
+        "256": 0.125,
+        "257": 0.125,
+        "267": 0.5,
+        "269": 0.5,
+        "272": 0.5,
+        "274": 0.5,
+        "275": 0.5,
+        "307": 0.5,
+        "308": 0.5,
+        "315": 0.5,
+        "316": 0.5,
+        "317": 0.5,
+        "322": 0.5,
+        "323": 0.5,
+        "350": 0.5,
+        "369": 0.125,
+        "396": 0.5,
+        "397": 0.5,
+        "398": 0.5,
+        "399": 0.5,
+        "400": 0.5,
+        "401": 0.5,
+        "402": 0.5,
+        "403": 0.5,
+        "404": 0.5,
+        "405": 0.5,
+        "407": 0.5,
+        "415": 0.125,
+        "417": 0.5,
+        "418": 0.5,
+        "419": 0.5,
+        "424": 0.5,
+        "443": 0.5,
+        "444": 0.5,
+        "445": 0.5,
+        "449": 0.5,
+        "450": 0.5,
+        "453": 0.5,
+        "454": 0.5,
+        "456": 0.5,
+        "457": 0.5,
+        "459": 0.5,
+        "460": 0.5,
+        "461": 0.5,
+        "464": 0.5,
+        "465": 0.5,
+        "473": 0.5,
+        "521": 0.5,
+        "592": 0.5,
+        "593": 0.5,
+        "668": 0.875
+    };
+    var specialFemaleIcons = [ // These Pokemon have a unique box sprite for females
+        449,450,521,592,593,668
+    ];
     var noShinySprite = [ // These Pokemon have no shiny sprites at all, so they should not be allowed to be shiny. This list includes Pikachu forms (except Pikachu-Cosplay), Castform forms, Rotom-Pokedex, Alcremie forms, and Eternamax Eternatus
         65561,131097,196633,262169,327705,458777,524313,589849,655385,720921,786457,851993,65887,131423,262495,393695,66405,131941,197477,263013,328549,394085,459621,525157,590693,656229,721765,787301,852837,918373,983909,1049445,1114981,1180517,1246053,1311589,1377125,1442661,1508197,1573733,1639269,1704805,1770341,1835877,1901413,1966949,2032485,2098021,2163557,2229093,2294629,2360165,2425701,2491237,2556773,2622309,2687845,2753381,2818917,2884453,2949989,3015525,3081061,3146597,3212133,3277669,3343205,3408741,3474277,3539813,3605349,3670885,3736421,3801957,3867493,3933029,3998565,4064101,66426
     ];
@@ -2850,14 +2970,18 @@ function Safari() {
         -name: String; Pokémon's name (including Shiny prefix). Same as poke()
         -input: String; What you need to type to get to that result. Used for trade
         */
-        var shiny = false, id, num, name;
+        var shiny = false, female = false, id, num, name;
         info = info.replace(/flabebe|flabébe|flabebé/gi, "flabébé").toLowerCase();
-        info = info.replace(/pokédex|pokedex/gi, "pokédex").toLowerCase();
+        info = info.replace(/pokédex|pokedex/gi, "pokédex");
         
         if ((info.length > 1 && (info[0] == "*" || info[info.length-1] == "*")) || info.indexOf("shiny ") === 0) {
             shiny = true;
             info = info.replace("*", "");
             info = info.replace("shiny ", "");
+        }
+        if (info.length > 2 && (info.indexOf("_f") === info.length - 2 || info.indexOf("_m") === info.length - 2)) {
+            female = true;
+            info = info.substring(0, info.length - 2);
         }
         var arr = info.split("-");
         if (arr.length === 2 && !isNaN(arr[0]) && !isNaN(arr[1])) {
@@ -2868,6 +2992,7 @@ function Safari() {
                 num = getPokeNum(info);
             }
         }
+        id = female ? -num : num;
         id = shiny ? num + "" : num;
 
         name = pokePlain(num);
@@ -2875,7 +3000,7 @@ function Safari() {
             num = null;
         }
 
-        return { num: num, id: id, shiny: shiny, name: poke(id), input: (shiny ? "*" : "") + name, type: "poke" };
+        return { num: num, id: id, shiny: shiny, gender: hasGenderDifference ? (female ? "F" : "M") : "N", name: poke(id), input: (shiny ? "*" : "") + name + (hasGenderDifference ? (female ? "_F" : "_M") : ""), type: "poke" };
     }
     function getInputMove(src, data) {
         var num = parseInt(data, 10), name;
@@ -2900,11 +3025,24 @@ function Safari() {
 
         return [id, shiny];
     }
+    function hasGenderDifference(num) {
+        if (typeof num === "string") {
+            num = parseInt(num, 10);
+        }
+        if (num < 0) {
+            num = -num;
+        }
+        return genderDifferences.hasOwnProperty(num+"");
+    }
     function poke(num) {
-        var shiny = false;
+        var shiny = false, female = false;
         if (typeof num === "string") {
             num = parseInt(num, 10);
             shiny = true;
+        }
+        if (num < 0 && hasGenderDifference(num)) {
+            num = -num;
+            female = true;
         }
 
         if (isNaN(num)) {
@@ -2916,11 +3054,14 @@ function Safari() {
             var name = sys.pokemon(num);
         }
 
-        return name ? (shiny ? "Shiny " : "") + name : null;
+        return name ? (shiny ? "Shiny " : "") + name + (hasGenderDifference(num) ? (female ? "_F" : "_M") : "") : null;
     }
     function pokePlain(num) {
         if (typeof num === "string") {
             num = parseInt(num, 10);
+        }
+        if (num < 0 && hasGenderDifference(num)) {
+            num = -num;
         }
         if (isNaN(num)) {
             return "Missingno";
@@ -10390,7 +10531,7 @@ function Safari() {
             info = player.megaTimers[e];
             if (info.expires <= currentTime) {
                 if (player.pokemon.indexOf(info.id) !== -1) {
-                    this.evolvePokemon(src, getInputPokemon(info.id + (typeof info.id == "string" ? "*" : "")), info.to, "reverted to", true);
+                    this.evolvePokemon(src, getInputPokemon(info.id + (typeof info.id == "string" ? "*" : "") + (hasGenderDifference(info.id) ? (parseInt(info.id, 10) < 0 ? "_F" : "_M") : "")), info.to, "reverted to", true);
                 }
                 player.megaTimers.splice(e, 1);
             }
@@ -11723,6 +11864,7 @@ function Safari() {
 
         var info = getInputPokemon(commandData);
         var shiny = info.shiny;
+        var gender = info.gender;
         var num = info.num;
         if (!num) {
             safaribot.sendMessage(src, "Invalid Pokémon!", safchan);
@@ -11746,7 +11888,10 @@ function Safari() {
 
         var possibleEvo = megaEvolutions[species];
         var evolveTo = possibleEvo[sys.rand(0, possibleEvo.length)];
-        var evolvedId = shiny ? "" + evolveTo : evolveTo;
+        var evolvedId = gender === "F" ? -evolveTo: evolveTo;
+        if (shiny) {
+            evolveTo = "" + evolveTo;
+        }
 
         player.balls.mega -= 1;
         player.records.megaEvolutions += 1;
@@ -11754,7 +11899,7 @@ function Safari() {
         var duration = itemData.mega.duration * 24 + this.getFortune(player, "extramega", 0);
 
         this.evolvePokemon(src, info, evolvedId, "mega evolved into", true);
-        this.logLostCommand(sys.name(src), "mega " + commandData, "mega evolved into " + poke(evolvedId));
+        this.logLostCommand(sys.name(src), "mega " + commandData, "mega evolved into " + poke(evolvedId < 0 ? -evolvedId : evolvedId));
         player.megaTimers.push({
             id: evolvedId,
             expires: now() + hours(duration),
