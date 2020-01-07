@@ -12043,7 +12043,7 @@ function Safari() {
             default:
                 if (chance(0.05)) {
                     safaribot.sendHtmlMessage(src, "You pull out your Itemfinder ... ... ... <b>KER-BONK!</b> You walked right into a sign! ...Huh? It has a Trainer Tip written on it!", safchan);
-                    sys.sendMessage(src, "±Hint: " + safariHints.random(), safchan);
+                    sys.sendHtmlMessage(src, "±Hint: " + safariHints.random(), safchan);
                 }
                 else {
                     safaribot.sendHtmlMessage(src, "You pull out your Itemfinder ... ... ... But it did not detect anything. "+(freefinder ? "<i>At least no charge was used... </i>" : "") + "[Remaining charges: " + totalCharges + (permCharges > 0 ? " (Daily " + dailyCharges + " plus " + permCharges + " bonus)" : "") + "].", safchan);
