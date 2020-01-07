@@ -36528,7 +36528,7 @@ function Safari() {
             if (isOwner && canPlay && pokemon.berry !== undefined && pokemon.berry !== null) {
                 if (pokemon.berry.hasOwnProperty("time") && pokemon.berry.time < now()) {
                     daycarebot.sendMessage(src, poke(pokemon.id) + " grew some berries for you!", safchan);
-                    var g = giveStuff(player, toStuffObj(pokemon.berry.amt + "@" + pokemon.berry.name));
+                    var g = giveStuff(player, toStuffObj(pokemon.berry.amount + "@" + pokemon.berry.name));
                     daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#32CD32"), safchan);  
                     pokemon.berry = null;
                     this.saveGame(player);
@@ -36858,7 +36858,7 @@ function Safari() {
                     var pokeName = gData[0];
                     var pokemon = gData[1];
                     if (pokemon.berry.time > now()) {
-                        daycarebot.sendMessage(src, "Come back for your " + pokeName + "'s" + plural("", pokemon.berry.name) + " in about " + timeLeftString(pokemon.berry.time) + "!", safchan);
+                        daycarebot.sendMessage(src, "Come back for your " + pokeName + "'s" + plural("", itemAlias(pokemon.berry.name, false, true)) + " in about " + timeLeftString(pokemon.berry.time) + "!", safchan);
                     } else {
                         daycarebot.sendMessage(src, pokeName + " grew some berries for you!", safchan);
                         var g = giveStuff(player, toStuffObj(pokemon.berry.amount + "@" + pokemon.berry.name));
