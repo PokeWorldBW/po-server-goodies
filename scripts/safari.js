@@ -36873,7 +36873,7 @@ function Safari() {
         }
         var berryName = itemAlias(data, true, true);
         if (typeof berryName !== "string" || berryName.indexOf(" ") === -1 || berryName.slice(berryName.lastIndexOf(" ") + 1) !== "Berry") {
-            daycarebot.sendHtmlMessage(src, berryName + "is not a berry! Type " + link("/daycare berry:", "/daycare berry:[berry]", true) + " to give your Pokémon a berry!", safchan);
+            daycarebot.sendHtmlMessage(src, berryName + " is not a berry! Type " + link("/daycare berry:", "/daycare berry:[berry]", true) + " to give your Pokémon a berry!", safchan);
             return false;
         }
         var berry = itemAlias(data, false, false);
