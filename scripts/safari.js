@@ -1748,7 +1748,7 @@ function Safari() {
             return typeof poke === "string";
         },
         gender: function(poke) {
-            return hasGenderDifference(poke) ? (parseInt(poke, 10) < 0 "F" : "M") : "N";
+            return hasGenderDifference(poke) ? (parseInt(poke, 10) < 0 ? "F" : "M") : "N";
         },
         readableNum: function(poke) {
             var ret = "";
