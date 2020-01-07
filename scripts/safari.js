@@ -1778,7 +1778,7 @@ function Safari() {
             return '<img src="icon:' + p2 + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
         },
         sprite: function(pk) {
-            var shiny = pokeInfo.shiny(pk) gender = pokeInfo.gender(pk);
+            var shiny = pokeInfo.shiny(pk), gender = pokeInfo.gender(pk);
             if (ultraPokes.hasOwnProperty(pk+"")) {
                 var species = pokeInfo.species(pk), form = pokeInfo.forme(pk);
                 var key = species + (form > 0 ? "-" + form : "");
