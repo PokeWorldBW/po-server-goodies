@@ -36886,8 +36886,8 @@ function Safari() {
             return false;
         }
         var gardener = null, pokemon = null;
-        for (var i = 0; i < opt.length; i++) {
-            pokemon = opt[i];
+        for (var i = 0; i < pokesList.length; i++) {
+            pokemon = pokesList[i];
             if (pokemon.berry === undefined || pokemon.berry === null) {
                 var harvest = this.getDayCareBerryHarvestData(pokemon.id, berry);
                 pokemon.berry = {
