@@ -37663,7 +37663,14 @@ function Safari() {
                 ret += "<td align=center width=42 height=32" + (bg ? " style='background-color:" + bg + ";'" : "") + ">";
                 if (rows.hasOwnProperty(place)) {
                     inp = parseInt(rows[place].mon, 10);
-                    ret += "<img src='icon:" + inp + "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
+                    if (ultraPokes.hasOwnProperty(inp+"")) {
+                        var species = pokeInfo.species(inp), form = pokeInfo.forme(inp);
+                        var key = species + (form > 0 ? "-" + form : "");
+                        ret += "<img src='" + resources.icons.get(key);
+                    } else {
+                        ret += "<img src='icon:" + inp;
+                    }
+                    ret += "' title='" + rows[place].owner.toCorrectCase() + " (" + poke(inp) + ")'" + (bg ? " style='background:" + bg + "'" : "") + ">";
                     ret += "<p" + (false ? " style='background:" + bg + "' " : "") + ">" + link("/daycare interact:" + rows[place].id, "Check", false, bg === "#2366ed" ? "#B0E2FF" : null) + "</p>";
                 } else {
                     if (features.hasOwnProperty(place)) {
