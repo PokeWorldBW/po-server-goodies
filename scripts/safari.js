@@ -2926,15 +2926,6 @@ function Safari() {
 
         return [id, shiny];
     }
-    function hasGenderDifference(num) {
-        if (typeof num === "string") {
-            num = parseInt(num, 10);
-        }
-        if (num < 0) {
-            num = -num;
-        }
-        return genderDifferences.hasOwnProperty(num+"");
-    }
     function poke(num) {
         var shiny = false, female = false;
         if (typeof num === "string") {
@@ -3079,6 +3070,15 @@ function Safari() {
         "593": 0.5,
         "668": 0.875
     };
+    function hasGenderDifference(num) {
+        if (typeof num === "string") {
+            num = parseInt(num, 10);
+        }
+        if (num < 0) {
+            num = -num;
+        }
+        return genderDifferences.hasOwnProperty(num+"");
+    }
     var specialFemaleIcons = [ // These Pokemon have a unique box sprite for females
         449,450,521,592,593,668
     ];
