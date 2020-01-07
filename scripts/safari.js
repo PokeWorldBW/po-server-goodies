@@ -36826,6 +36826,7 @@ function Safari() {
         };
     };
     this.dayCarePlantBerry = function(src, player, cdata) {
+        var data = cdata.join("");
         var opt = [];
         for (var t in this.daycarePokemon) {
             if (this.daycarePokemon[t].ownernum === player.idnum) {
@@ -36836,7 +36837,7 @@ function Safari() {
             daycarebot.sendHtmlMessage(src, "You do not have any Pokémon in the Daycare! Type " + link("/daycare dropoff:", false, true) + " to add one!", safchan);
             return false;
         }
-        if (cdata === "") {
+        if (data === "") {
             var gardeners = [];
             for (var i = 0; i < opt.length; i++) {
                 pokemon = opt[i];
@@ -36866,11 +36867,11 @@ function Safari() {
             }
             return false;
         }
-        var berryName = itemAlias(cdata, false, true);
+        var berryName = itemAlias(data, false, true);
         if (typeof berryName !== "string" || berryName.indexOf(" ") === -1 || berryName.slice(berryName.lastIndexOf(" ") + 1) !== "Berry") {
             return false;
         }
-        var berry = itemAlias(cdata, false, false);
+        var berry = itemAlias(data, false, false);
         if (player.balls[berry] < 1) {
             daycarebot.sendMessage(src, "Sorry, but it doesn't appear that you have any" + plural("", berryName) + "!", safchan);
             return false;
