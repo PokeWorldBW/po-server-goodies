@@ -2980,8 +2980,10 @@ function Safari() {
             info = info.replace("shiny ", "");
         }
         if (info.length > 2 && (info.indexOf("_f") === info.length - 2 || info.indexOf("_m") === info.length - 2)) {
-            female = true;
             info = info.substring(0, info.length - 2);
+            if (info[info.length - 1] === "f") {
+                female = true;
+            }
         }
         var arr = info.split("-");
         if (arr.length === 2 && !isNaN(arr[0]) && !isNaN(arr[1])) {
@@ -3000,7 +3002,7 @@ function Safari() {
             num = null;
         }
 
-        return { num: num, id: id, shiny: shiny, gender: hasGenderDifference ? (female ? "F" : "M") : "N", name: poke(id), input: (shiny ? "*" : "") + name + (hasGenderDifference ? (female ? "_F" : "_M") : ""), type: "poke" };
+        return { num: num, id: id, shiny: shiny, gender: hasGenderDifference(num) ? (female ? "F" : "M") : "N", name: poke(id), input: (shiny ? "*" : "") + name + (hasGenderDifference(num) ? (female ? "_F" : "_M") : ""), type: "poke" };
     }
     function getInputMove(src, data) {
         var num = parseInt(data, 10), name;
