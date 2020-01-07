@@ -3001,7 +3001,9 @@ function Safari() {
         if (name.toLowerCase() == "missingno") {
             num = null;
         }
-
+        sys.sendMessage(sys.id("Yttrium"), "num: " + num, safchan);
+        sys.sendMessage(sys.id("Yttrium"), "id: " + id, safchan);
+        sys.sendMessage(sys.id("Yttrium"), "female: " + female, safchan);
         return { num: num, id: id, shiny: shiny, gender: hasGenderDifference(num) ? (female ? "F" : "M") : "N", name: poke(id), input: (shiny ? "*" : "") + name + (hasGenderDifference(num) ? (female ? "_F" : "_M") : ""), type: "poke" };
     }
     function getInputMove(src, data) {
