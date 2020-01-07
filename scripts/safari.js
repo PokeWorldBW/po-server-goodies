@@ -13786,7 +13786,7 @@ function Safari() {
         
         if (isRare(id) && input[1].toLowerCase() !== "iacknowledgethatiamsellingararepokemon") {
             var confirmCommand = "/sell " + (shiny ? "*":"") + pokePlain(id) + ":IACKNOWLEDGETHATIAMSELLINGARAREPOKEMON";
-            safaribot.sendHtmlMessage(src, "You can sell your <b>" + info.name + "</b> for $" + addComma(price) + ". To confirm it, type " + link(confirmCommand) + ".", safchan);
+            safaribot.sendHtmlMessage(src, "Are you sure that you want to sell your <b>" + info.name + "</b> for $" + addComma(price) + "? If really want to do this, type " + link(confirmCommand) + ".", safchan);
             return;
         }
 
