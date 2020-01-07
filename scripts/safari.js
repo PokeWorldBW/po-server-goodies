@@ -905,7 +905,7 @@ function Safari() {
             battery: {name: "battery", fullName: "Cell Battery", type: "perk", icon: 241, price: 2000, bonusRate: 2, maxRate: 20, aliases:["battery", "cellbattery", "cell battery", "cell"], tradable: true},
             eviolite: {name: "eviolite", fullName: "Eviolite", type: "perk", icon: 233, price: 2000, bonusRate: 8, maxRate: 80, threshold: 420, aliases:["eviolite"], tradable: true},
             lens: {name: "lens", fullName: "Zoom Lens", type: "perk", icon: 41, price: 30000, cooldown: 16000, bonusRate: 1, maxRate: 10, threshold: 2000, aliases:["lens", "zoom lens", "zoom", "zoomlens"], tradable: false },
-            box: {name: "box", fullName: "Box", type: "perk", icon: 175, price: [0, 0, 0, 0, 100000, 200000, 400000, 600000, 800000, 1000000], bonusRate: 96, aliases:["box", "boxes"], tradable: false},
+            box: {name: "box", fullName: "Box", type: "perk", icon: 175, price: [0, 0, 0, 0, 100000, 200000, 400000, 600000, 800000, 1000000], bonusRate: 120, aliases:["box", "boxes"], tradable: false},
 
             //Valuables
             pearl: {name: "pearl", fullName: "Pearl", type: "valuables", icon: 111, price: 500, aliases:["pearl"], tradable: true},
@@ -9520,7 +9520,7 @@ function Safari() {
         var out = "";
         var list = player.cherished;
 
-        var label = "Cherished (" + player.cherished.length + "/96)";
+        var label = "Cherished (" + player.cherished.length + "/120)";
         if (textOnly) {
             out += this.listPokemonText(list, label);
         } else {
@@ -16402,6 +16402,7 @@ function Safari() {
         var player = getAvatar(src);
         if (!safari.events.spiritDuelsEnabled) {
             safaribot.sendMessage( src,"Spirit Duels are not enabled!",safchan );
+            return;
         }
         switch (command) {
             case "box": this.showSpiritBox(src,player,false,false); break;
@@ -16416,7 +16417,6 @@ function Safari() {
             case "reactive": this.markActivity(src,player); break;
             default: safaribot.sendMessage( src,"You are a " + player.spiritDuels.team + " " + player.spiritDuels.rankName + "! [Valid commands are box, boxt, active, join, history, party, skill, and watch!]",safchan );
         }
-        return;
     };
     this.markActivity = function( src,player ) {
         var army, named, index, passed = false;
@@ -24850,9 +24850,9 @@ function Safari() {
                     }
                     safaribot.sendHtmlMessage(src, trainerSprite + "Collector: My requests are organized into different levels:", safchan);
                     safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Easy", "Easy") + " - Three Pokémon with BST between 175 and 320. Reward is 2.4x their price.", safchan);
-                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Normal", "Normal") + " - Four Pokémon with BST between 320 and 460. Reward is 3.3x their price.", safchan);
-                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Hard", "Hard") + " - Five Pokémon with BST between 440 and 599. Reward is 4.8x their price.", safchan);
-                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Epic", "Epic") + " - Six Pokémon with BST between 480 and 600, with one of them being a Legendary. Reward is 10x their price.", safchan);
+                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Normal", "Normal") + " - Four Pokémon with BST between 320 and 480. Reward is 3.3x their price.", safchan);
+                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Hard", "Hard") + " - Five Pokémon with BST between 470 and 599. Reward is 4.8x their price.", safchan);
+                    safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Epic", "Epic") + " - Six Pokémon with BST between 500 and 600, with one of them being a Legendary. Reward is 10x their price.", safchan);
                     safaribot.sendHtmlMessage(src, "Collector: " + link("/quest collector:start:Insane", "Insane") + " - For crazy people.", safchan);
                     sys.sendMessage(src, "", safchan);
             break;
@@ -24880,7 +24880,7 @@ function Safari() {
                 }
                 var diff = data[1].toLowerCase();
 
-                var level = 1;
+                var level = 1, includeGalar = false;
                 switch (diff) {
                     case "easy":
                     case "[easy]":
@@ -24894,6 +24894,11 @@ function Safari() {
                     case "hard":
                     case "[hard]":
                         level = 2;
+                    break;
+                    case "galar":
+                    case "[galar]":
+                        level = 2;
+                        includeGalar = true;
                     break;
                     case "epic":
                     case "[epic]":
@@ -24910,15 +24915,15 @@ function Safari() {
 
                 var request = [];
                 var difficultBonus = [2.4, 3.3, 4.8, 10, 20][level];
-                var minBST = [175, 320, 440, 480, 520][level];
-                var maxBST = [320, 460, 599, 600, 750][level];
+                var minBST = [175, 320, 470, 500, 520][level];
+                var maxBST = [320, 480, 599, 600, 750][level];
                 var amount = [3, 4, 5, 5, 9][level];
                 var deadlineDays = 2;
 
                 while (request.length < amount) {
-                    var randomNum = sys.rand(1, 891);
-                    if (level < 2) {
-                        randomNum = sys.rand(1, 800);
+                    var randomNum = sys.rand(1, 800);
+                    if (includeGalar) {
+                        randomNum = sys.rand(1, 890);
                     }
                     if ([862, 863, 864, 865, 866, 867, 772, 773].contains(randomNum)) {
                         continue;
