@@ -1733,13 +1733,13 @@ function Safari() {
     var immuneMultiplier = 0.15;
     var pokeInfo = {
         species: function(poke) {
-            if (hasGenderDifference(poke) && poke < 0) {
+            if (poke < 0 && hasGenderDifference(poke)) {
                 poke = -poke;
             }
             return poke & ((1 << 16) - 1);
         },
         forme: function(poke) {
-            if (hasGenderDifference(poke) && poke < 0) {
+            if (poke < 0 && hasGenderDifference(poke)) {
                 poke = -poke;
             }
             return poke >> 16;
@@ -1751,6 +1751,9 @@ function Safari() {
             return hasGenderDifference(poke) ? (parseInt(poke, 10) < 0 ? "F" : "M") : "N";
         },
         readableNum: function(poke) {
+            if (poke < 0 && hasGenderDifference(poke)) {
+                poke = -poke;
+            }
             var ret = "";
             ret += pokeInfo.species(poke);
             if (pokeInfo.forme(poke) > 0) {
@@ -1825,7 +1828,7 @@ function Safari() {
             return ret;
         },
         valid: function(pk) {
-            if (hasGenderDifference(pk) && pk < 0) {
+            if (pk < 0 && hasGenderDifference(pk)) {
                 pk = -pk;
             }
             if (ultraPokes.hasOwnProperty(pk+"")) {
@@ -1834,6 +1837,9 @@ function Safari() {
             return pokePlain(pk) !== "Missingno";
         },
         calcForme: function(base, forme) {
+            if (base < 0 && hasGenderDifference(base)) {
+                base = -base;
+            }
             return parseInt(base,10) + parseInt(forme << 16, 10);
         }
     };
@@ -5540,33 +5546,51 @@ function Safari() {
         return out;
     };
     function type1(pokeNum) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         if (ultraPokes.hasOwnProperty(pokeNum)) {
             return ultraPokes[pokeNum+""].types[0];
         }
         return sys.type(sys.pokeType1(pokeNum));
     }
     function type2(pokeNum) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         if (ultraPokes.hasOwnProperty(pokeNum)) {
             return ultraPokes[pokeNum+""].types[1];
         }
         return sys.type(sys.pokeType2(pokeNum));
     }
     function hasType(pokeNum, type) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         return type1(pokeNum) == type || type2(pokeNum) == type;
     }
     function getHeight(pokeNum) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         if (ultraPokes.hasOwnProperty(pokeNum)) {
             return ultraPokes[pokeNum+""].height;
         }
         return pokedex.getHeight(pokeNum);
     }
     function getWeight(pokeNum) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         if (ultraPokes.hasOwnProperty(pokeNum)) {
             return ultraPokes[pokeNum+""].weight;
         }
         return pokedex.getWeight(pokeNum);
     }
     function fetchMoves(num) {
+        if (num < 0 && hasGenderDifference(num)) {
+            num = -num;
+        }
         var out = [];
         var moves = [];
         var id = parseInt(num, 10);
@@ -5605,6 +5629,9 @@ function Safari() {
         return removeDuplicates(moves);
     }
     function canLearnMove(num, moveNum) {
+        if (num < 0 && hasGenderDifference(num)) {
+            num = -num;
+        }
         var id = parseInt(num, 10);
         var moves = fetchMoves(id);
         var move = moveNum + "";
@@ -5639,6 +5666,9 @@ function Safari() {
         return out;
     }
     function getPokeAbility(pokeNum, num) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         if (isMega(pokeNum) && num !== 0) {
             return 0;
         }
@@ -5667,6 +5697,9 @@ function Safari() {
         return [0,1,2].map(function(x) { return getPokeAbility(num, x); }).contains(abilityNum);
     }
     function getStats(pokeNum) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         if (ultraPokes.hasOwnProperty(pokeNum+"")) {
             return ultraPokes[pokeNum+""].stats;
         }
@@ -5676,6 +5709,9 @@ function Safari() {
         return sys.pokeBaseStats(pokeNum);
     }
     function getStatsNamed(pokeNum) {
+        if (pokeNum < 0 && hasGenderDifference(pokeNum)) {
+            pokeNum = -pokeNum;
+        }
         var st, out = {};
         if (ultraPokes.hasOwnProperty(pokeNum+"")) {
             st = ultraPokes[pokeNum+""].stats;
@@ -44689,7 +44725,7 @@ function Safari() {
                         efmsg += ", Immunities: " + im.join("");
                     }
                 }
-                safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + info.name + "'s BST is " + getBST(info.num) + statsmsg, safchan);
+                safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + pokePlain(info.num) + "'s BST is " + getBST(info.num) + statsmsg, safchan);
                 safaribot.sendHtmlMessage(src, "Type: " + (typeIcon(type_1) + (type_2 === "???" ? "" : typeIcon(type_2)))+ ", Region: " + generation(info.num, true) + ", Color: " + cap(getPokeColor(info.num)) + ", Egg Group(s): " + readable(getEggGroups(info.num)) +".", safchan);
                 if (efmsg !== "") {
                     safaribot.sendHtmlMessage(src, efmsg, safchan);
@@ -44767,10 +44803,10 @@ function Safari() {
                     safaribot.sendMessage(src, "Invalid Pokémon.", safchan);
                     return true;
                 }
-                var out = ["<timestamp/> <b>" + info.name + ":</b>"];
+                var out = ["<timestamp/> <b>" + pokePlain(info.num) + ":</b>"];
                 if (sys.pokemon(info.num) !== "Missingno") {
-                    out.push(pokeInfo.icon(info.num));
-                    out.push(pokeInfo.sprite(info.num) + " " + pokeInfo.sprite(info.num+""));
+                    out.push(pokeInfo.icon(info.id));
+                    out.push(pokeInfo.sprite(info.id) + " " + pokeInfo.sprite(info.id+""));
                 } else {
                     var species = pokeInfo.species(info.num), form = pokeInfo.forme(info.num);
                     var key = species + (form > 0 ? "-" + form : "");
