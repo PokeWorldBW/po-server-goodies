@@ -10590,7 +10590,7 @@ function Safari() {
             info = player.megaTimers[e];
             if (info.expires <= currentTime) {
                 if (player.pokemon.indexOf(info.id) !== -1) {
-                    this.evolvePokemon(src, getInputPokemon(info.id + (typeof info.id == "string" ? "*" : "") + (hasGenderDifference(info.id) ? (parseInt(info.id, 10) < 0 ? "_F" : "_M") : "")), info.to, "reverted to", true);
+                    this.evolvePokemon(src, getInputPokemon(info.id + (typeof info.id == "string" ? "*" : "")), info.to, "reverted to", true);
                 }
                 player.megaTimers.splice(e, 1);
             }
