@@ -3010,7 +3010,7 @@ function Safari() {
             num = null;
         }
 
-        return { num: num, id: id, shiny: shiny, gender: hasGenderDifference(num) ? (female ? "F" : "M") : "N", name: poke(id), input: (shiny ? "*" : "") + name + (hasGenderDifference(num) ? (female ? "_F" : "_M") : ""), type: "poke" };
+        return { num: num, id: id, shiny: shiny, gender: hasGenderDifference(num) ? (female ? "F" : "M") : "N", name: poke(id), fullName: poke(id, true), input: (shiny ? "*" : "") + name + (hasGenderDifference(num) ? (female ? "_F" : "_M") : ""), type: "poke" };
     }
     function getInputMove(src, data) {
         var num = parseInt(data, 10), name;
@@ -3044,13 +3044,13 @@ function Safari() {
         }
         return typeof genderDifferences === "object" ? genderDifferences.hasOwnProperty(num+"") : false;
     }
-    function poke(num) {
+    function poke(num, showGender) {
         var shiny = false, female = false;
         if (typeof num === "string") {
             num = parseInt(num, 10);
             shiny = true;
         }
-        if (num < 0 && hasGenderDifference(num)) {
+        if (showGender && num < 0 && hasGenderDifference(num)) {
             num = -num;
             female = true;
         }
@@ -3064,7 +3064,7 @@ function Safari() {
             var name = sys.pokemon(num);
         }
 
-        return name ? (shiny ? "Shiny " : "") + name + (hasGenderDifference(num) ? (female ? "_F" : "_M") : "") : null;
+        return name ? (shiny ? "Shiny " : "") + name + (showGender && hasGenderDifference(num) ? (female ? "_F" : "_M") : "") : null;
     }
     function pokePlain(num) {
         if (typeof num === "string") {
@@ -44725,7 +44725,7 @@ function Safari() {
                         efmsg += ", Immunities: " + im.join("");
                     }
                 }
-                safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + pokePlain(info.num) + "'s BST is " + getBST(info.num) + statsmsg, safchan);
+                safaribot.sendHtmlMessage(src, ic + " " + pokeInfo.species(info.num) + ". " + info.name + "'s BST is " + getBST(info.num) + statsmsg, safchan);
                 safaribot.sendHtmlMessage(src, "Type: " + (typeIcon(type_1) + (type_2 === "???" ? "" : typeIcon(type_2)))+ ", Region: " + generation(info.num, true) + ", Color: " + cap(getPokeColor(info.num)) + ", Egg Group(s): " + readable(getEggGroups(info.num)) +".", safchan);
                 if (efmsg !== "") {
                     safaribot.sendHtmlMessage(src, efmsg, safchan);
