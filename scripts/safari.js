@@ -36827,7 +36827,7 @@ function Safari() {
         }
         return {
             amount: amt,
-            time: now() + t
+            time: t
         };
     };
     this.dayCarePlantBerry = function(src, player, data) {
@@ -36893,7 +36893,7 @@ function Safari() {
                 pokemon.berry = {
                     name: berry,
                     amount: harvest.amount,
-                    time: harvest.time
+                    time: harvest.time + now()
                 };
                 gardener = (pokemon.shiny ? "Shiny " : "") + poke(pokemon.id);
                 break;
