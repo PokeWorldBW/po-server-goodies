@@ -1766,7 +1766,7 @@ function Safari() {
             if (pcheck === 710 || pcheck === 711) {
                 p2 = pcheck;
             }
-            if (pokeInfo.gender(p2) === "F" && specialFemaleIcons.contains(parseInt(p2, 10))) {
+            if (pokeInfo.gender(p2) === "F" && specialFemaleIcons.contains(-parseInt(p2, 10))) {
                 var key = pokeInfo.species(p2) + "-F";
                 return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
             }
@@ -1791,7 +1791,12 @@ function Safari() {
             
             var ret = [];
             ret += "<img src='pokemon:num=";
-            ret += pk;
+            if (gender === "F") {
+                ret += -pk;
+                ret += "&gender=female";
+            } else {
+                ret += pk;
+            }
             if (shiny) {
                 // PO has Magearna's shiny sprites mixed up. The shiny sprite for Magearna is actually the shiny sprite for Magearna-Pokeball
                 // Magearna's real shiny is identical to normal Magearna (blame GameFreak)
@@ -1802,9 +1807,6 @@ function Safari() {
                 } else {
                     ret += "&shiny=true";
                 }
-            }
-            if (gender === "F") {
-                ret += "&gender=female";
             }
             // ret += "&gen=7'>";
             /* Start of temporary hack due to windows client bug with shiny sprites. Enable the line above and remove this block once the client can properly show shiny sprites for non-gen 7 Pokémon*/
