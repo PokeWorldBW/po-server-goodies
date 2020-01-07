@@ -1154,7 +1154,7 @@ function Safari() {
     
         //triathlete: {icon: 361, name: "triathlete", fullName: "Triathlete", aliases: ["triathlete"], acqReq: 50, record: fullyPlayedContests, rate: 0.01, thresh1: 5, thresh2: 8, thresh3: 13, effect: "A master in endurance. Even after playing in the Safari Zone all day, extensive training allows a quick and alert response when a wild Pokémon appears.", noAcq: "{0}"},
         //guitarist: {icon: 428, name: "guitarist", fullName: "Guitarist", aliases: ["guitarist"], acqReq: 30, record: "gemsUsed", rate: 5, effect: "A master in melody. ", noAcq: "Use {0} more Ampere Gems"},
-        //sightseer: {icon: 816, name: "sightseer", fullName: "Sightseer", aliases: ["sightseer"], acqReq: 8, record: "rareHatched", acqReq2: 512, record2: "goldenBaitUsed", rate: 0.05, effect: "A world class traveler. Figured how to bait Shiny Pokemon more effectively after exploring the planet several times.", noAcq: "Match ${0} more rare Pokémon from eggs and use ${1} more Golden Bait" }
+        //sightseer: {icon: 816, name: "sightseer", fullName: "Sightseer", aliases: ["sightseer"], acqReq: 8, record: "rareHatched", acqReq2: 512, record2: "goldenBaitUsed", rate: 0.05, effect: "A master in tourism. Figured how to bait Shiny Pokemon more effectively after exploring the planet several times.", noAcq: "Match ${0} more rare Pokémon from eggs and use ${1} more Golden Bait" }
         
         };
 
@@ -13778,9 +13778,15 @@ function Safari() {
             safaribot.sendHtmlMessage(src, "You cannot sell " + info.name + " because it's in your Tradeblocked list. If you really wish to sell it, use /tradeblock to remove it from your tradeblock list.", safchan);
             return;
         }
-        if (input.length < 2 || input[1].toLowerCase() !== "confirm") {
+        if (input.length < 2 || (input[1].toLowerCase() !== "confirm" && input[1].toLowerCase() !== "iacknowledgethatiamsellingararepokemon")) {
             var confirmCommand = "/sell " + (shiny ? "*":"") + pokePlain(id) + ":confirm";
             safaribot.sendHtmlMessage(src, "You can sell your " + info.name + " for $" + addComma(price) + ". To confirm it, type " + link(confirmCommand) + ".", safchan);
+            return;
+        }
+        
+        if (isRare(id) && input[1].toLowerCase() !== "iacknowledgethatiamsellingararepokemon") {
+            var confirmCommand = "/sell " + (shiny ? "*":"") + pokePlain(id) + ":IACKNOWLEDGETHATIAMSELLINGARAREPOKEMON";
+            safaribot.sendHtmlMessage(src, "You can sell your <b>" + info.name + "</b> for $" + addComma(price) + ". To confirm it, type " + link(confirmCommand) + ".", safchan);
             return;
         }
 
