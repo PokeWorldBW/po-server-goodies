@@ -36529,10 +36529,10 @@ function Safari() {
                 if (pokemon.berry.hasOwnProperty("time") && pokemon.berry.time < now()) {
                     daycarebot.sendMessage(src, poke(pokemon.id) + " grew some berries for you!", safchan);
                     var g = giveStuff(player, toStuffObj(pokemon.berry.amt + "@" + pokemon.berry.name));
-                    daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#66CD00"), safchan);                        
+                    daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#32CD32"), safchan);  
+                    pokemon.berry = null;
+                    this.saveGame(player);
                 }
-                pokemon.berry = null;
-                this.saveGame(player);
             }
             var m = [];
             if (canPlay) {
@@ -36857,12 +36857,12 @@ function Safari() {
                     var gData = gardeners[i];
                     var pokeName = gData[0];
                     var pokemon = gData[1];
-                    if (pokemon.berry.time < now()) {
+                    if (pokemon.berry.time > now()) {
                         daycarebot.sendMessage(src, "Come back for your " + pokeName + "'s" + plural("", pokemon.berry.name) + " in about " + timeLeftString(pokemon.berry.time) + "!", safchan);
                     } else {
                         daycarebot.sendMessage(src, pokeName + " grew some berries for you!", safchan);
                         var g = giveStuff(player, toStuffObj(pokemon.berry.amount + "@" + pokemon.berry.name));
-                        daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#66CD00"), safchan);                        
+                        daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#32CD32"), safchan);                        
                         pokemon.berry = null;
                         this.saveGame(player);
                         safari.saveDaycare();
@@ -36871,9 +36871,9 @@ function Safari() {
             }
             return false;
         }
-        var berryName = itemAlias(data, false, true);
+        var berryName = itemAlias(data, true, true);
         if (typeof berryName !== "string" || berryName.indexOf(" ") === -1 || berryName.slice(berryName.lastIndexOf(" ") + 1) !== "Berry") {
-            daycarebot.sendHtmlMessage(src, "Type " + link("/daycare berry:", "/daycare berry:[berry]", true) + " to give your Pokémon a berry!", safchan);
+            daycarebot.sendHtmlMessage(src, berryName + "is not a berry! Type " + link("/daycare berry:", "/daycare berry:[berry]", true) + " to give your Pokémon a berry!", safchan);
             return false;
         }
         var berry = itemAlias(data, false, false);
