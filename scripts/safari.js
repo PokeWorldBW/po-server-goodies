@@ -1769,9 +1769,13 @@ function Safari() {
             if (pcheck === 710 || pcheck === 711) {
                 p2 = pcheck;
             }
-            if (pokeInfo.gender(p2) === "F" && specialFemaleIcons.contains(-parseInt(p2, 10))) {
-                var key = pokeInfo.species(p2) + "-F";
-                return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
+            if (pokeInfo.gender(p2) === "F") {
+                if (specialFemaleIcons.contains(-parseInt(p2, 10))) {
+                    var key = pokeInfo.species(p2) + "-F";
+                    return '<img src="' + resources.icons.get(key) + '" title="#' + pokeInfo.readableNum(p) + " " + poke(p) + (shinyBG && pokeInfo.shiny(p) ? '" style="background:yellow"' : '"') + '>';
+                } else {
+                    p2 = -p2;
+                }
             }
             if (ultraPokes.hasOwnProperty(p2+"")) {
                 var species = pokeInfo.species(p2), form = pokeInfo.forme(p2);
