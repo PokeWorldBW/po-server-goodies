@@ -3050,7 +3050,7 @@ function Safari() {
             num = parseInt(num, 10);
             shiny = true;
         }
-        if (showGender && num < 0 && hasGenderDifference(num)) {
+        if (num < 0 && hasGenderDifference(num)) {
             num = -num;
             female = true;
         }
@@ -44803,7 +44803,7 @@ function Safari() {
                     safaribot.sendMessage(src, "Invalid Pokémon.", safchan);
                     return true;
                 }
-                var out = ["<timestamp/> <b>" + pokePlain(info.num) + ":</b>"];
+                var out = ["<timestamp/> <b>" + info.name + ":</b>"];
                 if (sys.pokemon(info.num) !== "Missingno") {
                     out.push(pokeInfo.icon(info.id));
                     out.push(pokeInfo.sprite(info.id) + " " + pokeInfo.sprite(info.id+""));
