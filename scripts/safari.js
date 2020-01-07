@@ -36477,7 +36477,7 @@ function Safari() {
                 this.removePokemon(src, pokemon.id);
                 this.daycarePokemon.push(p);
                 this.saveGame(player);
-                daycarebot.sendMessage(src, "Your " + (p.shiny ? "Shiny " : "") + poke(pokemon.id) + " has been added to the Daycare! Enjoy your stay, "  + poke(pokemon.id) + "!", safchan);
+                daycarebot.sendMessage(src, "Your " + poke(pokemon.id) + " has been added to the Daycare! Enjoy your stay, "  + poke(pokemon.id) + "!", safchan);
                 sys.appendToFile(questLog, now() + "|||" + player.id.toCorrectCase() + "|||Daycare|||Dropped off " + (p.shiny ? "Shiny " : "") + poke(pokemon.id) + "|||Into " + place + "\n");
                 safari.saveDaycare();
                 return true;
@@ -48527,11 +48527,6 @@ function Safari() {
         safari.daycareRegions = parseFromPerm("daycareRegions", {});
         safari.daycarePokemon = parseFromPerm("daycarePokemon", []);
         recipeData = parseFromPerm("alchemistRecipes", {});
-        if (recipeData.hasOwnProperty("expup")) {
-            delete recipeData["expup"];
-            permObj.add("alchemistRecipes", JSON.stringify(recipeData));
-            permObj.save();
-        }
         gymData = parseFromPerm("gyms", {});
         eliteData = parseFromPerm("elite", []);
         eliteHall = parseFromPerm("hall", []);
@@ -48708,7 +48703,7 @@ function Safari() {
             this.showNextContest(src);
             sys.sendMessage(src, "*** ******************************************** ***", safchan);
             if (currentPokemon && (!(currentTheme && contestThemes[currentTheme].disguises))) {
-                sys.sendHtmlMessage(src, "There's a wild " + (typeof currentPokemon === "string" ? "Shiny " : "") + poke(currentDisplay) + "! Type " + link("/catch") + " to catch it!", safchan);
+                sys.sendHtmlMessage(src, "There's a wild " + poke(currentDisplay) + "! Type " + link("/catch") + " to catch it!", safchan);
             }
         }
         return false;
