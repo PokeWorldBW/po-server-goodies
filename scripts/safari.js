@@ -5754,7 +5754,7 @@ function Safari() {
         return Math.round(getBST(pokeNum) * (getBST(pokeNum) >= 600 ? 2 : 1) * (getBST(pokeNum) >= 660 ? 4 : 1) * (shiny ? 5 : 1) * (isLegendary(pokeNum) ? 10 : 1) * (perkBonus ? perkBonus : 1));
     }
     function isMega(num) {
-        return megaPokemon.indexOf(num) !== -1;
+        return typeof megaPokemon === "object" ? megaPokemon.indexOf(num) !== -1 : false;
     }
     function isLegendary(num) {
         return legendaries.indexOf(pokeInfo.species(num)) !== -1;
