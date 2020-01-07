@@ -3034,8 +3034,7 @@ function Safari() {
         if (num < 0) {
             num = -num;
         }
-        return false;
-        //return genderDifferences.hasOwnProperty(num+"");
+        return genderDifferences.hasOwnProperty(num+"");
     }
     function poke(num) {
         var shiny = false, female = false;
