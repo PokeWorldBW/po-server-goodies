@@ -36412,7 +36412,7 @@ function Safari() {
             case "view": this.printDayCare(src, c2); break;
             case "interact": this.dayCareInteract(src, player, c2, c3); break;
             case "help": this.dayCareHelp(src); break;
-            case "berry": this.dayCarePlantBerry(src, player, cdata); break;
+            case "berry": this.dayCarePlantBerry(src, player, cdata.slice(1).join("")); break;
             default: daycarebot.sendHtmlMessage(src, "Hey there! The commands for the Daycare are " + link("/dc dropoff:", "Dropoff", true) + ", " + link("/dc retrieve", "Retrieve") + ", " + link("/dc view", "View") + ", " + link("/dc berry:", "Berry") + ", and " + link("/dc help", "Help") + "!", safchan);
         }
     };
@@ -36748,14 +36748,19 @@ function Safari() {
         }
         if (player.pokemon.length >= getPerkBonus(player, "box")) {
             daycarebot.sendMessage(src, "Your boxes are full! Clear your boxes or buy a new one to retrieve your Pokémon!", safchan);
-            return;
+            return false;
         }
 
         for (var t = 0; t < this.daycarePokemon.length; t++) {
-            if (this.daycarePokemon[t].ownernum === player.idnum && this.daycarePokemon[t].id === pokemon.id) {
-                var mon = this.daycarePokemon[t].id;
-                if (this.daycarePokemon[t].shiny) {
+            var dcpoke = this.daycarePokemon[t];
+            if (dcpoke.ownernum === player.idnum && dcpoke.id === pokemon.id) {
+                var mon = dcpoke.id;
+                if (dcpoke.shiny) {
                     mon = mon + "";
+                }
+                if (dcpoke.berry !== undefined && dc.poke.berry !== null && cdata[cdata.length - 1].toLowerCase() !== "confirm") {
+                    daycarebot.sendHtmlMessage(src, "Your " + poke(mon) + "is busy growing berries! If you take it back now, the berry you gave it will be lost forever! If you are sure you want to do this, type " + link("/daycare retrieve:" + poke(dcpoke.id) + ":confirm", false, true) + "!", safchan);
+                    return false;
                 }
                 player.pokemon.push(mon);
                 daycarebot.sendMessage(src, "You retrieved " + poke(mon) + " from the Daycare!", safchan);
@@ -36825,8 +36830,7 @@ function Safari() {
             time: now() + t
         };
     };
-    this.dayCarePlantBerry = function(src, player, cdata) {
-        var data = cdata.join("");
+    this.dayCarePlantBerry = function(src, player, data) {
         var opt = [];
         for (var t in this.daycarePokemon) {
             if (this.daycarePokemon[t].ownernum === player.idnum) {
@@ -36869,6 +36873,7 @@ function Safari() {
         }
         var berryName = itemAlias(data, false, true);
         if (typeof berryName !== "string" || berryName.indexOf(" ") === -1 || berryName.slice(berryName.lastIndexOf(" ") + 1) !== "Berry") {
+            daycarebot.sendHtmlMessage(src, "Type " + link("/daycare berry:", "/daycare berry:[berry]", true) + " to give your Pokémon a berry!", safchan);
             return false;
         }
         var berry = itemAlias(data, false, false);
