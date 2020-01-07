@@ -36529,7 +36529,7 @@ function Safari() {
                 if (pokemon.berry.hasOwnProperty("time") && pokemon.berry.time < now()) {
                     daycarebot.sendMessage(src, poke(pokemon.id) + " grew some berries for you!", safchan);
                     var g = giveStuff(player, toStuffObj(pokemon.berry.amount + "@" + pokemon.berry.name));
-                    daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#32CD32"), safchan);  
+                    daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#228B22"), safchan);  
                     pokemon.berry = null;
                     this.saveGame(player);
                 }
@@ -36758,7 +36758,7 @@ function Safari() {
                 if (dcpoke.shiny) {
                     mon = mon + "";
                 }
-                if (dcpoke.berry !== undefined && dc.poke.berry !== null && cdata[cdata.length - 1].toLowerCase() !== "confirm") {
+                if (dcpoke.berry !== undefined && dcpoke.berry !== null && cdata[cdata.length - 1].toLowerCase() !== "confirm") {
                     daycarebot.sendHtmlMessage(src, "Your " + poke(mon) + "is busy growing berries! If you take it back now, the berry you gave it will be lost forever! If you are sure you want to do this, type " + link("/daycare retrieve:" + poke(dcpoke.id) + ":confirm", false, true) + "!", safchan);
                     return false;
                 }
@@ -36862,7 +36862,7 @@ function Safari() {
                     } else {
                         daycarebot.sendMessage(src, pokeName + " grew some berries for you!", safchan);
                         var g = giveStuff(player, toStuffObj(pokemon.berry.amount + "@" + pokemon.berry.name));
-                        daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#32CD32"), safchan);                        
+                        daycarebot.sendHtmlMessage(src, toColor("<b>You " + g + "!</b>", "#228B22"), safchan);                        
                         pokemon.berry = null;
                         this.saveGame(player);
                         safari.saveDaycare();
