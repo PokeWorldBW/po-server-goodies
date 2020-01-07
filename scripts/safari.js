@@ -36831,20 +36831,20 @@ function Safari() {
         };
     };
     this.dayCarePlantBerry = function(src, player, data) {
-        var opt = [];
+        var pokesList = [];
         for (var t in this.daycarePokemon) {
             if (this.daycarePokemon[t].ownernum === player.idnum) {
-                opt.push(this.daycarePokemon[t].id);
+                pokesList.push(this.daycarePokemon[t]);
             }
         }
-        if (opt.length === 0) {
+        if (pokesList.length === 0) {
             daycarebot.sendHtmlMessage(src, "You do not have any Pokémon in the Daycare! Type " + link("/daycare dropoff:", false, true) + " to add one!", safchan);
             return false;
         }
         if (data === "") {
             var gardeners = [];
-            for (var i = 0; i < opt.length; i++) {
-                pokemon = opt[i];
+            for (var i = 0; i < pokesList.length; i++) {
+                pokemon = pokesList[i];
                 if (pokemon.berry !== undefined && pokemon.berry !== null) {
                     gardeners.push([(pokemon.shiny ? "Shiny " : "") + poke(pokemon.id), pokemon]);
                     break;
@@ -36899,15 +36899,15 @@ function Safari() {
                 break;
             }
         }
-        if (gardener) {
+        if (gardener !== null) {
             player.balls[berry] -= 1;
-            daycarebot.sendMessage(src, "You gave " + an(berryName) + " to your " + gardener + "! Your berries should be ready to harvest in about " + timeLeftString(pokemon.time) + ".", safchan);
+            daycarebot.sendMessage(src, "You gave " + an(berryName) + " to your " + gardener + "! Your berries should be ready to harvest in about " + timeLeftString(pokemon.berry.time) + ".", safchan);
             this.saveGame(player);
             safari.saveDaycare();
         } else {
             daycarebot.sendMessage(src, "Sorry, but your all your Pokémon are already busy growing berries!", safchan);
         }
-        return planted;
+        return gardener !== null;
     };
     this.getUniqueDayCareId = function() {
         var i = 0, j = this.daycarePokemon.length;
