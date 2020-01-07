@@ -2979,14 +2979,11 @@ function Safari() {
             info = info.replace("*", "");
             info = info.replace("shiny ", "");
         }
-        sys.sendMessage(sys.id("Yttrium"), "info: " + info, safchan);
         if (info.length > 2 && (info.indexOf("_f") === info.length - 2 || info.indexOf("_m") === info.length - 2)) {
-            info = info.substring(0, info.length - 2);
-            sys.sendMessage(sys.id("Yttrium"), "info 2: " + info, safchan);
-            sys.sendMessage(sys.id("Yttrium"), "info[info.length - 1]: " + info[info.length - 1], safchan);
             if (info[info.length - 1] === "f") {
                 female = true;
             }
+            info = info.substring(0, info.length - 2);
         }
         var arr = info.split("-");
         if (arr.length === 2 && !isNaN(arr[0]) && !isNaN(arr[1])) {
