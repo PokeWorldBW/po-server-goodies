@@ -12258,7 +12258,7 @@ function Safari() {
             default:
                 if (chance(0.05)) {
                     safaribot.sendHtmlMessage(src, "You pull out your Itemfinder ... ... ... <b>KER-BONK!</b> You walked right into a sign! ...Huh? It has a Trainer Tip written on it!", safchan);
-                    sys.sendHtmlMessage(src, "±Hint: " + safariHints.random(), safchan);
+                    sys.sendHtmlMessage(src, "<font color='#3DAA68'><timestamp/><b>±Hint:</b></font><b> " + safariHints.random(), safchan);
                 }
                 else {
                     safaribot.sendHtmlMessage(src, "You pull out your Itemfinder ... ... ... But it did not detect anything. "+(freefinder ? "<i>At least no charge was used... </i>" : "") + "[Remaining charges: " + totalCharges + (permCharges > 0 ? " (Daily " + dailyCharges + " plus " + permCharges + " bonus)" : "") + "].", safchan);
@@ -36541,7 +36541,7 @@ function Safari() {
             if (pokemon.hunger > 2 && player.balls.pokeblock > 0) {
                 m.push("«" + link("/daycare interact:" + pokemon.uid + ":feed", "Feed") + "»");
             }
-            if (pokemon.berry === undefined || pokemon.berry === null) {
+            if (isOwner && (pokemon.berry === undefined || pokemon.berry === null)) {
                 m.push("«" + link("/daycare berry", "Berry") + "»");
             }
             if (m.length > 0) {
@@ -45224,8 +45224,9 @@ function Safari() {
                         if (!(hit)) {
                             safaribot.sendHtmlMessage(src, "No trivia for " + poke(mon) + " found!", safchan);
                         }
+                    } else {
+                        safaribot.sendHtmlMessage(src, "No submitted questions for " + poke(mon) + " found!", safchan);
                     }
-                    safaribot.sendHtmlMessage(src, "No submitted questions for " + poke(mon) + " found!", safchan);
                     return true;
                 }
                 for (var a in triviaData) {
@@ -45236,7 +45237,7 @@ function Safari() {
                             continue;
                         }
                         hit = true;
-                        safaribot.sendHtmlMessage(src, poke(parseInt(a, 10)) + ": " + i + (approved ? "" : link("/approvetrivia " + a + ":" + i, "Approve")) + " " + link("/removetrivia " + a + ":" + i, "Remove"), safchan);
+                        safaribot.sendHtmlMessage(src, poke(parseInt(a, 10)) + ": " + i + (approved ? "" : " " + link("/approvetrivia " + a + ":" + i, "Approve")) + " " + link("/removetrivia " + a + ":" + i, "Remove"), safchan);
                     }
                 }
                 if (!(hit)) {
