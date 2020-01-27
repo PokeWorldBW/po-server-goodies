@@ -6399,7 +6399,7 @@ function Safari() {
                     out.push("-$" + addComma(-amt));
                 }
             } else if (s == "@expup") {
-                out.push("EXP Up");
+                out.push("Costume Exp");
             } else if (s[0] === "@" || (allItems.contains(itemAlias(s, true)))) {
                 asset = s;
                 if (asset[0] === "@") {
@@ -26877,7 +26877,7 @@ function Safari() {
         if (player.costume && costumeData[player.costume].expItem) {
             var ing = {"dust": 300};
             ing[costumeData[player.costume].expItem] = 1;
-            recipes["exp up"] = {ingredients: ing, reward: "@expup", immediate: true, failChance: 0, cooldown: 6}
+            recipes["exp up"] = {ingredients: ing, reward: { "@expup": 350 + (safari.getCostumeLevel(player) * 50) }, immediate: true, failChance: 0, cooldown: 6}
         }
         else {
             if (recipes["exp up"]) {
