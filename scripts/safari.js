@@ -6423,11 +6423,6 @@ function Safari() {
             return "nothing";
         }
 
-        if (stuff === "@expup") {
-            out.gained.push((350 + (safari.getCostumeLevel(player) * 50) + " Costume Exp"));
-            safari.costumeEXP(player, "alchemy", 350 + (safari.getCostumeLevel(player) * 50));
-            return out;
-        }
         if (typeof stuff === "string") {
             asset = stuff;
             stuff = {};
@@ -6460,6 +6455,9 @@ function Safari() {
                     }
                     out.lost.push("$" + addComma(-total));
                 }
+            } else if (s === "@expup") {
+                out.gained.push(amt + " Costume Exp");
+                safari.costumeEXP(player, "alchemy", amt);
             } else if (s[0] === "@" || (allItems.contains(itemAlias(s, true)))) {
                 asset = s;
                 if (asset[0] === "@") {
