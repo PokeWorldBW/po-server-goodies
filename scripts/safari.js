@@ -6399,7 +6399,7 @@ function Safari() {
                     out.push("-$" + addComma(-amt));
                 }
             } else if (s == "@expup") {
-                out.push("Costume Exp");
+                out.push(amt + " Costume Exp");
             } else if (s[0] === "@" || (allItems.contains(itemAlias(s, true)))) {
                 asset = s;
                 if (asset[0] === "@") {
