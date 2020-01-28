@@ -36800,32 +36800,32 @@ function Safari() {
                 amt = 2;
         }
         if (hasType(poke, "Grass")) {
-            amt = Math.floor(amt * 1.35);
+            amt *= 1.4;
         }
         if (hasType(poke, "Ground")) {
-            amt = Math.floor(amt * 1.35);
+            amt *= 1.35;
         }
         if (hasType(poke, "Water")) {
-            t = Math.floor(t * 0.8);
+            t *= 0.8;
         }
         if (canHaveAbility(poke, abilitynum("Ripen"))) {
-            amt = Math.floor(amt * 1.5);
-            t = Math.floor(t * 0.75);
+            amt *= 1.5;
+            t *= 0.75;
         }
         if (canHaveAbility(poke, abilitynum("Harvest"))) {
-            amt = Math.floor(amt * 1.8);
+            amt *= 1.8;
         }
         if (canHaveAbility(poke, abilitynum("Gluttony"))) {
-            amt = Math.floor(amt * 0.7);
-            t = Math.floor(t * 0.4);
+            amt *= 0.7;
+            t *= 0.4;
         }
         if (canHaveAbility(poke, abilitynum("Cheek Pouch"))) {
-            amt = Math.floor(amt * 0.8);
-            t = Math.floor(t * 0.45);
+            amt = *= 0.8;
+            t *= 0.45;
         }
         return {
-            amount: amt,
-            time: t
+            amount: Math.max(Math.floor(amt), 2),
+            time: Math.floor(t)
         };
     };
     this.dayCarePlantBerry = function(src, player, data) {
