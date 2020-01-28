@@ -49642,7 +49642,7 @@ function Safari() {
                 safari.runPendingActive();
                 checkUpdate();
             } else {
-                if (!currentPokemon && (chance(0.092743 + (sys.playersOfChannel(safchan).length > 54 ? 0.011 : 0)) || ((lastWild > now() + 12000 && (chance(0.25))) )) ) {
+                if (!currentPokemon /*&& (chance(0.092743 + (sys.playersOfChannel(safchan).length > 15 ? 0.011 : 0)) || ((lastWild > now() + 12000 && (chance(0.25))) )) */) {
                     var amt = chance(0.05919) ? (chance(0.35) ? 3 : 2) : 1;
                     if (currentTheme && (chance(0.02)) && (currentTheme === "seasonal" || (currentTheme === "seasonal2"))) {
                         amt++;
