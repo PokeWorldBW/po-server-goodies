@@ -36839,7 +36839,7 @@ function Safari() {
             t *= 0.4;
         }
         if (canHaveAbility(poke, abilitynum("Cheek Pouch"))) {
-            amt = *= 0.8;
+            amt *= 0.8;
             t *= 0.45;
         }
         return {
