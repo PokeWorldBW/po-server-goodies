@@ -8733,6 +8733,23 @@ function Mafia(mafiachan) {
             dump(src, mess, channel);
             return;
         }
+        if (command === "themedump" || command === "dumptheme") {
+            if (commandData === noPlayer) {
+                mafiabot.sendMessage(src, "Please specify a theme!", mafiachan);
+                return;
+            }
+            var name = this.getThemeName(commandData);
+            if (name === false) {
+                mafiabot.sendMessage(src, "The theme '" + commandData + "' does not exist!", mafiachan);
+                return;
+            }
+            name = name.replace("/", "").toLowerCase();
+            var json = sys.getFileContent("scriptdata/mafiathemes/theme_" + name);
+            var fileName = sys.time() + "-" + name + ".json";
+            sys.writeToFile("usage_stats/formatted/team/" + fileName, json);
+            normalbot.sendMessage(src, "The raw theme can be found here: http://server.pokemon-online.eu/team/" + fileName, channel);
+            return;
+        }
 
         if (!this.isMafiaSuperAdmin(src))
             throw ("no valid command");
@@ -9007,23 +9024,6 @@ function Mafia(mafiachan) {
             } else {
                 msg(src, "No peak themes are disabled.");
             }
-            return;
-        }
-        if (command === "themedump" || command === "dumptheme") {
-            if (commandData === noPlayer) {
-                mafiabot.sendMessage(src, "Please specify a theme!", mafiachan);
-                return;
-            }
-            var name = this.getThemeName(commandData);
-            if (name === false) {
-                mafiabot.sendMessage(src, "The theme '" + commandData + "' does not exist!", mafiachan);
-                return;
-            }
-            name = name.replace("/", "").toLowerCase();
-            var json = sys.getFileContent("scriptdata/mafiathemes/theme_" + name);
-            var fileName = sys.time() + "-" + name + ".json";
-            sys.writeToFile("usage_stats/formatted/team/" + fileName, json);
-            normalbot.sendMessage(src, "The raw theme can be found here: http://server.pokemon-online.eu/team/" + fileName, channel);
             return;
         }
         /*REMOVE: The following commands*/
