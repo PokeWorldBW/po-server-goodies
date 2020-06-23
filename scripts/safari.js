@@ -30494,7 +30494,7 @@ function Safari() {
                         hits = (chance((aggregateScore - 200) * 0.007) ? 1 : 0);
                     }
                     if (bst >= 680) {
-                        hits = (chance((aggregateScore - 200) * 0.007) ? 1 : 0);
+                        hits = (chance((aggregateScore - 400) * 0.007) ? 1 : 0);
                     }
                 }
                 if (rareForm) {
@@ -44921,7 +44921,7 @@ function Safari() {
                 sys.sendMessage(src, "", safchan);
                 var type_1 = type1(info.num);
                 var type_2 = type2(info.num);
-                var ic = pokeInfo.icon(info.num);
+                var ic = pokeInfo.icon(info.id);
                 var stats = getStatsNamed(info.num), statsmsg = [], efmsg = "";
                 for (var i in stats) {
                     statsmsg.push(i + ": " + stats[i]);
